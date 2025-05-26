@@ -1,0 +1,1058 @@
+{
+    "name": "Warlock",
+    "description": "A wielder of magic that is derived from a bargain with an extraplanar entity.",
+    "hit_dice": "1d8",
+    "primary_ability": [
+        "charisma"
+    ],
+    "saving_throw_proficiencies": [
+        "wisdom",
+        "charisma"
+    ],
+    "armor_proficiencies": [
+        "light armor"
+    ],
+    "weapon_proficiencies": [
+        "simple weapons"
+    ],
+    "tool_proficiencies": [],
+    "skill_proficiencies": {
+        "choose": 2,
+        "from": [
+            "Arcana",
+            "Deception",
+            "History",
+            "Intimidation",
+            "Investigation",
+            "Nature",
+            "Religion"
+        ]
+    },
+    "starting_equipment": {
+        "choices": [
+            {
+                "choose": 1,
+                "from": [
+                    "light crossbow and 20 bolts",
+                    "any simple weapon"
+                ]
+            },
+            {
+                "choose": 1,
+                "from": [
+                    "component pouch",
+                    "arcane focus"
+                ]
+            },
+            {
+                "choose": 1,
+                "from": [
+                    "scholar's pack",
+                    "dungeoneer's pack"
+                ]
+            }
+        ],
+        "default": [
+            "leather armor",
+            "any simple weapon",
+            "two daggers"
+        ]
+    },
+    "features": {
+        "1": [
+            {
+                "name": "Otherworldly Patron",
+                "description": "You have struck a bargain with an otherworldly being of your choice: the Archfey, the Fiend, or the Great Old One. Your choice grants you features at 1st, 6th, 10th, and 14th level.",
+                "mechanics": {
+                    "type": "subclass_choice",
+                    "subclass_type": "patron",
+                    "feature_levels": [1, 6, 10, 14]
+                }
+            },
+            {
+                "name": "Pact Magic",
+                "description": "You can cast known warlock spells using Charisma as your spellcasting ability. You regain all expended spell slots when you finish a short or long rest.",
+                "mechanics": {
+                    "type": "spellcasting",
+                    "ability": "charisma",
+                    "focus": ["arcane focus"],
+                    "preparation": "known",
+                    "short_rest_recovery": true,
+                    "spell_slot_type": "pact_magic"
+                }
+            }
+        ],
+        "2": [
+            {
+                "name": "Eldritch Invocations",
+                "description": "You learn eldritch invocations, magical effects you can choose from a list. Some require certain levels or features. You learn additional invocations at higher levels.",
+                "mechanics": {
+                    "type": "resource",
+                    "resource_name": "eldritch_invocations",
+                    "amount": {
+                        "2": 2,
+                        "5": 3,
+                        "7": 4,
+                        "9": 5,
+                        "12": 6,
+                        "15": 7,
+                        "18": 8
+                    },
+                    "choice_type": "eldritch_invocation_list"
+                }
+            }
+        ],
+        "3": [
+            {
+                "name": "Pact Boon",
+                "description": "You gain a magical gift from your patron: Pact of the Chain, Pact of the Blade, or Pact of the Tome.",
+                "mechanics": {
+                    "type": "choice",
+                    "choose": 1,
+                    "options": [
+                        {
+                            "name": "Pact of the Chain",
+                            "description": "You learn the find familiar spell and can cast it as a ritual. When you cast the spell, you can choose one of the normal forms for your familiar or one of the following special forms: imp, pseudodragon, quasit, or sprite.",
+                            "effects": [
+                                {
+                                    "type": "bonus_spell",
+                                    "spell": "find familiar",
+                                    "ritual": true
+                                },
+                                {
+                                    "type": "familiar_options",
+                                    "special_forms": ["imp", "pseudodragon", "quasit", "sprite"]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Pact of the Blade",
+                            "description": "You can use your action to create a pact weapon in your empty hand. This weapon counts as magical for overcoming resistance and immunity. You can choose the form each time you create it and are proficient with it while you wield it.",
+                            "effects": [
+                                {
+                                    "type": "weapon_creation",
+                                    "action_type": "action",
+                                    "properties": ["magical", "proficient"]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Pact of the Tome",
+                            "description": "Your patron gives you a grimoire called a Book of Shadows. Choose three cantrips from any class's spell list. While the book is on your person, you can cast those cantrips at will.",
+                            "effects": [
+                                {
+                                    "type": "bonus_cantrips",
+                                    "amount": 3,
+                                    "source": "any class"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "4": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "8": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "11": [
+            {
+                "name": "Mystic Arcanum (6th Level)",
+                "description": "You can cast one 6th-level spell once without expending a spell slot. You regain use on a long rest.",
+                "mechanics": {
+                    "type": "mystic_arcanum",
+                    "spell_level": 6,
+                    "uses": {
+                        "per_long_rest": 1
+                    },
+                    "spell_choice": "one_6th_level_warlock_spell"
+                }
+            }
+        ],
+        "12": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "13": [
+            {
+                "name": "Mystic Arcanum (7th Level)",
+                "description": "You can cast one 7th-level spell once without expending a spell slot. You regain use on a long rest.",
+                "mechanics": {
+                    "type": "mystic_arcanum",
+                    "spell_level": 7,
+                    "uses": {
+                        "per_long_rest": 1
+                    },
+                    "spell_choice": "one_7th_level_warlock_spell"
+                }
+            }
+        ],
+        "15": [
+            {
+                "name": "Mystic Arcanum (8th Level)",
+                "description": "You can cast one 8th-level spell once without expending a spell slot. You regain use on a long rest.",
+                "mechanics": {
+                    "type": "mystic_arcanum",
+                    "spell_level": 8,
+                    "uses": {
+                        "per_long_rest": 1
+                    },
+                    "spell_choice": "one_8th_level_warlock_spell"
+                }
+            }
+        ],
+        "16": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "17": [
+            {
+                "name": "Mystic Arcanum (9th Level)",
+                "description": "You can cast one 9th-level spell once without expending a spell slot. You regain use on a long rest.",
+                "mechanics": {
+                    "type": "mystic_arcanum",
+                    "spell_level": 9,
+                    "uses": {
+                        "per_long_rest": 1
+                    },
+                    "spell_choice": "one_9th_level_warlock_spell"
+                }
+            }
+        ],
+        "19": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "20": [
+            {
+                "name": "Eldritch Master",
+                "description": "You can spend 1 minute to regain all your expended Pact Magic spell slots once per long rest.",
+                "mechanics": {
+                    "type": "resource_recovery",
+                    "action_type": "1_minute",
+                    "recovers": "all_pact_magic_slots",
+                    "uses": {
+                        "per_long_rest": 1
+                    }
+                }
+            }
+        ]
+    },
+    "spellcasting": {
+        "ability": "charisma",
+        "focus": [
+            "arcane focus"
+        ],
+        "spells_known": {
+            "1": 2,
+            "2": 3,
+            "3": 4,
+            "4": 5,
+            "5": 6,
+            "6": 7,
+            "7": 8,
+            "8": 9,
+            "9": 10,
+            "10": 10,
+            "11": 11,
+            "12": 11,
+            "13": 12,
+            "14": 12,
+            "15": 13,
+            "16": 13,
+            "17": 14,
+            "18": 14,
+            "19": 15,
+            "20": 15
+        },
+        "cantrips_known": {
+            "1": 2,
+            "4": 3,
+            "10": 4
+        },
+        "pact_magic_slots": {
+            "1": {
+                "slots": 1,
+                "level": 1
+            },
+            "2": {
+                "slots": 2,
+                "level": 1
+            },
+            "3": {
+                "slots": 2,
+                "level": 2
+            },
+            "4": {
+                "slots": 2,
+                "level": 2
+            },
+            "5": {
+                "slots": 2,
+                "level": 3
+            },
+            "6": {
+                "slots": 2,
+                "level": 3
+            },
+            "7": {
+                "slots": 2,
+                "level": 4
+            },
+            "8": {
+                "slots": 2,
+                "level": 4
+            },
+            "9": {
+                "slots": 2,
+                "level": 5
+            },
+            "10": {
+                "slots": 2,
+                "level": 5
+            },
+            "11": {
+                "slots": 3,
+                "level": 5
+            },
+            "12": {
+                "slots": 3,
+                "level": 5
+            },
+            "13": {
+                "slots": 3,
+                "level": 5
+            },
+            "14": {
+                "slots": 3,
+                "level": 5
+            },
+            "15": {
+                "slots": 3,
+                "level": 5
+            },
+            "16": {
+                "slots": 3,
+                "level": 5
+            },
+            "17": {
+                "slots": 4,
+                "level": 5
+            },
+            "18": {
+                "slots": 4,
+                "level": 5
+            },
+            "19": {
+                "slots": 4,
+                "level": 5
+            },
+            "20": {
+                "slots": 4,
+                "level": 5
+            }
+        }
+    },
+    "subclass_level": 1,
+    "subclasses": [
+        {
+            "name": "The Archfey",
+            "description": "Your patron is a lord or lady of the fey, a creature of legend whose motivations are often inscrutable. You gain features like Fey Presence, Misty Escape, Beguiling Defenses, and Dark Delirium.",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "The Archfey lets you choose from an expanded list of spells when you learn a warlock spell.",
+                        "mechanics": {
+                            "type": "expanded_spell_list",
+                            "spells": {
+                                "1": ["faerie fire", "sleep"],
+                                "3": ["calm emotions", "phantasmal force"],
+                                "5": ["blink", "plant growth"],
+                                "7": ["dominate beast", "greater invisibility"],
+                                "9": ["dominate person", "seeming"]
+                            }
+                        }
+                    },
+                    {
+                        "name": "Fey Presence",
+                        "description": "As an action, you can cause each creature in a 10-foot cube originating from you to make a Wisdom saving throw against your warlock spell save DC. The creatures that fail their saving throws are all charmed or frightened by you (your choice) until the end of your next turn.",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "action",
+                            "range": "10-foot cube from self",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "save": {
+                                "ability": "wisdom",
+                                "dc": "warlock_spell_save_dc"
+                            },
+                            "effects": [
+                                {
+                                    "type": "condition",
+                                    "condition": "charmed_or_frightened",
+                                    "duration": "end_of_next_turn",
+                                    "choice": true
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Misty Escape",
+                        "description": "When you take damage, you can use your reaction to turn invisible and teleport up to 60 feet to an unoccupied space you can see. You remain invisible until the start of your next turn or until you attack or cast a spell.",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "reaction",
+                            "trigger": "take_damage",
+                            "range": "60 feet",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "teleport",
+                                    "distance": "60 feet",
+                                    "condition": "unoccupied_space_you_can_see"
+                                },
+                                {
+                                    "type": "condition",
+                                    "condition": "invisible",
+                                    "duration": "until_start_of_next_turn_or_attack_or_cast_spell"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Beguiling Defenses",
+                        "description": "You are immune to being charmed, and when another creature attempts to charm you, you can use your reaction to attempt to turn the charm back on that creature.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "immunity",
+                                    "condition": "charmed"
+                                },
+                                {
+                                    "type": "reaction_ability",
+                                    "trigger": "targeted_by_charm",
+                                    "effect": "reflect_charm_back"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Dark Delirium",
+                        "description": "As an action, you can plunge a creature into an illusory realm. The target must make a Wisdom saving throw against your warlock spell save DC. On a failed save, it is charmed or frightened by you (your choice) for 1 minute or until your concentration is broken. This effect ends early if the creature takes damage.",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "action",
+                            "range": "60 feet",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "save": {
+                                "ability": "wisdom",
+                                "dc": "warlock_spell_save_dc"
+                            },
+                            "effects": [
+                                {
+                                    "type": "condition",
+                                    "condition": "charmed_or_frightened",
+                                    "duration": "1 minute or until concentration broken",
+                                    "choice": true,
+                                    "ends_on_damage": true
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Fiend",
+            "description": "Your pact is with a fiend from the lower planes. You gain features like Dark One's Blessing, Dark One's Own Luck, Fiendish Resilience, and Hurl Through Hell.",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "The Fiend lets you choose from an expanded list of spells when you learn a warlock spell.",
+                        "mechanics": {
+                            "type": "expanded_spell_list",
+                            "spells": {
+                                "1": ["burning hands", "command"],
+                                "3": ["blindness/deafness", "scorching ray"],
+                                "5": ["fireball", "stinking cloud"],
+                                "7": ["fire shield", "wall of fire"],
+                                "9": ["flame strike", "hallow"]
+                            }
+                        }
+                    },
+                    {
+                        "name": "Dark One's Blessing",
+                        "description": "When you reduce a hostile creature to 0 hit points, you gain temporary hit points equal to your Charisma modifier + your warlock level (minimum of 1).",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "reduce_hostile_creature_to_0_hp",
+                            "effects": [
+                                {
+                                    "type": "temporary_hit_points",
+                                    "formula": "charisma_modifier + warlock_level",
+                                    "minimum": 1
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Dark One's Own Luck",
+                        "description": "When you make an ability check or saving throw, you can use this feature to add a d10 to your roll. You can do so after seeing the initial roll but before any of the roll's effects occur.",
+                        "mechanics": {
+                            "type": "resource",
+                            "trigger": "ability_check_or_saving_throw",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "roll_bonus",
+                                    "bonus": "1d10",
+                                    "timing": "after_roll_before_effects"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Fiendish Resilience",
+                        "description": "You can choose one damage type when you finish a short or long rest. You gain resistance to that damage type until you choose a different one with this feature. Damage from magical weapons or silver weapons ignores this resistance.",
+                        "mechanics": {
+                            "type": "resource",
+                            "timing": "on_rest",
+                            "rest_type": "short_or_long",
+                            "effects": [
+                                {
+                                    "type": "damage_resistance",
+                                    "damage_type": "chosen_damage_type",
+                                    "exceptions": ["magical_weapons", "silver_weapons"]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Hurl Through Hell",
+                        "description": "When you hit a creature with an attack, you can use this feature to instantly transport the target through the lower planes. The creature disappears and hurtles through a nightmare landscape. At the end of your next turn, the target returns to the space it previously occupied, or the nearest unoccupied space. If the target is not a fiend, it takes 10d10 psychic damage as it reels from its horrific experience.",
+                        "mechanics": {
+                            "type": "resource",
+                            "trigger": "hit_with_attack",
+                            "uses": {
+                                "per_long_rest": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "banishment",
+                                    "duration": "until_end_of_next_turn",
+                                    "return_location": "previous_space_or_nearest_unoccupied"
+                                },
+                                {
+                                    "type": "damage",
+                                    "damage": "10d10",
+                                    "damage_type": "psychic",
+                                    "condition": "target_is_not_fiend"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Great Old One",
+            "description": "Your patron is a mysterious being from the Far Realm. You gain features like Awakened Mind, Entropic Ward, Thought Shield, and Create Thrall.",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "The Great Old One lets you choose from an expanded list of spells when you learn a warlock spell.",
+                        "mechanics": {
+                            "type": "expanded_spell_list",
+                            "spells": {
+                                "1": ["dissonant whispers", "Tasha's hideous laughter"],
+                                "3": ["calm emotions", "detect thoughts"],
+                                "5": ["clairvoyance", "sending"],
+                                "7": ["dominate beast", "Evard's black tentacles"],
+                                "9": ["dominate person", "modify memory"]
+                            }
+                        }
+                    },
+                    {
+                        "name": "Awakened Mind",
+                        "description": "Starting at 1st level, your alien knowledge gives you the ability to touch the minds of other creatures. You can telepathically speak to any creature you can see within 30 feet of you. You don't need to share a language with the creature for it to understand your telepathic utterances, but the creature must be able to understand at least one language.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "telepathy",
+                                    "range": "30 feet",
+                                    "requires_line_of_sight": true,
+                                    "language_requirement": "target_understands_one_language"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Entropic Ward",
+                        "description": "When a creature makes an attack roll against you, you can use your reaction to impose disadvantage on that roll. If the attack misses you, your next attack roll against the creature has advantage if you make it before the end of your next turn.",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "reaction",
+                            "trigger": "targeted_by_attack",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "impose_disadvantage",
+                                    "on": "attack_roll"
+                                },
+                                {
+                                    "type": "conditional_advantage",
+                                    "condition": "if_attack_misses",
+                                    "benefit": "advantage_on_next_attack_against_attacker",
+                                    "duration": "until_end_of_next_turn"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Thought Shield",
+                        "description": "Your thoughts can't be read by telepathy or other means unless you allow it. You also have resistance to psychic damage, and whenever a creature deals psychic damage to you, that creature takes the same amount of damage that you do.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "immunity",
+                                    "condition": "mind_reading",
+                                    "exception": "if_allowed"
+                                },
+                                {
+                                    "type": "damage_resistance",
+                                    "damage_type": "psychic"
+                                },
+                                {
+                                    "type": "damage_reflection",
+                                    "damage_type": "psychic",
+                                    "amount": "same_as_received"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Create Thrall",
+                        "description": "You can use your action to touch an incapacitated humanoid. That creature is then charmed by you until a remove curse spell is cast on it, the charmed condition is removed from it, or you use this feature again.",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "action",
+                            "range": "touch",
+                            "target": "incapacitated_humanoid",
+                            "uses": {
+                                "per_long_rest": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "condition",
+                                    "condition": "charmed",
+                                    "duration": "until_remove_curse_or_use_again"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Celestial",
+            "description": "Your patron is a powerful being of the Upper Planes. You gain features like Healing Light, Celestial Resilience, Radiant Soul, and Searing Vengeance.",
+            "source": "XGE",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "You gain additional spells: cure wounds, guiding bolt, flaming sphere, lesser restoration, daylight, revivify, guardian of faith, wall of fire, flame strike, greater restoration."
+                    },
+                    {
+                        "name": "Healing Light",
+                        "description": "You have a pool of d6s equal to 1 + your warlock level. As a bonus action, you can heal a creature within 60 feet by spending dice from the pool. The target regains hit points equal to the total rolled. Your pool regains all expended dice when you finish a long rest."
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Radiant Soul",
+                        "description": "You gain resistance to radiant damage, and when you cast a spell that deals fire or radiant damage, you add your Charisma modifier to one damage roll."
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Celestial Resilience",
+                        "description": "When you finish a short or long rest, you and up to five creatures gain temporary hit points equal to your warlock level + your Charisma modifier."
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Searing Vengeance",
+                        "description": "When you would make a death saving throw, you can instead spring back to your feet with a burst of radiant energy. You regain hit points equal to half your hit point maximum, and creatures of your choice within 30 feet take radiant damage equal to 2d8 + your Charisma modifier and are blinded until the end of your turn. Once per long rest."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Hexblade",
+            "description": "Your patron is a mysterious entity from the Shadowfell that manifests in sentient magic weapons. You gain features like Hexblade's Curse, Hex Warrior, Accursed Specter, and Master of Hexes.",
+            "source": "XGE",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "The Hexblade lets you choose from an expanded list of spells when you learn a warlock spell.",
+                        "mechanics": {
+                            "type": "expanded_spell_list",
+                            "spells": {
+                                "1": ["shield", "wrathful smite"],
+                                "3": ["blur", "branding smite"],
+                                "5": ["blink", "elemental weapon"],
+                                "7": ["phantasmal killer", "staggering smite"],
+                                "9": ["cone of cold", "banishing smite"]
+                            }
+                        }
+                    },
+                    {
+                        "name": "Hexblade's Curse",
+                        "description": "As a bonus action, you place a curse on a creature you can see within 30 feet of you. The target is cursed for 1 minute. The curse ends early if the target dies, you die, or you are incapacitated. Until the curse ends, you gain the following benefits: You gain a bonus to damage rolls against the cursed target. The bonus equals your proficiency bonus. Any attack roll you make against the cursed target is a critical hit on a roll of 19 or 20 on the d20. If the cursed target dies, you regain hit points equal to your warlock level + your Charisma modifier (minimum of 1).",
+                        "mechanics": {
+                            "type": "resource",
+                            "action_type": "bonus_action",
+                            "range": "30 feet",
+                            "uses": {
+                                "per_rest": "short",
+                                "amount": 1
+                            },
+                            "duration": "1 minute",
+                            "effects": [
+                                {
+                                    "type": "damage_bonus",
+                                    "bonus": "proficiency_bonus",
+                                    "target": "cursed_creature"
+                                },
+                                {
+                                    "type": "critical_hit_expansion",
+                                    "range": "19-20",
+                                    "target": "cursed_creature"
+                                },
+                                {
+                                    "type": "heal_on_death",
+                                    "amount": "warlock_level + charisma_modifier",
+                                    "minimum": 1,
+                                    "trigger": "cursed_target_dies"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "Hex Warrior",
+                        "description": "You acquire the training necessary to effectively arm yourself for battle. You gain proficiency with medium armor, shields, and martial weapons. The influence of your patron also allows you to mystically channel your will through a particular weapon. Whenever you finish a long rest, you can touch one weapon that you are proficient with and that lacks the two-handed property. When you attack with that weapon, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefit lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the weapon's type.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "proficiencies",
+                                    "armor": ["medium armor", "shields"],
+                                    "weapons": ["martial weapons"]
+                                },
+                                {
+                                    "type": "ability_substitution",
+                                    "substitute": "charisma",
+                                    "for": ["strength", "dexterity"],
+                                    "applies_to": "one_chosen_weapon_per_long_rest",
+                                    "weapon_restrictions": ["not_two_handed", "proficient"]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Accursed Specter",
+                        "description": "When you slay a humanoid, you can cause its spirit to rise from its corpse as a specter, the statistics for which are in the Monster Manual. When the specter appears, it gains temporary hit points equal to half your warlock level. Roll initiative for the specter, which has its own turns. It obeys your verbal commands, and it gains a special bonus to its attack rolls equal to your Charisma modifier (minimum of +0). The specter remains in your service until the end of your next long rest, at which point it vanishes to the afterlife.",
+                        "mechanics": {
+                            "type": "resource",
+                            "trigger": "slay_humanoid",
+                            "uses": {
+                                "per_long_rest": 1
+                            },
+                            "effects": [
+                                {
+                                    "type": "summon_creature",
+                                    "creature": "specter",
+                                    "temporary_hit_points": "warlock_level / 2",
+                                    "attack_bonus": "charisma_modifier",
+                                    "duration": "until_end_of_next_long_rest"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Armor of Hexes",
+                        "description": "Your hex grows more powerful. If the target cursed by your Hexblade's Curse hits you with an attack roll, you can use your reaction to roll a d6. On a 4 or higher, the attack instead misses you, regardless of its roll.",
+                        "mechanics": {
+                            "type": "passive",
+                            "action_type": "reaction",
+                            "trigger": "hit_by_hexblade_cursed_target",
+                            "effects": [
+                                {
+                                    "type": "attack_negation",
+                                    "roll": "1d6",
+                                    "success_on": "4+",
+                                    "effect": "attack_misses"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Master of Hexes",
+                        "description": "You can spread your Hexblade's Curse from a slain creature to another creature. When the creature cursed by your Hexblade's Curse dies, you can apply the curse to a different creature you can see within 30 feet of you, provided you aren't incapacitated. When you apply the curse in this way, you don't regain hit points from the death of the previously cursed creature.",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "hexblade_cursed_target_dies",
+                            "effects": [
+                                {
+                                    "type": "transfer_curse",
+                                    "range": "30 feet",
+                                    "target": "different_creature_you_can_see",
+                                    "condition": "not_incapacitated",
+                                    "note": "no_hit_points_regained_on_transfer"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Fathomless",
+            "description": "Your patron is a mysterious creature from the ocean's depths. You gain features like Tentacle of the Deeps, Guardian Coil, Oceanic Soul, and Fathomless Plunge.",
+            "source": "TCE",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "You gain additional spells: create or destroy water, thunderwave, gust of wind, silence, lightning bolt, sleet storm, control water, evard's black tentacles, bigby's hand, cone of cold."
+                    },
+                    {
+                        "name": "Tentacle of the Deeps",
+                        "description": "As a bonus action, you create a spectral tentacle within 60 feet. It can strike creatures within 10 feet of it, dealing 1d8 cold damage and reducing speed by 10 feet. The tentacle lasts for 1 minute or until you use this feature again. You can use this feature a number of times equal to your proficiency bonus per long rest."
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Guardian Coil",
+                        "description": "Your tentacle can protect you and others. When you or a creature you can see within 10 feet of the tentacle takes damage, you can use your reaction to reduce that damage by 1d8. This increases to 2d8 at 10th level."
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Oceanic Soul",
+                        "description": "You gain resistance to cold damage and can breathe underwater. You also gain a swimming speed equal to your walking speed and can use telepathy to communicate with any creature that has a swimming speed while both of you are underwater."
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Fathomless Plunge",
+                        "description": "As an action, you can magically open temporary conduits to watery destinations. You and up to five willing creatures within 30 feet of you can instantly teleport to a body of water you've seen within 1 mile. Once per long rest."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Genie",
+            "description": "Your patron is a genie noble from one of the four elemental planes. You gain features like Genie's Vessel, Elemental Gift, Sanctuary Vessel, and Limited Wish.",
+            "source": "TCE",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "You gain additional spells based on your genie kind (Dao, Djinni, Efreeti, or Marid)."
+                    },
+                    {
+                        "name": "Genie's Vessel",
+                        "description": "You gain a magical vessel that you can use as a spellcasting focus. Once per long rest, you can add your proficiency bonus to one damage roll of a spell you cast. You can also use the vessel as a tiny refuge, entering it for up to 2 times your proficiency bonus in hours per long rest."
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Elemental Gift",
+                        "description": "You gain resistance to a damage type based on your genie kind, and you can hover up to 10 feet off the ground. You can use this flying speed for a number of minutes equal to your proficiency bonus per long rest."
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Sanctuary Vessel",
+                        "description": "When you enter your Genie's Vessel, you can bring up to five willing creatures with you. Also, while inside, you and any creatures you brought in can benefit from a short rest in only 10 minutes."
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Limited Wish",
+                        "description": "You can entreat your patron's power to grant you a limited wish, duplicating the effect of any spell of 6th level or lower that has a casting time of 1 action. Once per long rest."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "The Undying",
+            "description": "Your patron is a powerful undead being, such as a lich or vampire. You gain features like Among the Dead, Defy Death, Undying Nature, and Indestructible Life.",
+            "source": "SCAG",
+            "features": {
+                "1": [
+                    {
+                        "name": "Expanded Spell List",
+                        "description": "You gain additional spells: false life, ray of sickness, blindness/deafness, silence, feign death, speak with dead, aura of life, death ward, contagion, legend lore."
+                    },
+                    {
+                        "name": "Among the Dead",
+                        "description": "You learn the spare the dying cantrip, and undead have disadvantage on attack rolls against you. If you target an undead with an attack or harmful spell, that creature loses this disadvantage until the end of your next turn."
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "Defy Death",
+                        "description": "When you succeed on a death saving throw or stabilize a creature with spare the dying, you regain hit points equal to 1d8 + your Constitution modifier. Once per long rest."
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Undying Nature",
+                        "description": "You can hold your breath indefinitely, and you don't need food, water, or sleep, although you still need to rest to reduce exhaustion and still benefit from finishing short and long rests."
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "Indestructible Life",
+                        "description": "As a bonus action, you can regain hit points equal to 1d8 + your warlock level. Additionally, if you put a severed body part of yours back in place when you use this feature, the part reattaches. Once per short or long rest."
+                    }
+                ]
+            }
+        }
+    ],
+    "version": "5E",
+    "source": "PHB",
+    "source_page": 105
+}

@@ -1,0 +1,816 @@
+{
+    "name": "Fighter",
+    "description": "A master of martial combat, skilled with a variety of weapons and armor.",
+    "hit_dice": "1d10",
+    "primary_ability": [
+        "strength",
+        "dexterity"
+    ],
+    "saving_throw_proficiencies": [
+        "strength",
+        "constitution"
+    ],
+    "armor_proficiencies": [
+        "light armor",
+        "medium armor",
+        "heavy armor",
+        "shields"
+    ],
+    "weapon_proficiencies": [
+        "simple weapons",
+        "martial weapons"
+    ],
+    "tool_proficiencies": [],
+    "skill_proficiencies": {
+        "choose": 2,
+        "from": [
+            "Acrobatics",
+            "Animal Handling",
+            "Athletics",
+            "History",
+            "Insight",
+            "Intimidation",
+            "Perception",
+            "Survival"
+        ]
+    },
+    "starting_equipment": {
+        "choices": [
+            {
+                "choose": 1,
+                "from": [
+                    "chain mail",
+                    ["leather armor", "longbow", "20 arrows"]
+                ]
+            },
+            {
+                "choose": 1,
+                "from": [
+                    ["martial weapon", "shield"],
+                    ["two martial weapons"]
+                ]
+            },
+            {
+                "choose": 1,
+                "from": [
+                    ["light crossbow", "20 bolts"],
+                    ["two handaxes"]
+                ]
+            },
+            {
+                "choose": 1,
+                "from": [
+                    "dungeoneer's pack",
+                    "explorer's pack"
+                ]
+            }
+        ]
+    },
+    "features": {
+        "1": [
+            {
+                "name": "Fighting Style",
+                "description": "You adopt a particular style of fighting as your specialty.",
+                "mechanics": {
+                    "type": "choice",
+                    "choose": 1,
+                    "options": [
+                        {
+                            "name": "Archery",
+                            "description": "You gain a +2 bonus to attack rolls you make with ranged weapons.",
+                            "effects": [
+                                {
+                                    "type": "attack_roll_bonus",
+                                    "bonus": 2,
+                                    "weapon_type": "ranged"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Defense",
+                            "description": "While you are wearing armor, you gain a +1 bonus to AC.",
+                            "effects": [
+                                {
+                                    "type": "ac_bonus",
+                                    "bonus": 1,
+                                    "condition": "wearing_armor"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Dueling",
+                            "description": "When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.",
+                            "effects": [
+                                {
+                                    "type": "damage_bonus",
+                                    "bonus": 2,
+                                    "weapon_type": "melee",
+                                    "condition": "one_handed_no_other_weapons"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Great Weapon Fighting",
+                            "description": "When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll, even if the new roll is a 1 or a 2.",
+                            "effects": [
+                                {
+                                    "type": "damage_reroll",
+                                    "reroll_on": [1, 2],
+                                    "weapon_type": "two_handed_melee",
+                                    "must_use_new_roll": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Protection",
+                            "description": "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.",
+                            "effects": [
+                                {
+                                    "type": "reaction_ability",
+                                    "action_type": "reaction",
+                                    "trigger": "ally_within_5_feet_attacked",
+                                    "effect": "impose_disadvantage_on_attack",
+                                    "requirement": "wielding_shield"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Two-Weapon Fighting",
+                            "description": "When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.",
+                            "effects": [
+                                {
+                                    "type": "two_weapon_fighting_bonus",
+                                    "effect": "add_ability_modifier_to_offhand"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "Second Wind",
+                "description": "You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again.",
+                "mechanics": {
+                    "type": "resource",
+                    "action_type": "bonus_action",
+                    "uses": {
+                        "per_rest": "short",
+                        "amount": 1
+                    },
+                    "effects": [
+                        {
+                            "type": "healing",
+                            "formula": "1d10 + fighter_level"
+                        }
+                    ]
+                }
+            }
+        ],
+        "2": [
+            {
+                "name": "Action Surge",
+                "description": "You can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again. Starting at 17th level, you can use it twice before a rest, but only once on the same turn.",
+                "mechanics": {
+                    "type": "resource",
+                    "action_type": "free",
+                    "uses": {
+                        "per_rest": "short",
+                        "amount": {
+                            "2": 1,
+                            "17": 2
+                        }
+                    },
+                    "effects": [
+                        {
+                            "type": "additional_action",
+                            "restrictions": ["once_per_turn"]
+                        }
+                    ]
+                }
+            }
+        ],
+        "3": [
+            {
+                "name": "Martial Archetype",
+                "description": "You choose an archetype that you strive to emulate in your combat styles and techniques. The archetype you choose grants you features at 3rd level and again at 7th, 10th, 15th, and 18th level.",
+                "mechanics": {
+                    "type": "subclass_choice",
+                    "subclass_type": "archetype",
+                    "feature_levels": [3, 7, 10, 15, 18]
+                }
+            }
+        ],
+        "4": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "5": [
+            {
+                "name": "Extra Attack",
+                "description": "You can attack twice, instead of once, whenever you take the Attack action on your turn.",
+                "mechanics": {
+                    "type": "passive",
+                    "effects": [
+                        {
+                            "type": "extra_attack",
+                            "attacks": 2,
+                            "trigger": "attack_action"
+                        }
+                    ]
+                }
+            }
+        ],
+        "6": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "7": [
+            {
+                "name": "Martial Archetype Feature",
+                "description": "You gain a feature from your Martial Archetype."
+            }
+        ],
+        "8": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "9": [
+            {
+                "name": "Indomitable",
+                "description": "You can reroll a saving throw that you fail. If you do so, you must use the new roll, and you can't use this feature again until you finish a long rest. You can use this feature twice between long rests starting at 13th level and three times between long rests starting at 17th level.",
+                "mechanics": {
+                    "type": "resource",
+                    "trigger": "failed_saving_throw",
+                    "uses": {
+                        "per_rest": "long",
+                        "amount": {
+                            "9": 1,
+                            "13": 2,
+                            "17": 3
+                        }
+                    },
+                    "effects": [
+                        {
+                            "type": "reroll_saving_throw",
+                            "must_use_new_roll": true
+                        }
+                    ]
+                }
+            }
+        ],
+        "10": [
+            {
+                "name": "Martial Archetype Feature",
+                "description": "You gain a feature from your Martial Archetype."
+            }
+        ],
+        "11": [
+            {
+                "name": "Extra Attack (2)",
+                "description": "You can attack three times, instead of twice, whenever you take the Attack action on your turn.",
+                "mechanics": {
+                    "type": "passive_enhancement",
+                    "enhances": "Extra Attack",
+                    "effect": {
+                        "type": "increase_attacks",
+                        "new_total": 3
+                    }
+                }
+            }
+        ],
+        "12": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "13": [
+            {
+                "name": "Indomitable (two uses)",
+                "description": "You can now use Indomitable twice between long rests.",
+                "mechanics": {
+                    "type": "passive_enhancement",
+                    "enhances": "Indomitable",
+                    "effect": {
+                        "type": "increase_uses",
+                        "new_amount": 2
+                    }
+                }
+            }
+        ],
+        "14": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "15": [
+            {
+                "name": "Martial Archetype Feature",
+                "description": "You gain a feature from your Martial Archetype."
+            }
+        ],
+        "16": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "17": [
+            {
+                "name": "Action Surge (two uses)",
+                "description": "You can use Action Surge twice before a rest, but only once on the same turn.",
+                "mechanics": {
+                    "type": "passive_enhancement",
+                    "enhances": "Action Surge",
+                    "effect": {
+                        "type": "increase_uses",
+                        "new_amount": 2,
+                        "restriction": "once_per_turn"
+                    }
+                }
+            },
+            {
+                "name": "Indomitable (three uses)",
+                "description": "You can now use Indomitable three times between long rests.",
+                "mechanics": {
+                    "type": "passive_enhancement",
+                    "enhances": "Indomitable",
+                    "effect": {
+                        "type": "increase_uses",
+                        "new_amount": 3
+                    }
+                }
+            }
+        ],
+        "18": [
+            {
+                "name": "Martial Archetype Feature",
+                "description": "You gain a feature from your Martial Archetype."
+            }
+        ],
+        "19": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "20": [
+            {
+                "name": "Extra Attack (3)",
+                "description": "You can attack four times, instead of three, whenever you take the Attack action on your turn.",
+                "mechanics": {
+                    "type": "passive_enhancement",
+                    "enhances": "Extra Attack",
+                    "effect": {
+                        "type": "increase_attacks",
+                        "new_total": 4
+                    }
+                }
+            }
+        ]
+    },
+    "subclass_level": 3,
+    "subclasses": [
+        {
+            "name": "Champion",
+            "description": "The archetypal Champion focuses on the development of raw physical power honed to deadly perfection. Those who model themselves on this archetype combine rigorous training with physical excellence to deal devastating blows.",
+            "source": "PHB",
+            "features": {
+                "3": [
+                    {
+                        "name": "Improved Critical",
+                        "description": "Your weapon attacks score a critical hit on a roll of 19 or 20.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "critical_hit_range",
+                                    "range": [19, 20]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "Remarkable Athlete",
+                        "description": "You can add half your proficiency bonus, rounded up, to any Strength, Dexterity, or Constitution check you make that doesn't already use your proficiency bonus. In addition, when you make a running long jump, the distance you can cover increases by a number of feet equal to your Strength modifier.",
+                        "mechanics": {
+                            "type": "passive",
+                            "effects": [
+                                {
+                                    "type": "half_proficiency_bonus",
+                                    "applies_to": ["Strength", "Dexterity", "Constitution"],
+                                    "condition": "not_already_proficient",
+                                    "rounding": "up"
+                                },
+                                {
+                                    "type": "long_jump_bonus",
+                                    "bonus": "strength_modifier",
+                                    "condition": "running_long_jump"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Additional Fighting Style",
+                        "description": "You can choose a second option from the Fighting Style class feature. You cannot take a Fighting Style option more than once, even if you later get to choose again.",
+                        "mechanics": {
+                            "type": "choice",
+                            "choose": 1,
+                            "from": "fighting_style_options",
+                            "restriction": "cannot_duplicate_existing_choice"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "Superior Critical",
+                        "description": "Your weapon attacks score a critical hit on a roll of 18-20.",
+                        "mechanics": {
+                            "type": "passive_enhancement",
+                            "enhances": "Improved Critical",
+                            "effect": {
+                                "type": "expand_critical_range",
+                                "new_range": [18, 19, 20]
+                            }
+                        }
+                    }
+                ],
+                "18": [
+                    {
+                        "name": "Survivor",
+                        "description": "At the start of each of your turns, you regain hit points equal to 5 + your Constitution modifier if you have no more than half of your hit points left. You don't gain this benefit if you have 0 hit points.",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "start_of_turn",
+                            "effects": [
+                                {
+                                    "type": "healing",
+                                    "formula": "5 + constitution_modifier",
+                                    "condition": "hp_below_half_but_not_zero"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Battle Master",
+            "description": "Those who emulate the archetypal Battle Master employ martial techniques passed down through generations. To a Battle Master, combat is an academic field, sometimes including subjects beyond battle such as weaponsmithing and calligraphy. Not every fighter absorbs the lessons of history, theory, and artistry that are reflected in the Battle Master archetype, but those who do are well-rounded fighters of great skill and knowledge.",
+            "source": "PHB",
+            "features": {
+                "3": [
+                    {
+                        "name": "Combat Superiority",
+                        "description": "You learn maneuvers that are fueled by special dice called superiority dice. You have four superiority dice, which are d8s. A superiority die is expended when you use it. You regain all of your expended superiority dice when you finish a short or long rest.",
+                        "mechanics": {
+                            "type": "resource",
+                            "resource": {
+                                "name": "superiority_dice",
+                                "die_type": {
+                                    "3": "d8",
+                                    "10": "d10",
+                                    "18": "d12"
+                                },
+                                "amount": {
+                                    "3": 4,
+                                    "7": 5,
+                                    "15": 6
+                                },
+                                "recovery": "short_rest"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Maneuvers",
+                        "description": "You learn three maneuvers of your choice. Many maneuvers enhance an attack in some way. You can use only one maneuver per attack. You learn two additional maneuvers at 7th, 10th, and 15th level.",
+                        "mechanics": {
+                            "type": "choice",
+                            "choose": {
+                                "3": 3,
+                                "7": 2,
+                                "10": 2,
+                                "15": 2
+                            },
+                            "total": {
+                                "3": 3,
+                                "7": 5,
+                                "10": 7,
+                                "15": 9
+                            },
+                            "from": "battle_master_maneuvers",
+                            "usage": "one_per_attack"
+                        }
+                    },
+                    {
+                        "name": "Student of War",
+                        "description": "You gain proficiency with one type of artisan's tools of your choice.",
+                        "mechanics": {
+                            "type": "choice",
+                            "choose": 1,
+                            "from": "artisan_tools",
+                            "effects": [
+                                {
+                                    "type": "tool_proficiency",
+                                    "tools": "chosen_artisan_tools"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "Know Your Enemy",
+                        "description": "If you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own.",
+                        "mechanics": {
+                            "type": "special_ability",
+                            "action_type": "1_minute_observation",
+                            "target": "creature_outside_combat",
+                            "effects": [
+                                {
+                                    "type": "creature_information",
+                                    "reveals": [
+                                        "strength_comparison",
+                                        "dexterity_comparison", 
+                                        "constitution_comparison",
+                                        "ac_comparison",
+                                        "current_hp_comparison",
+                                        "total_class_levels_comparison",
+                                        "fighter_class_levels"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Improved Combat Superiority",
+                        "description": "Your superiority dice turn into d10s. At 18th level, they turn into d12s.",
+                        "mechanics": {
+                            "type": "passive_enhancement",
+                            "enhances": "Combat Superiority",
+                            "effect": {
+                                "type": "improve_die_type",
+                                "new_die": "d10"
+                            }
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "Relentless",
+                        "description": "When you roll initiative and have no superiority dice remaining, you regain 1 superiority die.",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "roll_initiative",
+                            "condition": "no_superiority_dice_remaining",
+                            "effects": [
+                                {
+                                    "type": "regain_resource",
+                                    "resource": "superiority_dice",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "18": [
+                    {
+                        "name": "Improved Combat Superiority",
+                        "description": "Your superiority dice turn into d12s.",
+                        "mechanics": {
+                            "type": "passive_enhancement",
+                            "enhances": "Combat Superiority",
+                            "effect": {
+                                "type": "improve_die_type",
+                                "new_die": "d12"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Eldritch Knight",
+            "description": "The archetypal Eldritch Knight combines the martial mastery common to all fighters with a careful study of magic. Eldritch Knights use magical techniques similar to those practiced by wizards. They focus their study on two of the eight schools of magic: abjuration and evocation.",
+            "source": "PHB",
+            "features": {
+                "3": [
+                    {
+                        "name": "Spellcasting",
+                        "description": "You augment your martial prowess with the ability to cast spells. You learn spells from the wizard spell list.",
+                        "mechanics": {
+                            "type": "spellcasting",
+                            "ability": "intelligence",
+                            "focus": ["arcane focus"],
+                            "preparation": "known",
+                            "ritual_casting": false,
+                            "spell_list": "wizard",
+                            "restrictions": ["abjuration_evocation_only_except_specific_levels"]
+                        }
+                    },
+                    {
+                        "name": "Weapon Bond",
+                        "description": "You learn a ritual that creates a magical bond between yourself and one weapon. Once you have bonded a weapon to yourself, you can't be disarmed of that weapon unless you are incapacitated. If it is on the same plane of existence, you can summon that weapon as a bonus action, causing it to teleport instantly to your hand.",
+                        "mechanics": {
+                            "type": "ritual",
+                            "ritual_time": "1 hour",
+                            "target": "one_weapon",
+                            "effects": [
+                                {
+                                    "type": "weapon_bond",
+                                    "prevents": "disarming",
+                                    "condition": "not_incapacitated"
+                                },
+                                {
+                                    "type": "weapon_summon",
+                                    "action_type": "bonus_action",
+                                    "range": "same_plane",
+                                    "effect": "teleport_to_hand"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "War Magic",
+                        "description": "When you use your action to cast a cantrip, you can make one weapon attack as a bonus action.",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "cast_cantrip_with_action",
+                            "effects": [
+                                {
+                                    "type": "bonus_action",
+                                    "action": "weapon_attack"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "Eldritch Strike",
+                        "description": "When you hit a creature with your weapon attack, that creature has disadvantage on the next saving throw it makes against a spell you cast before the end of your next turn.",
+                        "mechanics": {
+                            "type": "passive",
+                            "trigger": "weapon_attack_hit",
+                            "duration": "until_end_of_next_turn",
+                            "effects": [
+                                {
+                                    "type": "impose_disadvantage",
+                                    "on": "next_saving_throw_against_your_spells"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "Arcane Charge",
+                        "description": "When you use your Action Surge, you can teleport up to 30 feet to an unoccupied space you can see. You can teleport before or after the additional action.",
+                        "mechanics": {
+                            "type": "passive_enhancement",
+                            "enhances": "Action Surge",
+                            "effects": [
+                                {
+                                    "type": "teleport",
+                                    "range": "30 feet",
+                                    "target": "unoccupied_space_you_can_see",
+                                    "timing": "before_or_after_additional_action"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "18": [
+                    {
+                        "name": "Improved War Magic",
+                        "description": "When you use your action to cast a spell, you can make one weapon attack as a bonus action.",
+                        "mechanics": {
+                            "type": "passive_enhancement",
+                            "enhances": "War Magic",
+                            "effect": {
+                                "type": "expand_trigger",
+                                "new_trigger": "cast_any_spell_with_action"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "version": "5E",
+    "source": "PHB",
+    "source_page": 70
+} 
