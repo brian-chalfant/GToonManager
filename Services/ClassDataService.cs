@@ -101,7 +101,17 @@ public class ClassDataService
         // Parse skill proficiencies
         if (classData.TryGetProperty("skill_proficiencies", out var skillProfElement))
         {
-            characterClass.SkillProficiencies = ParseSkillProficiencies(skillProfElement);
+            characterClass.SkillChoices = ParseSkillProficiencies(skillProfElement);
+            
+            // For backward compatibility, also populate the old SkillProficiencies array
+            if (characterClass.SkillChoices?.HasChoices == true)
+            {
+                characterClass.SkillProficiencies = new[] { $"Choose {characterClass.SkillChoices.ChooseCount} from: {string.Join(", ", characterClass.SkillChoices.AvailableSkills)}" };
+            }
+            else
+            {
+                characterClass.SkillProficiencies = ParseSkillProficienciesLegacy(skillProfElement);
+            }
         }
 
         // Parse armor proficiencies
@@ -172,16 +182,18 @@ public class ClassDataService
         return result.ToArray();
     }
 
-    private string[] ParseSkillProficiencies(JsonElement skillElement)
+    private SkillChoiceOptions? ParseSkillProficiencies(JsonElement skillElement)
     {
-        if (skillElement.ValueKind == JsonValueKind.Array)
-        {
-            return ParseStringArray(skillElement);
-        }
-        else if (skillElement.ValueKind == JsonValueKind.Object)
+        if (skillElement.ValueKind == JsonValueKind.Object)
         {
             // Handle "choose X from [list]" structure
             var skills = new List<string>();
+            var chooseCount = 0;
+            
+            if (skillElement.TryGetProperty("choose", out var chooseElement))
+            {
+                chooseCount = chooseElement.GetInt32();
+            }
             
             if (skillElement.TryGetProperty("from", out var fromElement) && fromElement.ValueKind == JsonValueKind.Array)
             {
@@ -195,19 +207,34 @@ public class ClassDataService
                 }
             }
 
-            var chooseCount = 0;
-            if (skillElement.TryGetProperty("choose", out var chooseElement))
-            {
-                chooseCount = chooseElement.GetInt32();
-            }
-
-            // For now, just return all available skills with a note about choice
             if (chooseCount > 0 && skills.Count > 0)
             {
-                return new[] { $"Choose {chooseCount} from: {string.Join(", ", skills)}" };
+                return new SkillChoiceOptions
+                {
+                    ChooseCount = chooseCount,
+                    AvailableSkills = skills
+                };
             }
+        }
+        else if (skillElement.ValueKind == JsonValueKind.Array)
+        {
+            // Handle direct skill list (no choices) - return null to indicate no choices needed
+            return null;
+        }
 
-            return skills.ToArray();
+        return null;
+    }
+
+    private string[] ParseSkillProficienciesLegacy(JsonElement skillElement)
+    {
+        if (skillElement.ValueKind == JsonValueKind.Array)
+        {
+            return ParseStringArray(skillElement);
+        }
+        else if (skillElement.ValueKind == JsonValueKind.Object)
+        {
+            // Handle "choose X from [list]" structure - return empty array for legacy compatibility
+            return Array.Empty<string>();
         }
 
         return Array.Empty<string>();

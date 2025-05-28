@@ -12,6 +12,17 @@ public class CharacterClass
     public string[] WeaponProficiencies { get; set; } = Array.Empty<string>();
     public string[] ToolProficiencies { get; set; } = Array.Empty<string>();
     public string[] StartingEquipment { get; set; } = Array.Empty<string>();
+    
+    // New property for parsed skill choices
+    public SkillChoiceOptions? SkillChoices { get; set; }
 
     public override string ToString() => Name;
+}
+
+public class SkillChoiceOptions
+{
+    public int ChooseCount { get; set; } = 0;
+    public List<string> AvailableSkills { get; set; } = new();
+    
+    public bool HasChoices => ChooseCount > 0 && AvailableSkills.Count > 0;
 } 

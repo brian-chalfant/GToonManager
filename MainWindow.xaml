@@ -315,6 +315,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
                                 <!-- Class Selection -->
@@ -359,8 +360,79 @@
                                     </StackPanel>
                                 </Border>
 
+                                <!-- Skill Selection Section -->
+                                <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#fff3cd" 
+                                       BorderBrush="#ffeaa7" BorderThickness="1" Padding="15" 
+                                       Margin="0,15,0,0"
+                                       Visibility="{Binding HasSkillChoices, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding SkillChoicePrompt}" FontSize="14" FontWeight="Bold" 
+                                                  Margin="0,0,0,10"/>
+                                        
+                                        <!-- Available Skills -->
+                                        <TextBlock Text="Available Skills:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <ItemsControl ItemsSource="{Binding AvailableSkillChoices}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding}" 
+                                                           Command="{Binding DataContext.AddSkillCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                           CommandParameter="{Binding}"
+                                                           Background="#007bff" Foreground="White" 
+                                                           Padding="8,4" Margin="2" BorderThickness="0"
+                                                           IsEnabled="{Binding DataContext.CanAddMoreSkills, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        
+                                        <!-- Selected Skills -->
+                                        <TextBlock Text="Selected Skills:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                        <ItemsControl ItemsSource="{Binding SelectedSkills}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#28a745" Margin="2" Padding="8,4" CornerRadius="3">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding SkillName}" Foreground="White" 
+                                                                      VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                            <Button Content="×" 
+                                                                   Command="{Binding DataContext.RemoveSkillCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                   CommandParameter="{Binding}"
+                                                                   Background="Transparent" Foreground="White" 
+                                                                   BorderThickness="0" Padding="2" 
+                                                                   FontWeight="Bold" FontSize="12"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        
+                                        <TextBlock Text="No skills selected" FontStyle="Italic" Foreground="Gray" 
+                                                   Margin="0,5,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding SelectedSkills.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+
                                 <!-- Total Level Summary -->
-                                <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#d4edda" 
+                                <Border Grid.Row="3" Grid.ColumnSpan="3" Background="#d4edda" 
                                        BorderBrush="#c3e6cb" BorderThickness="1" Padding="15" 
                                        Margin="0,15,0,0">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -120,8 +120,88 @@ public class PdfSharpExportService
                 }
                 else if (field is PdfCheckBoxField checkBox)
                 {
-                    // Handle checkbox fields if needed
-                    checkBox.Checked = value.ToLower() == "true" || value == "1";
+                    // Handle checkbox fields - try multiple approaches
+                    var isChecked = value.ToLower() == "true" || value == "1";
+                    
+                    try
+                    {
+                        // Based on analysis: /DV: /Off means unchecked value is the PDF name /Off
+                        // We need to use PdfName instead of PdfString for checkbox values
+                        
+                        if (isChecked)
+                        {
+                            // Try the most common checked values as PDF names
+                            // Based on our analysis, we'll try /Yes first, then /On
+                            
+                            // Approach 1: Try /Yes as PDF Name (most common)
+                            var yesName = new PdfSharp.Pdf.PdfName("/Yes");
+                            checkBox.Value = yesName;
+                            if (checkBox.Elements.ContainsKey("/V"))
+                            {
+                                checkBox.Elements["/V"] = yesName;
+                            }
+                            if (checkBox.Elements.ContainsKey("/AS"))
+                            {
+                                checkBox.Elements["/AS"] = yesName;
+                            }
+                            else
+                            {
+                                checkBox.Elements.Add("/AS", yesName);
+                            }
+                        }
+                        else
+                        {
+                            // Unchecked state: use /Off as PDF Name (from analysis)
+                            var offName = new PdfSharp.Pdf.PdfName("/Off");
+                            checkBox.Value = offName;
+                            if (checkBox.Elements.ContainsKey("/V"))
+                            {
+                                checkBox.Elements["/V"] = offName;
+                            }
+                            if (checkBox.Elements.ContainsKey("/AS"))
+                            {
+                                checkBox.Elements["/AS"] = offName;
+                            }
+                            else
+                            {
+                                checkBox.Elements.Add("/AS", offName);
+                            }
+                        }
+                        
+                        // Set the Checked property after setting the values
+                        checkBox.Checked = isChecked;
+                        
+                        // Debug: Show what we set for key checkboxes
+                        // if (fieldName == "checkbox_249voxf" || fieldName == "checkbox_128cefr" || fieldName == "checkbox_126dqaq")
+                        // {
+                        //     System.Diagnostics.Debug.WriteLine($"=== AFTER SETTING {fieldName} ===");
+                        //     System.Diagnostics.Debug.WriteLine($"Checked property: {checkBox.Checked}");
+                        //     System.Diagnostics.Debug.WriteLine($"Value: {checkBox.Value}");
+                        //     if (checkBox.Elements.ContainsKey("/V"))
+                        //     {
+                        //         System.Diagnostics.Debug.WriteLine($"Element /V: {checkBox.Elements["/V"]}");
+                        //     }
+                        //     if (checkBox.Elements.ContainsKey("/AS"))
+                        //     {
+                        //         System.Diagnostics.Debug.WriteLine($"Element /AS: {checkBox.Elements["/AS"]}");
+                        //     }
+                        //     System.Diagnostics.Debug.WriteLine($"=====================================");
+                        // }
+                    }
+                    catch (Exception checkboxEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error setting checkbox {fieldName}: {checkboxEx.Message}");
+                        // Final fallback: try just setting as text field
+                        try
+                        {
+                            field.Value = new PdfString(isChecked ? "Yes" : "Off");
+                        }
+                        catch
+                        {
+                            // If all else fails, ignore this field
+                        }
+                    }
+                    
                     return true;
                 }
                 else
@@ -178,6 +258,12 @@ public class PdfSharpExportService
         return fieldNames;
     }
 
+    public void AnalyzeCheckboxFields(PdfDocument document)
+    {
+        // Analyze checkbox fields to understand their structure
+        // AnalyzeCheckboxFields(document);
+    }
+
     private string GetCharacterValue(Character character, string propertyName)
     {
         return propertyName switch
@@ -185,9 +271,9 @@ public class PdfSharpExportService
             // Basic Character Info
             "CharacterName" => character.Name,
             "PlayerName" => character.PlayerName,
-            "Race" => character.Race?.Name ?? "",
-            "Background" => character.Background?.Name ?? "",
-            "ClassLevel" => character.ClassSummary,
+            "Race" => GetRaceSubclassText(character),
+            "Background" => GetBackgroundClassText(character),
+            "ClassLevel" => character.Level.ToString(),
             "ExperiencePoints" => character.ExperiencePoints.ToString(),
             
             // Ability Scores
@@ -217,36 +303,70 @@ public class PdfSharpExportService
             "ProficiencyBonus" => FormatModifier(character.ProficiencyBonus),
             
             // Saving Throws
-            "StrengthSave" => FormatModifier(character.StrengthModifier),
-            "DexteritySave" => FormatModifier(character.DexterityModifier),
-            "ConstitutionSave" => FormatModifier(character.ConstitutionModifier),
-            "IntelligenceSave" => FormatModifier(character.IntelligenceModifier),
-            "WisdomSave" => FormatModifier(character.WisdomModifier),
-            "CharismaSave" => FormatModifier(character.CharismaModifier),
+            "StrengthSave" => FormatModifier(GetSavingThrowModifier(character, "strength")),
+            "DexteritySave" => FormatModifier(GetSavingThrowModifier(character, "dexterity")),
+            "ConstitutionSave" => FormatModifier(GetSavingThrowModifier(character, "constitution")),
+            "IntelligenceSave" => FormatModifier(GetSavingThrowModifier(character, "intelligence")),
+            "WisdomSave" => FormatModifier(GetSavingThrowModifier(character, "wisdom")),
+            "CharismaSave" => FormatModifier(GetSavingThrowModifier(character, "charisma")),
+            
+            // Saving Throw Proficiencies (checkboxes)
+            "StrengthSaveProficiency" => HasSavingThrowProficiency(character, "strength") ? "true" : "false",
+            "DexteritySaveProficiency" => HasSavingThrowProficiency(character, "dexterity") ? "true" : "false",
+            "ConstitutionSaveProficiency" => HasSavingThrowProficiency(character, "constitution") ? "true" : "false",
+            "IntelligenceSaveProficiency" => HasSavingThrowProficiency(character, "intelligence") ? "true" : "false",
+            "WisdomSaveProficiency" => HasSavingThrowProficiency(character, "wisdom") ? "true" : "false",
+            "CharismaSaveProficiency" => HasSavingThrowProficiency(character, "charisma") ? "true" : "false",
             
             // Skills
-            "Acrobatics" => FormatModifier(character.DexterityModifier),
-            "AnimalHandling" => FormatModifier(character.WisdomModifier),
-            "Arcana" => FormatModifier(character.IntelligenceModifier),
-            "Athletics" => FormatModifier(character.StrengthModifier),
-            "Deception" => FormatModifier(character.CharismaModifier),
-            "History" => FormatModifier(character.IntelligenceModifier),
-            "Insight" => FormatModifier(character.WisdomModifier),
-            "Intimidation" => FormatModifier(character.CharismaModifier),
-            "Investigation" => FormatModifier(character.IntelligenceModifier),
-            "Medicine" => FormatModifier(character.WisdomModifier),
-            "Nature" => FormatModifier(character.IntelligenceModifier),
-            "Perception" => FormatModifier(character.WisdomModifier),
-            "Performance" => FormatModifier(character.CharismaModifier),
-            "Persuasion" => FormatModifier(character.CharismaModifier),
-            "Religion" => FormatModifier(character.IntelligenceModifier),
-            "SleightOfHand" => FormatModifier(character.DexterityModifier),
-            "Stealth" => FormatModifier(character.DexterityModifier),
-            "Survival" => FormatModifier(character.WisdomModifier),
+            "Acrobatics" => FormatModifier(GetSkillModifier(character, "acrobatics")),
+            "AnimalHandling" => FormatModifier(GetSkillModifier(character, "animal handling")),
+            "Arcana" => FormatModifier(GetSkillModifier(character, "arcana")),
+            "Athletics" => FormatModifier(GetSkillModifier(character, "athletics")),
+            "Deception" => FormatModifier(GetSkillModifier(character, "deception")),
+            "History" => FormatModifier(GetSkillModifier(character, "history")),
+            "Insight" => FormatModifier(GetSkillModifier(character, "insight")),
+            "Intimidation" => FormatModifier(GetSkillModifier(character, "intimidation")),
+            "Investigation" => FormatModifier(GetSkillModifier(character, "investigation")),
+            "Medicine" => FormatModifier(GetSkillModifier(character, "medicine")),
+            "Nature" => FormatModifier(GetSkillModifier(character, "nature")),
+            "Perception" => FormatModifier(GetSkillModifier(character, "perception")),
+            "Performance" => FormatModifier(GetSkillModifier(character, "performance")),
+            "Persuasion" => FormatModifier(GetSkillModifier(character, "persuasion")),
+            "Religion" => FormatModifier(GetSkillModifier(character, "religion")),
+            "SleightOfHand" => FormatModifier(GetSkillModifier(character, "sleight of hand")),
+            "Stealth" => FormatModifier(GetSkillModifier(character, "stealth")),
+            "Survival" => FormatModifier(GetSkillModifier(character, "survival")),
+            
+            // Skill Proficiencies (checkboxes)
+            "AcrobaticsProficiency" => HasSkillProficiency(character, "acrobatics") ? "true" : "false",
+            "AnimalHandlingProficiency" => HasSkillProficiency(character, "animal handling") ? "true" : "false",
+            "ArcanaProficiency" => HasSkillProficiency(character, "arcana") ? "true" : "false",
+            "AthleticsProficiency" => HasSkillProficiency(character, "athletics") ? "true" : "false",
+            "DeceptionProficiency" => HasSkillProficiency(character, "deception") ? "true" : "false",
+            "HistoryProficiency" => HasSkillProficiency(character, "history") ? "true" : "false",
+            "InsightProficiency" => HasSkillProficiency(character, "insight") ? "true" : "false",
+            "IntimidationProficiency" => HasSkillProficiency(character, "intimidation") ? "true" : "false",
+            "InvestigationProficiency" => HasSkillProficiency(character, "investigation") ? "true" : "false",
+            "MedicineProficiency" => HasSkillProficiency(character, "medicine") ? "true" : "false",
+            "NatureProficiency" => HasSkillProficiency(character, "nature") ? "true" : "false",
+            "PerceptionProficiency" => HasSkillProficiency(character, "perception") ? "true" : "false",
+            "PerformanceProficiency" => HasSkillProficiency(character, "performance") ? "true" : "false",
+            "PersuasionProficiency" => HasSkillProficiency(character, "persuasion") ? "true" : "false",
+            "ReligionProficiency" => HasSkillProficiency(character, "religion") ? "true" : "false",
+            "SleightOfHandProficiency" => HasSkillProficiency(character, "sleight of hand") ? "true" : "false",
+            "StealthProficiency" => HasSkillProficiency(character, "stealth") ? "true" : "false",
+            "SurvivalProficiency" => HasSkillProficiency(character, "survival") ? "true" : "false",
+            
+            // Armor Proficiencies (checkboxes)
+            "LightArmorProficiency" => HasArmorProficiency(character, "light armor") ? "true" : "false",
+            "MediumArmorProficiency" => HasArmorProficiency(character, "medium armor") ? "true" : "false",
+            "HeavyArmorProficiency" => HasArmorProficiency(character, "heavy armor") ? "true" : "false",
+            "ShieldProficiency" => HasArmorProficiency(character, "shields") ? "true" : "false",
             
             // Additional Stats
             "Size" => "Medium", // Default size
-            "PassivePerception" => (10 + character.WisdomModifier).ToString(),
+            "PassivePerception" => (10 + GetSkillModifier(character, "perception")).ToString(),
             "Alignment" => "",
             
             // Spellcasting (if applicable)
@@ -303,5 +423,123 @@ public class PdfSharpExportService
             traits.Add($"- {character.Race.Description}");
         }
         return string.Join("\n", traits);
+    }
+
+    private static string GetBackgroundClassText(Character character)
+    {
+        var parts = new List<string>();
+        
+        // Add background if available
+        if (character.Background != null && !string.IsNullOrEmpty(character.Background.Name))
+        {
+            parts.Add(character.Background.Name);
+        }
+        
+        // Add class(es) if available
+        if (character.ClassLevels.Count > 0)
+        {
+            var classNames = character.ClassLevels.Select(cl => cl.ClassName).ToList();
+            parts.Add(string.Join("/", classNames));
+        }
+        
+        return string.Join(", ", parts);
+    }
+
+    private static string GetRaceSubclassText(Character character)
+    {
+        var parts = new List<string>();
+        
+        // Add race if available
+        if (character.Race != null && !string.IsNullOrEmpty(character.Race.Name))
+        {
+            parts.Add(character.Race.Name);
+        }
+        
+        // Add subrace if available
+        if (character.Subrace != null && !string.IsNullOrEmpty(character.Subrace.Name))
+        {
+            parts.Add(character.Subrace.Name);
+        }
+        
+        return string.Join(", ", parts);
+    }
+
+    private static bool HasSavingThrowProficiency(Character character, string ability)
+    {
+        return character.ClassLevels.Any(cl => 
+            cl.CharacterClass?.SavingThrowProficiencies?.Contains(ability, StringComparer.OrdinalIgnoreCase) == true);
+    }
+
+    private static bool HasSkillProficiency(Character character, string skill)
+    {
+        // Check background proficiencies first
+        var backgroundSkills = character.Background?.ProficiencyGrants?.Skills ?? new List<string>();
+        var hasBackgroundProficiency = backgroundSkills.Any(s => 
+            string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
+        
+        // Check racial skill proficiencies
+        var hasRacialProficiency = character.RacialSkillProficiencies
+            .Any(s => string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
+        
+        // Check chosen class skill proficiencies
+        var hasClassProficiency = character.ClassLevels
+            .SelectMany(cl => cl.ChosenSkillProficiencies)
+            .Any(s => string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
+        
+        return hasBackgroundProficiency || hasRacialProficiency || hasClassProficiency;
+    }
+
+    private static bool HasArmorProficiency(Character character, string armorType)
+    {
+        return character.ClassLevels.Any(cl => 
+            cl.CharacterClass?.ArmorProficiencies?.Contains(armorType, StringComparer.OrdinalIgnoreCase) == true ||
+            cl.CharacterClass?.ArmorProficiencies?.Contains("all armor", StringComparer.OrdinalIgnoreCase) == true);
+    }
+
+    private static int GetSavingThrowModifier(Character character, string ability)
+    {
+        var baseModifier = ability.ToLower() switch
+        {
+            "strength" => character.StrengthModifier,
+            "dexterity" => character.DexterityModifier,
+            "constitution" => character.ConstitutionModifier,
+            "intelligence" => character.IntelligenceModifier,
+            "wisdom" => character.WisdomModifier,
+            "charisma" => character.CharismaModifier,
+            _ => 0
+        };
+
+        var proficiencyBonus = HasSavingThrowProficiency(character, ability) ? character.ProficiencyBonus : 0;
+        return baseModifier + proficiencyBonus;
+    }
+
+    private static int GetSkillModifier(Character character, string skill)
+    {
+        // Map skills to their associated abilities
+        var baseModifier = skill.ToLower() switch
+        {
+            "acrobatics" => character.DexterityModifier,
+            "animal handling" => character.WisdomModifier,
+            "arcana" => character.IntelligenceModifier,
+            "athletics" => character.StrengthModifier,
+            "deception" => character.CharismaModifier,
+            "history" => character.IntelligenceModifier,
+            "insight" => character.WisdomModifier,
+            "intimidation" => character.CharismaModifier,
+            "investigation" => character.IntelligenceModifier,
+            "medicine" => character.WisdomModifier,
+            "nature" => character.IntelligenceModifier,
+            "perception" => character.WisdomModifier,
+            "performance" => character.CharismaModifier,
+            "persuasion" => character.CharismaModifier,
+            "religion" => character.IntelligenceModifier,
+            "sleight of hand" => character.DexterityModifier,
+            "stealth" => character.DexterityModifier,
+            "survival" => character.WisdomModifier,
+            _ => 0
+        };
+
+        var proficiencyBonus = HasSkillProficiency(character, skill) ? character.ProficiencyBonus : 0;
+        return baseModifier + proficiencyBonus;
     }
 } 

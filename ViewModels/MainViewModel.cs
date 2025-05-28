@@ -80,6 +80,12 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _selectedClassToAdd = value;
             OnPropertyChanged(nameof(SelectedClassToAdd));
+            OnPropertyChanged(nameof(HasSkillChoices));
+            OnPropertyChanged(nameof(AvailableSkillChoices));
+            OnPropertyChanged(nameof(SkillChoicePrompt));
+            
+            // Clear previous selections when class changes
+            SelectedSkills.Clear();
         }
     }
 
@@ -92,6 +98,23 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(SelectedLevelToAdd));
         }
     }
+
+    // Skill selection properties
+    public bool HasSkillChoices => SelectedClassToAdd?.SkillChoices?.HasChoices == true;
+    
+    public List<string> AvailableSkillChoices => SelectedClassToAdd?.SkillChoices?.AvailableSkills ?? new List<string>();
+    
+    public string SkillChoicePrompt => SelectedClassToAdd?.SkillChoices != null 
+        ? $"Choose {SelectedClassToAdd.SkillChoices.ChooseCount} skills from the list below:"
+        : "";
+    
+    public ObservableCollection<SkillSelectionItem> SelectedSkills { get; } = new();
+
+    public int MaxSkillSelections => SelectedClassToAdd?.SkillChoices?.ChooseCount ?? 0;
+    
+    public bool CanAddMoreSkills => SelectedSkills.Count < MaxSkillSelections;
+    
+    public bool HasRequiredSkillSelections => !HasSkillChoices || SelectedSkills.Count == MaxSkillSelections;
 
     // Commands
     public ICommand NewCharacterCommand { get; private set; } = null!;
@@ -110,6 +133,8 @@ public class MainViewModel : INotifyPropertyChanged
     // Multiclass commands
     public ICommand AddClassCommand { get; private set; } = null!;
     public ICommand RemoveClassCommand { get; private set; } = null!;
+    public ICommand AddSkillCommand { get; private set; } = null!;
+    public ICommand RemoveSkillCommand { get; private set; } = null!;
 
     private void InitializeCommands()
     {
@@ -129,6 +154,8 @@ public class MainViewModel : INotifyPropertyChanged
         // Multiclass commands
         AddClassCommand = new RelayCommand(AddClass);
         RemoveClassCommand = new RelayCommand(RemoveClass, CanRemoveClass);
+        AddSkillCommand = new RelayCommand(AddSkill);
+        RemoveSkillCommand = new RelayCommand(RemoveSkill);
     }
 
     private async void InitializeData()
@@ -619,10 +646,41 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (SelectedClassToAdd != null)
         {
-            CurrentCharacter.AddClass(SelectedClassToAdd, SelectedLevelToAdd);
+            // Check if we need skill selections and they haven't been made
+            if (HasSkillChoices && !HasRequiredSkillSelections)
+            {
+                StatusMessage = $"Please select {MaxSkillSelections} skills for the {SelectedClassToAdd.Name} class";
+                return;
+            }
+
+            // Create the class level with chosen skills
+            var classLevel = new CharacterClassLevel 
+            { 
+                CharacterClass = SelectedClassToAdd, 
+                Level = SelectedLevelToAdd 
+            };
+            
+            // Add chosen skills
+            foreach (var skillItem in SelectedSkills)
+            {
+                classLevel.ChosenSkillProficiencies.Add(skillItem.SkillName);
+            }
+            
+            // Add the class level directly to the character
+            classLevel.PropertyChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(CurrentCharacter.Level));
+                OnPropertyChanged(nameof(CurrentCharacter.ProficiencyBonus));
+                OnPropertyChanged(nameof(CurrentCharacter.ClassSummary));
+            };
+            CurrentCharacter.ClassLevels.Add(classLevel);
+            
             StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name}";
+            
+            // Clear selections
             SelectedClassToAdd = null;
             SelectedLevelToAdd = 1;
+            SelectedSkills.Clear();
         }
         else
         {
@@ -642,6 +700,31 @@ public class MainViewModel : INotifyPropertyChanged
     private bool CanRemoveClass(object? parameter)
     {
         return CurrentCharacter.ClassLevels.Count > 0;
+    }
+
+    private void AddSkill(object? parameter)
+    {
+        if (parameter is string skillName && CanAddMoreSkills)
+        {
+            if (!SelectedSkills.Any(s => s.SkillName == skillName))
+            {
+                SelectedSkills.Add(new SkillSelectionItem { SkillName = skillName });
+                OnPropertyChanged(nameof(CanAddMoreSkills));
+                OnPropertyChanged(nameof(HasRequiredSkillSelections));
+                StatusMessage = $"Added {skillName} skill proficiency";
+            }
+        }
+    }
+
+    private void RemoveSkill(object? parameter)
+    {
+        if (parameter is SkillSelectionItem skillItem)
+        {
+            SelectedSkills.Remove(skillItem);
+            OnPropertyChanged(nameof(CanAddMoreSkills));
+            OnPropertyChanged(nameof(HasRequiredSkillSelections));
+            StatusMessage = $"Removed {skillItem.SkillName} skill proficiency";
+        }
     }
 
     private async Task<bool> CreateTestPdfWithFieldNamesAsync(string templatePath, string outputPath)
@@ -712,4 +795,9 @@ public class MainViewModel : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+}
+
+public class SkillSelectionItem
+{
+    public string SkillName { get; set; } = string.Empty;
 } 

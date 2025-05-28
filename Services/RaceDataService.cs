@@ -180,7 +180,9 @@ public class RaceDataService
     {
         var grants = new TraitGrants();
 
-        if (grantsElement.TryGetProperty("skill_proficiencies", out var skillsElement))
+        // Check for skill_proficiencies (from original JSON files) OR skillProficiencies (from saved character JSON)
+        if (grantsElement.TryGetProperty("skill_proficiencies", out var skillsElement) ||
+            grantsElement.TryGetProperty("skillProficiencies", out skillsElement))
         {
             if (skillsElement.ValueKind == JsonValueKind.Array)
             {
@@ -199,7 +201,10 @@ public class RaceDataService
             }
         }
 
-        if (grantsElement.TryGetProperty("weapon_proficiencies", out var weaponsElement) && weaponsElement.ValueKind == JsonValueKind.Array)
+        // Check for weapon_proficiencies OR weaponProficiencies
+        if ((grantsElement.TryGetProperty("weapon_proficiencies", out var weaponsElement) ||
+             grantsElement.TryGetProperty("weaponProficiencies", out weaponsElement)) && 
+            weaponsElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var weapon in weaponsElement.EnumerateArray())
             {
@@ -207,7 +212,10 @@ public class RaceDataService
             }
         }
 
-        if (grantsElement.TryGetProperty("armor_proficiencies", out var armorElement) && armorElement.ValueKind == JsonValueKind.Array)
+        // Check for armor_proficiencies OR armorProficiencies
+        if ((grantsElement.TryGetProperty("armor_proficiencies", out var armorElement) ||
+             grantsElement.TryGetProperty("armorProficiencies", out armorElement)) && 
+            armorElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var armor in armorElement.EnumerateArray())
             {
@@ -215,11 +223,48 @@ public class RaceDataService
             }
         }
 
-        if (grantsElement.TryGetProperty("damage_resistances", out var resistancesElement) && resistancesElement.ValueKind == JsonValueKind.Array)
+        // Check for tool_proficiencies OR toolProficiencies  
+        if ((grantsElement.TryGetProperty("tool_proficiencies", out var toolElement) ||
+             grantsElement.TryGetProperty("toolProficiencies", out toolElement)) && 
+            toolElement.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var tool in toolElement.EnumerateArray())
+            {
+                grants.ToolProficiencies.Add(tool.GetString() ?? string.Empty);
+            }
+        }
+
+        // Check for damage_resistances OR damageResistances
+        if ((grantsElement.TryGetProperty("damage_resistances", out var resistancesElement) ||
+             grantsElement.TryGetProperty("damageResistances", out resistancesElement)) && 
+            resistancesElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var resistance in resistancesElement.EnumerateArray())
             {
                 grants.DamageResistances.Add(resistance.GetString() ?? string.Empty);
+            }
+        }
+
+        // Check for saving_throw_advantages OR savingThrowAdvantages
+        if ((grantsElement.TryGetProperty("saving_throw_advantages", out var savingThrowElement) ||
+             grantsElement.TryGetProperty("savingThrowAdvantages", out savingThrowElement)) && 
+            savingThrowElement.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var savingThrow in savingThrowElement.EnumerateArray())
+            {
+                grants.SavingThrowAdvantages.Add(savingThrow.GetString() ?? string.Empty);
+            }
+        }
+
+        // Handle speed grants
+        if (grantsElement.TryGetProperty("speed", out var speedElement) && speedElement.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var speedProperty in speedElement.EnumerateObject())
+            {
+                if (speedProperty.Value.ValueKind == JsonValueKind.Number)
+                {
+                    grants.Speed[speedProperty.Name] = speedProperty.Value.GetInt32();
+                }
             }
         }
 
