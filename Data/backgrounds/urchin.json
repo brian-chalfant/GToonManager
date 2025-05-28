@@ -10,16 +10,14 @@
             "Sleight of Hand",
             "Stealth"
         ],
-        "languages": [],
+        "languages": {
+            "count": 0,
+            "type": "none",
+            "description": ""
+        },
         "tools": [
-            {
-                "type": "disguise kit",
-                "quantity": 1
-            },
-            {
-                "type": "thieves' tools",
-                "quantity": 1
-            }
+            "Disguise kit",
+            "Thieves' tools"
         ]
     },
     "equipment_grants": {

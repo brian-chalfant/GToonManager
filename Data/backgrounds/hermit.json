@@ -16,10 +16,7 @@
             "description": "One language of your choice"
         },
         "tools": [
-            {
-                "type": "herbalism kit",
-                "quantity": 1
-            }
+            "Herbalism kit"
         ]
     },
     "equipment_grants": {

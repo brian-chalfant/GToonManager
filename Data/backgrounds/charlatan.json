@@ -10,16 +10,14 @@
             "Deception",
             "Sleight of Hand"
         ],
-        "languages": [],
+        "languages": {
+            "count": 0,
+            "type": "none",
+            "description": ""
+        },
         "tools": [
-            {
-                "type": "disguise kit",
-                "quantity": 1
-            },
-            {
-                "type": "forgery kit",
-                "quantity": 1
-            }
+            "Disguise kit",
+            "Forgery kit"
         ]
     },
     "equipment_grants": {

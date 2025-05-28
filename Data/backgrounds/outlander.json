@@ -16,11 +16,7 @@
             "description": "One language of your choice"
         },
         "tools": [
-            {
-                "type": "musical instrument",
-                "quantity": 1,
-                "description": "One type of musical instrument"
-            }
+            "One type of musical instrument"
         ]
     },
     "equipment_grants": {

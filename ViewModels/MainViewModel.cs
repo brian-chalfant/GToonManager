@@ -18,6 +18,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly CharacterFileService _characterFileService;
     private readonly RaceDataService _raceDataService;
     private readonly ClassDataService _classDataService;
+    private readonly BackgroundDataService _backgroundDataService;
     private string? _currentFilePath;
 
     public MainViewModel()
@@ -25,6 +26,7 @@ public class MainViewModel : INotifyPropertyChanged
         _characterFileService = new CharacterFileService();
         _raceDataService = new RaceDataService();
         _classDataService = new ClassDataService();
+        _backgroundDataService = new BackgroundDataService();
         _currentCharacter = new Character
         {
             Name = "New Character",
@@ -121,21 +123,7 @@ public class MainViewModel : INotifyPropertyChanged
     {
         await LoadRacesAsync();
         await LoadClassesAsync();
-
-        // Initialize with basic D&D backgrounds
-        //TODO: Load backgrounds from a data file or service
-        Backgrounds.Add(new Background { Name = "Acolyte", Description = "Religious servant" });
-        Backgrounds.Add(new Background { Name = "Criminal", Description = "Life of crime" });
-        Backgrounds.Add(new Background { Name = "Folk Hero", Description = "Champion of the people" });
-        Backgrounds.Add(new Background { Name = "Noble", Description = "Upper class upbringing" });
-        Backgrounds.Add(new Background { Name = "Sage", Description = "Scholar and researcher" });
-        Backgrounds.Add(new Background { Name = "Soldier", Description = "Military service" });
-        Backgrounds.Add(new Background { Name = "Charlatan", Description = "Master of deception" });
-        Backgrounds.Add(new Background { Name = "Entertainer", Description = "Performer" });
-        Backgrounds.Add(new Background { Name = "Guild Artisan", Description = "Skilled craftsperson" });
-        Backgrounds.Add(new Background { Name = "Hermit", Description = "Secluded contemplative" });
-        Backgrounds.Add(new Background { Name = "Outlander", Description = "Wilderness dweller" });
-        Backgrounds.Add(new Background { Name = "Sailor", Description = "Seafaring adventurer" });
+        await LoadBackgroundsAsync();
     }
 
     private async Task LoadRacesAsync()
@@ -193,6 +181,39 @@ public class MainViewModel : INotifyPropertyChanged
             Classes.Add(new CharacterClass { Name = "Monk", Description = "Master of martial arts", HitDie = 8, PrimaryAbility = "Dexterity and Wisdom" });
             Classes.Add(new CharacterClass { Name = "Sorcerer", Description = "Innate magical power", HitDie = 6, PrimaryAbility = "Charisma" });
             Classes.Add(new CharacterClass { Name = "Warlock", Description = "Pact magic user", HitDie = 8, PrimaryAbility = "Charisma" });
+        }
+    }
+
+    private async Task LoadBackgroundsAsync()
+    {
+        try
+        {
+            var backgrounds = await _backgroundDataService.LoadAllBackgroundsAsync();
+            Backgrounds.Clear();
+            foreach (var background in backgrounds)
+            {
+                Backgrounds.Add(background);
+            }
+            StatusMessage = $"Loaded {backgrounds.Count} backgrounds from data files";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error loading backgrounds: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error loading backgrounds: {ex}");
+            
+            // Fallback to basic backgrounds if loading fails
+            Backgrounds.Add(new Background { Name = "Acolyte", Description = "Religious servant" });
+            Backgrounds.Add(new Background { Name = "Criminal", Description = "Life of crime" });
+            Backgrounds.Add(new Background { Name = "Folk Hero", Description = "Champion of the people" });
+            Backgrounds.Add(new Background { Name = "Noble", Description = "Upper class upbringing" });
+            Backgrounds.Add(new Background { Name = "Sage", Description = "Scholar and researcher" });
+            Backgrounds.Add(new Background { Name = "Soldier", Description = "Military service" });
+            Backgrounds.Add(new Background { Name = "Charlatan", Description = "Master of deception" });
+            Backgrounds.Add(new Background { Name = "Entertainer", Description = "Performer" });
+            Backgrounds.Add(new Background { Name = "Guild Artisan", Description = "Skilled craftsperson" });
+            Backgrounds.Add(new Background { Name = "Hermit", Description = "Secluded contemplative" });
+            Backgrounds.Add(new Background { Name = "Outlander", Description = "Wilderness dweller" });
+            Backgrounds.Add(new Background { Name = "Sailor", Description = "Seafaring adventurer" });
         }
     }
 

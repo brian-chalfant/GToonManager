@@ -10,17 +10,14 @@
             "Acrobatics",
             "Performance"
         ],
-        "languages": [],
+        "languages": {
+            "count": 0,
+            "type": "none",
+            "description": ""
+        },
         "tools": [
-            {
-                "type": "disguise kit",
-                "quantity": 1
-            },
-            {
-                "type": "musical instrument",
-                "quantity": 1,
-                "description": "One type of musical instrument"
-            }
+            "Disguise kit",
+            "One type of musical instrument"
         ]
     },
     "equipment_grants": {

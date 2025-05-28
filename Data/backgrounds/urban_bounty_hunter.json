@@ -6,22 +6,16 @@
         "description": "You are in frequent contact with people in the segment of society that your chosen quarries move through. These people might be associated with the criminal underworld, the rough-and-tumble folk of the streets, or members of high society. This connection comes in the form of a contact in any city you visit, a person who can be relied upon to provide information about the people and places of the local area."
     },
     "proficiency_grants": {
-        "skills": {
-            "choose": 2,
-            "from": [
-                "Deception",
-                "Insight",
-                "Persuasion",
-                "Stealth"
-            ]
+        "skills": [
+            "Choose two from: Deception, Insight, Persuasion, Stealth"
+        ],
+        "languages": {
+            "count": 0,
+            "type": "none",
+            "description": ""
         },
-        "languages": [],
         "tools": [
-            {
-                "type": "gaming set or musical instrument",
-                "quantity": 2,
-                "description": "Choose your instruments from among disguise kit, forgery kit, one gaming set, and one musical instrument"
-            }
+            "Choose your instruments from among disguise kit, forgery kit, one gaming set, and one musical instrument"
         ]
     },
     "equipment_grants": {

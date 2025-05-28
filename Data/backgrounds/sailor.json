@@ -10,16 +10,14 @@
             "Athletics",
             "Perception"
         ],
-        "languages": [],
+        "languages": {
+            "count": 0,
+            "type": "none",
+            "description": ""
+        },
         "tools": [
-            {
-                "type": "navigator's tools",
-                "quantity": 1
-            },
-            {
-                "type": "vehicles (water)",
-                "quantity": 1
-            }
+            "Navigator's tools",
+            "Vehicles (water)"
         ]
     },
     "equipment_grants": {
