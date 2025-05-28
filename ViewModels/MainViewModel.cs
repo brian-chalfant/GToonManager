@@ -17,12 +17,14 @@ public class MainViewModel : INotifyPropertyChanged
     private int _selectedLevelToAdd = 1;
     private readonly CharacterFileService _characterFileService;
     private readonly RaceDataService _raceDataService;
+    private readonly ClassDataService _classDataService;
     private string? _currentFilePath;
 
     public MainViewModel()
     {
         _characterFileService = new CharacterFileService();
         _raceDataService = new RaceDataService();
+        _classDataService = new ClassDataService();
         _currentCharacter = new Character
         {
             Name = "New Character",
@@ -118,22 +120,10 @@ public class MainViewModel : INotifyPropertyChanged
     private async void InitializeData()
     {
         await LoadRacesAsync();
-
-        // Initialize with basic D&D classes
-        Classes.Add(new CharacterClass { Name = "Fighter", Description = "Master of weapons and armor", HitDie = 10, PrimaryAbility = "Strength or Dexterity" });
-        Classes.Add(new CharacterClass { Name = "Wizard", Description = "Master of arcane magic", HitDie = 6, PrimaryAbility = "Intelligence" });
-        Classes.Add(new CharacterClass { Name = "Rogue", Description = "Master of stealth and skill", HitDie = 8, PrimaryAbility = "Dexterity" });
-        Classes.Add(new CharacterClass { Name = "Cleric", Description = "Divine spellcaster", HitDie = 8, PrimaryAbility = "Wisdom" });
-        Classes.Add(new CharacterClass { Name = "Ranger", Description = "Guardian of the wilderness", HitDie = 10, PrimaryAbility = "Dexterity and Wisdom" });
-        Classes.Add(new CharacterClass { Name = "Paladin", Description = "Holy warrior", HitDie = 10, PrimaryAbility = "Strength and Charisma" });
-        Classes.Add(new CharacterClass { Name = "Barbarian", Description = "Fierce warrior", HitDie = 12, PrimaryAbility = "Strength" });
-        Classes.Add(new CharacterClass { Name = "Bard", Description = "Master of performance and magic", HitDie = 8, PrimaryAbility = "Charisma" });
-        Classes.Add(new CharacterClass { Name = "Druid", Description = "Guardian of nature", HitDie = 8, PrimaryAbility = "Wisdom" });
-        Classes.Add(new CharacterClass { Name = "Monk", Description = "Master of martial arts", HitDie = 8, PrimaryAbility = "Dexterity and Wisdom" });
-        Classes.Add(new CharacterClass { Name = "Sorcerer", Description = "Innate magical power", HitDie = 6, PrimaryAbility = "Charisma" });
-        Classes.Add(new CharacterClass { Name = "Warlock", Description = "Pact magic user", HitDie = 8, PrimaryAbility = "Charisma" });
+        await LoadClassesAsync();
 
         // Initialize with basic D&D backgrounds
+        //TODO: Load backgrounds from a data file or service
         Backgrounds.Add(new Background { Name = "Acolyte", Description = "Religious servant" });
         Backgrounds.Add(new Background { Name = "Criminal", Description = "Life of crime" });
         Backgrounds.Add(new Background { Name = "Folk Hero", Description = "Champion of the people" });
@@ -170,6 +160,39 @@ public class MainViewModel : INotifyPropertyChanged
             Races.Add(new Race { Name = "Elf", Description = "Graceful and long-lived" });
             Races.Add(new Race { Name = "Dwarf", Description = "Hardy and traditional" });
             Races.Add(new Race { Name = "Halfling", Description = "Small and brave" });
+        }
+    }
+
+    private async Task LoadClassesAsync()
+    {
+        try
+        {
+            var classes = await _classDataService.LoadAllClassesAsync();
+            Classes.Clear();
+            foreach (var characterClass in classes)
+            {
+                Classes.Add(characterClass);
+            }
+            StatusMessage = $"Loaded {classes.Count} classes from data files";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error loading classes: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error loading classes: {ex}");
+            
+            // Fallback to basic classes if loading fails
+            Classes.Add(new CharacterClass { Name = "Fighter", Description = "Master of weapons and armor", HitDie = 10, PrimaryAbility = "Strength or Dexterity" });
+            Classes.Add(new CharacterClass { Name = "Wizard", Description = "Master of arcane magic", HitDie = 6, PrimaryAbility = "Intelligence" });
+            Classes.Add(new CharacterClass { Name = "Rogue", Description = "Master of stealth and skill", HitDie = 8, PrimaryAbility = "Dexterity" });
+            Classes.Add(new CharacterClass { Name = "Cleric", Description = "Divine spellcaster", HitDie = 8, PrimaryAbility = "Wisdom" });
+            Classes.Add(new CharacterClass { Name = "Ranger", Description = "Guardian of the wilderness", HitDie = 10, PrimaryAbility = "Dexterity and Wisdom" });
+            Classes.Add(new CharacterClass { Name = "Paladin", Description = "Holy warrior", HitDie = 10, PrimaryAbility = "Strength and Charisma" });
+            Classes.Add(new CharacterClass { Name = "Barbarian", Description = "Fierce warrior", HitDie = 12, PrimaryAbility = "Strength" });
+            Classes.Add(new CharacterClass { Name = "Bard", Description = "Master of performance and magic", HitDie = 8, PrimaryAbility = "Charisma" });
+            Classes.Add(new CharacterClass { Name = "Druid", Description = "Guardian of nature", HitDie = 8, PrimaryAbility = "Wisdom" });
+            Classes.Add(new CharacterClass { Name = "Monk", Description = "Master of martial arts", HitDie = 8, PrimaryAbility = "Dexterity and Wisdom" });
+            Classes.Add(new CharacterClass { Name = "Sorcerer", Description = "Innate magical power", HitDie = 6, PrimaryAbility = "Charisma" });
+            Classes.Add(new CharacterClass { Name = "Warlock", Description = "Pact magic user", HitDie = 8, PrimaryAbility = "Charisma" });
         }
     }
 
@@ -334,6 +357,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ShowSettings()
     {
+        //TODO: Implement settings functionality
         StatusMessage = "Settings functionality not yet implemented";
     }
 
@@ -344,6 +368,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void DiscoverPdfFields()
     {
+        // This method discovers the fields in the PDF template and writes them to a text file
+        // it is useful for debugging and understanding the field names available in the PDF.
+        // May no longer need this if we have a good mapping already.
         try
         {
             var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
@@ -401,6 +428,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void CreateTestPdf()
     {
+        // This method creates a test PDF with field names filled in, useful for debugging and understanding the field positions.
+        // It uses the PdfFieldMappingTool to generate a PDF that shows each field name in its actual position on the character sheet.
+        // May no longer need this if we have a good mapping already.
         try
         {
             var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
@@ -465,6 +495,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void AnalyzePdf()
     {
+        // This method analyzes the PDF structure and provides a report on the fields found, including text fields and checkboxes.
+        // It uses the PdfSharpExportService to read the PDF and extract field information.
+        // May no longer need this if we have a good mapping already.
         try
         {
             var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
@@ -520,6 +553,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ShowAbout()
     {
+        //TODO: Implement about dialog functionality
         StatusMessage = "About dialog functionality not yet implemented";
     }
 
@@ -554,6 +588,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async Task<bool> CreateTestPdfWithFieldNamesAsync(string templatePath, string outputPath)
     {
+        // This method creates a test PDF with field names filled in, useful for debugging and understanding the field positions.
+        // It uses the PdfSharpExportService to generate a PDF that shows each field name in its actual position on the character sheet.
+        // May no longer need this if we have a good mapping already.
         try
         {
             var pdfService = new PdfSharpExportService();
@@ -581,6 +618,9 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     private async Task<PdfAnalysisResult> AnalyzePdfStructureAsync(string templatePath)
+    // This method analyzes the PDF structure and provides a report on the fields found, including text fields and checkboxes.
+    // It uses the PdfSharpExportService to read the PDF and extract field information.
+    // May no longer need this if we have a good mapping already.
     {
         try
         {

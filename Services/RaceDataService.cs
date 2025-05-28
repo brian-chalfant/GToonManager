@@ -142,6 +142,7 @@ public class RaceDataService
                 // For now, we'll skip the "choose" mechanism as it requires user interaction
                 // This is typically handled by character creation UI where user selects which abilities to boost
                 // We could implement this later with a more sophisticated system
+                //TODO: Implement the choose mechanism
                 continue;
             }
         }
@@ -194,6 +195,7 @@ public class RaceDataService
                 // Handle "choose" structure - for now we'll skip this as it requires user interaction
                 // This should be handled by character creation UI where user selects specific skills
                 // We could add a note or placeholder to indicate this requires choice
+                //TODO: Implement the choose mechanism
             }
         }
 
