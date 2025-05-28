@@ -20,6 +20,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly ClassDataService _classDataService;
     private readonly BackgroundDataService _backgroundDataService;
     private string? _currentFilePath;
+    private Settings _settings;
 
     public MainViewModel()
     {
@@ -27,6 +28,7 @@ public class MainViewModel : INotifyPropertyChanged
         _raceDataService = new RaceDataService();
         _classDataService = new ClassDataService();
         _backgroundDataService = new BackgroundDataService();
+        _settings = new Settings();
         _currentCharacter = new Character
         {
             Name = "New Character",
@@ -60,6 +62,16 @@ public class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<Race> Races { get; } = new();
     public ObservableCollection<CharacterClass> Classes { get; } = new();
     public ObservableCollection<Background> Backgrounds { get; } = new();
+
+    public Settings Settings
+    {
+        get => _settings;
+        set
+        {
+            _settings = value;
+            OnPropertyChanged(nameof(Settings));
+        }
+    }
 
     public CharacterClass? SelectedClassToAdd
     {
@@ -378,8 +390,33 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ShowSettings()
     {
-        //TODO: Implement settings functionality
-        StatusMessage = "Settings functionality not yet implemented";
+        try
+        {
+            var settingsWindow = new Views.SettingsWindow(Settings);
+            settingsWindow.Owner = Application.Current.MainWindow;
+            
+            var result = settingsWindow.ShowDialog();
+            if (result == true)
+            {
+                // Settings were applied - they're already updated in the Settings object
+                StatusMessage = "Settings have been updated";
+                
+                // Here you could add logic to apply settings immediately, like:
+                // - Reload data if content sources changed
+                // - Update UI theme if theme changed
+                // - etc.
+            }
+            else
+            {
+                StatusMessage = "Settings unchanged";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error opening settings: {ex.Message}";
+            MessageBox.Show($"Failed to open settings:\n{ex.Message}", "Settings Error", 
+                           MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void ExitApplication()
