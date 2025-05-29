@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GToonManager.ViewModels"
+        xmlns:controls="clr-namespace:GToonManager.Controls"
         mc:Ignorable="d"
         Title="GToon Manager - Character Creator" 
         Height="800" Width="1200"
@@ -163,12 +164,12 @@
                                       BorderBrush="#ddd" BorderThickness="1"/>
                         </StackPanel>
 
-                        <!-- Classes Section -->
+                        <!-- Classes Section 
                         <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,0,0,20">
                             <Label Content="Classes" FontWeight="Bold"/>
                             <Border BorderBrush="#ddd" BorderThickness="1" Padding="10" Background="White">
-                                <StackPanel>
-                                    <!-- Current Classes List -->
+                                <StackPanel>-->
+                                    <!-- Current Classes List
                                     <TextBlock Text="Current Classes:" FontWeight="Bold" Margin="0,0,0,5"/>
                                     <ItemsControl ItemsSource="{Binding CurrentCharacter.ClassLevels}">
                                         <ItemsControl.ItemTemplate>
@@ -192,9 +193,9 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                    </ItemsControl> -->
                                     
-                                    <!-- Add New Class -->
+                                    <!-- Add New Class 
                                     <Separator Margin="0,10"/>
                                     <TextBlock Text="Add Class:" FontWeight="Bold" Margin="0,5,0,5"/>
                                     <Grid>
@@ -214,14 +215,15 @@
                                                 Command="{Binding AddClassCommand}"
                                                 Background="#27ae60" Foreground="White" 
                                                 Padding="10,5" BorderThickness="0"/>
-                                    </Grid>
+                                    </Grid> -->
                                     
-                                    <!-- Total Level Display -->
+                                    <!-- Total Level Display 
                                     <TextBlock Text="{Binding CurrentCharacter.Level, StringFormat='Total Level: {0}'}" 
                                                FontWeight="Bold" Margin="0,10,0,0" HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
-                        </StackPanel>
+                        </StackPanel> -->
+                        
 
 
                     </Grid>
@@ -458,12 +460,40 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Text="Ability Scores" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
 
+                        <!-- Standard Array Section -->
+                        <Border Grid.Row="1" Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="2" 
+                                Padding="15" Margin="0,0,0,20">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                    <TextBlock Text="Standard Array (2024 D&amp;D Rules)" FontSize="16" FontWeight="Bold" 
+                                               VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                    <Button Content="Assign Standard Array" 
+                                            Command="{Binding OpenStandardArrayCommand}"
+                                            Background="#3498db" Foreground="White" 
+                                            Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                </StackPanel>
+                                
+                                <TextBlock Text="Use the standard array values (15, 14, 13, 12, 10, 8) to assign your base ability scores before racial bonuses." 
+                                           HorizontalAlignment="Center" FontStyle="Italic" Foreground="#2c3e50"/>
+                                
+                                <!-- Standard Array Control -->
+                                <ContentPresenter Content="{Binding StandardArrayViewModel}" Margin="0,15,0,0">
+                                    <ContentPresenter.Resources>
+                                        <DataTemplate DataType="{x:Type vm:StandardArrayViewModel}">
+                                            <controls:StandardArrayControl DataContext="{Binding}"/>
+                                        </DataTemplate>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Ability Scores with Racial Bonuses -->
-                        <UniformGrid Grid.Row="1" Columns="3" Rows="2" Margin="0,0,0,30">
+                        <UniformGrid Grid.Row="2" Columns="3" Rows="2" Margin="0,0,0,30">
                             <!-- Strength -->
                             <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="1">
                                 <StackPanel>
@@ -616,7 +646,7 @@
                         </UniformGrid>
 
                         <!-- Skill Proficiencies Section -->
-                        <StackPanel Grid.Row="2">
+                        <StackPanel Grid.Row="3">
                             <TextBlock Text="Skill Proficiencies" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
                             
                             <!-- Racial Skill Proficiencies -->

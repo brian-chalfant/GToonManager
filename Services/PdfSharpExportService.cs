@@ -13,7 +13,7 @@ public class PdfSharpExportService
 
     public PdfSharpExportService()
     {
-        _templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
+        _templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-character-sheet.pdf");
         
         // Initialize font resolver if not already set
         if (GlobalFontSettings.FontResolver == null)
@@ -271,30 +271,35 @@ public class PdfSharpExportService
             // Basic Character Info
             "CharacterName" => character.Name,
             "PlayerName" => character.PlayerName,
-            "Race" => GetRaceSubclassText(character),
-            "Background" => GetBackgroundClassText(character),
+            
+            // NEW: Separate fields for the new PDF format
+            "Race" => character.Race?.Name ?? "",
+            "Subclass" => GetSubclassText(character),
+            "Background" => character.Background?.Name ?? "",
+            "Class" => GetClassText(character),
+            
             "ClassLevel" => character.Level.ToString(),
             "ExperiencePoints" => character.ExperiencePoints.ToString(),
             
             // Ability Scores
-            "Strength" => character.AbilityScores.Strength.ToString(),
-            "Dexterity" => character.AbilityScores.Dexterity.ToString(),
-            "Constitution" => character.AbilityScores.Constitution.ToString(),
-            "Intelligence" => character.AbilityScores.Intelligence.ToString(),
-            "Wisdom" => character.AbilityScores.Wisdom.ToString(),
-            "Charisma" => character.AbilityScores.Charisma.ToString(),
+            "Strength" => character.StrengthTotal.ToString(),
+            "Dexterity" => character.DexterityTotal.ToString(),
+            "Constitution" => character.ConstitutionTotal.ToString(),
+            "Intelligence" => character.IntelligenceTotal.ToString(),
+            "Wisdom" => character.WisdomTotal.ToString(),
+            "Charisma" => character.CharismaTotal.ToString(),
             
-            // Ability Modifiers
-            "StrengthModifier" => FormatModifier(character.StrengthModifier),
-            "DexterityModifier" => FormatModifier(character.DexterityModifier),
-            "ConstitutionModifier" => FormatModifier(character.ConstitutionModifier),
-            "IntelligenceModifier" => FormatModifier(character.IntelligenceModifier),
-            "WisdomModifier" => FormatModifier(character.WisdomModifier),
-            "CharismaModifier" => FormatModifier(character.CharismaModifier),
+            // Ability Modifiers (calculated from total scores)
+            "StrengthModifier" => FormatModifier(CalculateModifier(character.StrengthTotal)),
+            "DexterityModifier" => FormatModifier(CalculateModifier(character.DexterityTotal)),
+            "ConstitutionModifier" => FormatModifier(CalculateModifier(character.ConstitutionTotal)),
+            "IntelligenceModifier" => FormatModifier(CalculateModifier(character.IntelligenceTotal)),
+            "WisdomModifier" => FormatModifier(CalculateModifier(character.WisdomTotal)),
+            "CharismaModifier" => FormatModifier(CalculateModifier(character.CharismaTotal)),
             
             // Combat Stats
             "ArmorClass" => character.ArmorClass.ToString(),
-            "Initiative" => FormatModifier(character.DexterityModifier),
+            "Initiative" => FormatModifier(CalculateModifier(character.DexterityTotal)),
             "Speed" => character.Speed.ToString(),
             "HitPointMaximum" => character.MaxHitPoints.ToString(),
             "CurrentHitPoints" => character.HitPoints.ToString(),
@@ -464,6 +469,25 @@ public class PdfSharpExportService
         return string.Join(", ", parts);
     }
 
+    private static string GetClassText(Character character)
+    {
+        if (character.ClassLevels.Count == 0)
+            return "";
+        
+        var classNames = character.ClassLevels.Select(cl => cl.ClassName).ToList();
+        return string.Join("/", classNames);
+    }
+
+    private static string GetSubclassText(Character character)
+    {
+        if (character.Subrace != null && !string.IsNullOrEmpty(character.Subrace.Name))
+        {
+            return character.Subrace.Name;
+        }
+        
+        return "";
+    }
+
     private static bool HasSavingThrowProficiency(Character character, string ability)
     {
         return character.ClassLevels.Any(cl => 
@@ -500,12 +524,12 @@ public class PdfSharpExportService
     {
         var baseModifier = ability.ToLower() switch
         {
-            "strength" => character.StrengthModifier,
-            "dexterity" => character.DexterityModifier,
-            "constitution" => character.ConstitutionModifier,
-            "intelligence" => character.IntelligenceModifier,
-            "wisdom" => character.WisdomModifier,
-            "charisma" => character.CharismaModifier,
+            "strength" => CalculateModifier(character.StrengthTotal),
+            "dexterity" => CalculateModifier(character.DexterityTotal),
+            "constitution" => CalculateModifier(character.ConstitutionTotal),
+            "intelligence" => CalculateModifier(character.IntelligenceTotal),
+            "wisdom" => CalculateModifier(character.WisdomTotal),
+            "charisma" => CalculateModifier(character.CharismaTotal),
             _ => 0
         };
 
@@ -518,28 +542,33 @@ public class PdfSharpExportService
         // Map skills to their associated abilities
         var baseModifier = skill.ToLower() switch
         {
-            "acrobatics" => character.DexterityModifier,
-            "animal handling" => character.WisdomModifier,
-            "arcana" => character.IntelligenceModifier,
-            "athletics" => character.StrengthModifier,
-            "deception" => character.CharismaModifier,
-            "history" => character.IntelligenceModifier,
-            "insight" => character.WisdomModifier,
-            "intimidation" => character.CharismaModifier,
-            "investigation" => character.IntelligenceModifier,
-            "medicine" => character.WisdomModifier,
-            "nature" => character.IntelligenceModifier,
-            "perception" => character.WisdomModifier,
-            "performance" => character.CharismaModifier,
-            "persuasion" => character.CharismaModifier,
-            "religion" => character.IntelligenceModifier,
-            "sleight of hand" => character.DexterityModifier,
-            "stealth" => character.DexterityModifier,
-            "survival" => character.WisdomModifier,
+            "acrobatics" => CalculateModifier(character.DexterityTotal),
+            "animal handling" => CalculateModifier(character.WisdomTotal),
+            "arcana" => CalculateModifier(character.IntelligenceTotal),
+            "athletics" => CalculateModifier(character.StrengthTotal),
+            "deception" => CalculateModifier(character.CharismaTotal),
+            "history" => CalculateModifier(character.IntelligenceTotal),
+            "insight" => CalculateModifier(character.WisdomTotal),
+            "intimidation" => CalculateModifier(character.CharismaTotal),
+            "investigation" => CalculateModifier(character.IntelligenceTotal),
+            "medicine" => CalculateModifier(character.WisdomTotal),
+            "nature" => CalculateModifier(character.IntelligenceTotal),
+            "perception" => CalculateModifier(character.WisdomTotal),
+            "performance" => CalculateModifier(character.CharismaTotal),
+            "persuasion" => CalculateModifier(character.CharismaTotal),
+            "religion" => CalculateModifier(character.IntelligenceTotal),
+            "sleight of hand" => CalculateModifier(character.DexterityTotal),
+            "stealth" => CalculateModifier(character.DexterityTotal),
+            "survival" => CalculateModifier(character.WisdomTotal),
             _ => 0
         };
 
         var proficiencyBonus = HasSkillProficiency(character, skill) ? character.ProficiencyBonus : 0;
         return baseModifier + proficiencyBonus;
+    }
+
+    private static int CalculateModifier(int score)
+    {
+        return (score - 10) / 2;
     }
 } 

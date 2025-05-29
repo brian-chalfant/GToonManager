@@ -21,6 +21,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly BackgroundDataService _backgroundDataService;
     private string? _currentFilePath;
     private Settings _settings;
+    private StandardArrayViewModel? _standardArrayViewModel;
 
     public MainViewModel()
     {
@@ -72,6 +73,18 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Settings));
         }
     }
+
+    public StandardArrayViewModel? StandardArrayViewModel
+    {
+        get => _standardArrayViewModel;
+        set
+        {
+            _standardArrayViewModel = value;
+            OnPropertyChanged(nameof(StandardArrayViewModel));
+        }
+    }
+
+    public bool IsStandardArrayMode => Settings.AbilityScoreMethod == AbilityScoreGenerationMethod.StandardArray;
 
     public CharacterClass? SelectedClassToAdd
     {
@@ -129,6 +142,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand ShowSettingsCommand { get; private set; } = null!;
     public ICommand ExitApplicationCommand { get; private set; } = null!;
     public ICommand ShowAboutCommand { get; private set; } = null!;
+    public ICommand OpenStandardArrayCommand { get; private set; } = null!;
     
     // Multiclass commands
     public ICommand AddClassCommand { get; private set; } = null!;
@@ -150,6 +164,7 @@ public class MainViewModel : INotifyPropertyChanged
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         ExitApplicationCommand = new RelayCommand(ExitApplication);
         ShowAboutCommand = new RelayCommand(ShowAbout);
+        OpenStandardArrayCommand = new RelayCommand(OpenStandardArray);
         
         // Multiclass commands
         AddClassCommand = new RelayCommand(AddClass);
@@ -458,7 +473,7 @@ public class MainViewModel : INotifyPropertyChanged
         // May no longer need this if we have a good mapping already.
         try
         {
-            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
+            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-character-sheet.pdf");
             
             if (!File.Exists(templatePath))
             {
@@ -518,7 +533,7 @@ public class MainViewModel : INotifyPropertyChanged
         // May no longer need this if we have a good mapping already.
         try
         {
-            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
+            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-character-sheet.pdf");
             
             if (!File.Exists(templatePath))
             {
@@ -585,7 +600,7 @@ public class MainViewModel : INotifyPropertyChanged
         // May no longer need this if we have a good mapping already.
         try
         {
-            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-dnd-character-sheet-fillable.pdf");
+            var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "2024-character-sheet.pdf");
             
             if (!File.Exists(templatePath))
             {
@@ -787,6 +802,21 @@ public class MainViewModel : INotifyPropertyChanged
                 ErrorMessage = ex.Message
             };
         }
+    }
+
+    private void OpenStandardArray()
+    {
+        if (StandardArrayViewModel == null)
+        {
+            StandardArrayViewModel = new StandardArrayViewModel(CurrentCharacter);
+        }
+        else
+        {
+            // Refresh the standard array with current character data
+            StandardArrayViewModel.StandardArray.LoadFromAbilityScores(CurrentCharacter.AbilityScores);
+        }
+        
+        StatusMessage = "Standard Array assignment opened";
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
