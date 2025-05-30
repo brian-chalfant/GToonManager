@@ -1,0 +1,143 @@
+{
+    "name": "Guard",
+    "description": "Your feet ache when you remember the countless hours you spent at your post in the tower. You were trained to keep one eye looking outside the wall, watching for marauders sweeping from the nearby forest, and your other eye looking inside the wall, searching for cutpurses and troublemakers.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "intelligence",
+                "wisdom"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Alert": {
+            "description": "Always on the lookout for danger, you gain the following benefits:",
+            "benefits": [
+                "You gain a +5 bonus to initiative.",
+                "You can't be surprised while you are conscious.",
+                "Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you."
+            ],
+            "modifies": {
+                "initiative": {
+                    "bonus": 5
+                },
+                "combat": {
+                    "cannot_be_surprised": true,
+                    "unseen_attackers": "no_advantage"
+                }
+            },
+            "source": "PHB",
+            "source_page": 165,
+            "prerequisites": null
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Animal Handling",
+            "Nature"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Choose one type of Gaming Set"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard entertainer equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Spear",
+                            "quantity": 1,
+                            "description": "A spear"
+                        },
+                        {
+                            "item": "Light Crossbow",
+                            "quantity": 1,
+                            "description": "A light crossbow"
+                        },
+                        {
+                            "item": "Bolts",
+                            "quantity": 20,
+                            "description": "A set of bolts"
+                        },
+                        {
+                            "item": "Gaming Set",
+                            "quantity": 1,
+                            "description": "The chosen gaming set"
+                        },
+                        {
+                            "item": "Hooded Lantern",
+                            "quantity": 1,
+                            "description": "A hooded lantern"
+                        },
+                        {
+                            "item": "Manacles",
+                            "quantity": 1,
+                            "description": "A set of manacles"
+                        },
+                        {
+                            "item": "Quiver",
+                            "quantity": 1,
+                            "description": "A quiver"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of traveler's clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 12
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 180,
+    "updated": "2025-05-30"
+}

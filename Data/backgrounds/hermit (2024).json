@@ -1,0 +1,143 @@
+{
+    "name": "Hermit",
+    "description": "You spent your early years secluded in a hut or monastery located well beyond the outskirts of the nearest settlement. In those days, your only companions were the creatures of the forest and those who would occasionally visit to bring news of the outside world and supplies. The solitude allowed you to spend many hours pondering the mysteries of creation.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "constitution",
+                "wisdom",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Healer": {
+            "description": "You have learned the basics of healing",
+            "benefits": [
+                "Battle Medic: If you have a healer's kit you can expend one use of it to tend to a creature within 5 feet of yourself as a Utilize action. That creature can expend one of it's hit point dice, and you then roll that die.  The creature regains a number of hit points equal to the roll plus your proficiency bonus.",
+                "Healing Rerolls: Whenever you roll a die to determine the number of Hit Points you restore with a spell or with this feat's Battle Medic benefit, you can reroll the die if it rolls a 1 and you must use the new roll."
+            ],
+            "modifies": {
+                "healing": {
+                    "battle_medic": {
+                        "action_type": "utilize",
+                        "range": 5,
+                        "healing": "hit_die_roll + proficiency_bonus",
+                        "requires": "healers_kit",
+                        "target_expends": "hit_die"
+                    },
+                    "reroll_ones": {
+                        "applies_to": ["spells", "battle_medic"],
+                        "condition": "healing_die_rolls_1",
+                        "effect": "reroll_once_must_use_new"
+                    }
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Medicine",
+            "Religion"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Cartographer's Tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard entertainer equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Quarterstaff   ",
+                            "quantity": 1,
+                            "description": "A quarterstaff"
+                        },
+                        {
+                            "item": "Herbalism Kit",
+                            "quantity": 1,
+                            "description": "A herbalism kit"
+                        },
+                        {
+                            "item": "Bedroll",
+                            "quantity": 1,
+                            "description": "A bedroll"
+                        },
+                        {
+                            "item": "Philosophy Book    ",
+                            "quantity": 1,
+                            "description": "A philosophy book"
+                        },
+                        {
+                            "item": "Lamp",
+                            "quantity": 1,
+                            "description": "A lamp"
+                        },
+                        {
+                            "item": "Oil Flask",
+                            "quantity": 3,
+                            "description": "A set of oil flasks"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of traveler's clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 16
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 182,
+    "updated": "2025-05-30"
+}

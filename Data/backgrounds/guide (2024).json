@@ -1,0 +1,147 @@
+{
+    "name": "Guide",
+    "description": "You came of age outdoors, far from settled lands. Your home was anywhere you chose to spread your bedroll. There are wonders in the wilderness strange monsters, pristine forests and streams, overgrown ruins of great halls once trod by giants and you learned to fend for yourself as you explored them. From time to time, you guided friendly nature priests who instructed you in the fundamentals of channeling the magic of the wild.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "dexterity",
+                "constitution",
+                "wisdom"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Magic Initiate (Druid)": {
+            "description": "You have learned the basics of druid spellcasting.",
+            "benefits": [
+                "You learn two cantrips of your choice from the druid spell list.",
+                "You learn one 1st-level spell from the druid spell list.",
+                "You can cast this 1st-level spell at its lowest level, and you must finish a long rest before you can cast it in this way again."
+            ],
+            "modifies": {
+                "spellcasting": {
+                    "class_choice": [
+                        "druid"
+                    ],
+                    "cantrips": {
+                        "count": 2,
+                        "from": "druid"
+                    },
+                    "spells": {
+                        "count": 1,
+                        "level": 1,
+                        "from": "druid",
+                        "uses": 1,
+                        "refresh": "long_rest"
+                    }
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 178,
+            "base_feat": "Magic Initiate"
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Stealth",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Cartographer's Tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard entertainer equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Shortbow",
+                            "quantity": 1,
+                            "description": "A shortbow"
+                        },
+                        {
+                            "item": "Arrows",
+                            "quantity": 20,
+                            "description": "A set of arrows"
+                        },
+                        {
+                            "item": "Cartographer's Tools",
+                            "quantity": 1,
+                            "description": "A set of cartographer's tools"
+                        },
+                        {
+                            "item": "Bedroll",
+                            "quantity": 1,
+                            "description": "A bedroll"
+                        },
+                        {
+                            "item": "Quiver",
+                            "quantity": 1,
+                            "description": "A quiver"
+                        },
+                        {
+                            "item": "Tent",
+                            "quantity": 1,
+                            "description": "A tent"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of traveler's clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 3
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 180,
+    "updated": "2025-05-30"
+}
