@@ -14,6 +14,8 @@ public class Background : INotifyPropertyChanged
 
     public string Name
     {
+        //TODO: Add source and source page to the backgrounds
+        //TODO: Add Backgrounds from the PHB 2024 that are not in the PHB 2014
         get => _name;
         set
         {

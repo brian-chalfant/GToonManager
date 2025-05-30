@@ -1,0 +1,117 @@
+{
+    "name": "Entertainer",
+    "description": "You thrive in front of an audience. You know how to entrance them, entertain them, and even inspire them.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "dexterity",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Musician": {
+            "description": "You have learned the basics of playing a musical instrument, gaining the following benefits:",
+            "benefits": [
+                "Instrument Training: You gain proficiency in any combination of three musical instruments of your choice.",
+                "Encouraging Song: As you finish a Short or Long Rest you can play a song on a musical instrument with which you have proficiency and give Heroic Inspiration to allies who hear the song the number of allies you can affect in this way equals your proficiency bonus."
+            ],
+            "source": "Player's Handbook (2024)",
+            "source_page": 201
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Acrobatics",
+            "Performance"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "One type of musical instrument"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard entertainer equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Musical Instrument",
+                            "quantity": 1,
+                            "description": "A musical instrument, same as the one you chose for your Instrument Training"
+                        },
+                        {
+                            "item": "Costumes",
+                            "quantity": 2,
+                            "description": "A set of costumes"
+                        },
+                        {
+                            "item": "Mirror",
+                            "quantity": 1,
+                            "description": "A mirror"
+                        },
+                        {
+                            "item": "Perfume",
+                            "quantity": 1,
+                            "description": "A bottle of perfume"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of traveler's clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 11
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 180,
+    "updated": "2025-05-29"
+}

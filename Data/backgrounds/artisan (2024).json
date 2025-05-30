@@ -1,0 +1,115 @@
+{
+    "name": "Artisan",
+    "description": "You learned your craft as an apprentice with a master artisan or a guild of artisans. You worked for years learning the secrets of your trade, and you might have even served an apprenticeship under another artisan. You've learned to create wondrous works of art, from simple pottery to intricate jewelry. You might have even learned to create magic items. You might have even learned to create magic items.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "dexterity",
+                "intelligence"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Crafter": {
+            "description": "You have learned the basics of crafting, gaining the following benefits:",
+            "benefits": [
+                "Tool Proficiencies: You gain proficiency with three type of artisan's tools of your choice from the Fast Crafting table.",
+                "Discount: Whenever you buy a nonmagical item, you recieve a 20% discount on the price.",
+                "Fast Crafting: When you finish a long rest, you can create one item of your choice using your proficiency with the chosen tools. The item lasts until the next long rest."
+            ],
+            "modifies": {
+                "crafting": {
+                    "proficiencies": ["fast_crafting"],
+                    "discount": 20
+                }
+            }
+        },
+        "source": "Player's Handbook (2024)",
+        "source_page": 178,
+        "base_feat": "Crafter"
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Investigation",
+            "Persuasion"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "One type of artisan's tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard artisan equipment and gold",
+                    "fixed": [
+                        {
+                            "item": "Artisan's Tools",
+                            "quantity": 1,
+                            "description": "A set of artisan's tools, same as the one you chose for your Tool Proficiencies"
+                        },
+                        {
+                            "item": "Pouches",
+                            "quantity": 2,
+                            "description": "A set of pouches"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of traveler's clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 32
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 178,
+    "updated": "2025-05-29"
+}

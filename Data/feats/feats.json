@@ -99,6 +99,20 @@
             "source_page": 165,
             "prerequisites": null
         },
+        "Crafter": {
+            "description": "You have learned the basics of crafting, gaining the following benefits:",
+            "benefits": [
+                "Tool Proficiencies: You gain proficiency with three type of artisan's tools of your choice from the Fast Crafting table.",
+                "Discount: Whenever you buy a nonmagical item, you recieve a 20% discount on the price.",
+                "Fast Crafting: When you finish a long rest, you can create one item of your choice using your proficiency with the chosen tools. The item lasts until the next long rest."
+            ],
+            "modifies": {
+                "crafting": {
+                    "proficiencies": ["fast_crafting"],
+                    "discount": 20
+                }
+            }
+        },
         "Crossbow Expert": {
             "description": "Thanks to extensive practice with crossbows, you gain the following benefits:",
             "benefits": [

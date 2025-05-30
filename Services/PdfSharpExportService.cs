@@ -380,6 +380,7 @@ public class PdfSharpExportService
             "SpellAttackBonus" => "",
             
             // Large Text Areas
+            //TODO: Add class features to the character sheet
             "ClassFeatures" => GetClassFeatures(character),
             "ClassFeatures2" => "", // Additional class features if needed
             "SpeciesTraits" => GetRaceTraits(character),

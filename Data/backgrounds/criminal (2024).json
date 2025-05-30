@@ -1,0 +1,123 @@
+{
+    "name": "Criminal",
+    "description": "You eked out a living in dark alleyways, cutting purses or burgling shops. Perhaps you were part of a small gang of like-minded wrongdoers who looked out for each other. Or maybe you were a lone wolf, fending for yourself against the local thieves' guild and more fearsome lawbreakers.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "dexterity",
+                "constitution",
+                "intelligence"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Alert": {
+            "description": "Always on the lookout for danger, you gain the following benefits:",
+            "benefits": [
+                "You gain a +5 bonus to initiative.",
+                "You can't be surprised while you are conscious.",
+                "Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you."
+            ],
+            "modifies": {
+                "initiative": {
+                    "bonus": 5
+                },
+                "combat": {
+                    "cannot_be_surprised": true,
+                    "unseen_attackers": "no_advantage"
+                }
+            },
+            "source": "PHB",
+            "source_page": 165,
+            "prerequisites": null
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Sleight of Hand",
+            "Stealth"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Thieves' tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard criminal equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Daggers",
+                            "quantity": 2,
+                            "description": "A set of daggers"
+                        },
+                        {
+                            "item": "Thieves' tools",
+                            "quantity": 1,
+                            "description": "A set of thieves' tools"
+                        },
+                        {
+                            "item": "Pouches",
+                            "quantity": 2,
+                            "description": "A set of pouches"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "A set of common clothes"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 16
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2024)",
+    "source_page": 179,
+    "updated": "2025-05-29"
+}
