@@ -1,0 +1,133 @@
+{
+    "name": "Outlander",
+    "description": "You grew up in the wilds, far from civilization and the comforts of town and technology. You've witnessed the migration of herds larger than forests, survived weather more extreme than any city-dweller could comprehend, and enjoyed the solitude of being the only thinking creature for miles in any direction.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "constitution",
+                "wisdom"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Alert": {
+            "description": "Always on the lookout for danger, you gain the following benefits:",
+            "benefits": [
+                "You gain a +5 bonus to initiative.",
+                "You can't be surprised while you are conscious.",
+                "Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you."
+            ],
+            "modifies": {
+                "initiative": {
+                    "bonus": 5
+                },
+                "combat": {
+                    "cannot_be_surprised": true,
+                    "unseen_attackers": "no_advantage"
+                }
+            },
+            "source": "PHB",
+            "source_page": 165,
+            "prerequisites": null
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Athletics",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "One type of musical instrument"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard outlander equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Musical Instrument",
+                            "quantity": 1,
+                            "description": "A musical instrument"
+                        },
+                        {
+                            "item": "Staff",
+                            "quantity": 1,
+                            "description": "A staff"
+                        },
+                        {
+                            "item": "Hunting Trap",
+                            "quantity": 1,
+                            "description": "A hunting trap"
+                        },
+                        {
+                            "item": "Trophy from an Animal",
+                            "quantity": 1,
+                            "description": "A trophy from an animal you killed"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "Traveler's clothes"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 10
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2014), Updated to 2024",
+    "source_page": 136,
+    "updated": "2025-01-28"
+} 

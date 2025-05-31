@@ -1,0 +1,129 @@
+{
+    "name": "Knight of Solamnia",
+    "description": "You have trained since childhood to be a fearless warrior and beacon of hope. You are either a full-fledged Solamnic knight, or you were training to become one and have been thrust into adventure. You might belong to one of the three orders of knights: Crown Knights (warriors), Sword Knights (clerics), or Rose Knights (leaders).",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "constitution",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Tough": {
+            "description": "You have a hardy constitution, gaining the following benefits:",
+            "benefits": [
+                "Your Hit Point Maximum increases by an amount equal to twice your character level when you gain this feat. Whenever you gain a level, your hit point maximum increases by 2."
+            ],
+            "modifies": {
+                "hit_points": {
+                    "type": "maximum_increase",
+                    "calculation": {
+                        "formula": "2 * character_level",
+                        "base_increase": 2,
+                        "scaling": "per_level"
+                    },
+                    "timing": {
+                        "initial": "when_feat_gained",
+                        "ongoing": "on_level_up"
+                    },
+                    "description": "Hit point maximum increases by 2 per character level",
+                    "retroactive": true,
+                    "stacks_with": "other_hp_bonuses"
+                }
+            },
+            "source": "Player's Handbook (2024)",
+            "source_page": 180,
+            "base_feat": "Tough"
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Athletics",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Smith's tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard Knight of Solamnia equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Insignia of Rank",
+                            "quantity": 1,
+                            "description": "An insignia of rank"
+                        },
+                        {
+                            "item": "Deck of Cards",
+                            "quantity": 1,
+                            "description": "A deck of cards"
+                        },
+                        {
+                            "item": "Common Clothes",
+                            "quantity": 1,
+                            "description": "Common clothes"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 10
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Dragonlance: Shadow of the Dragon Queen, Updated to 2024",
+    "source_page": 30,
+    "updated": "2025-01-28"
+} 

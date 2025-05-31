@@ -1,0 +1,138 @@
+{
+    "name": "Gate Warden",
+    "description": "You once stood watch at a gate between worlds. Perhaps you guarded a portal in the Outlands, or you served as a guide for travelers seeking passage through the planes. You might have been a member of the Harmonium, helping to maintain order in Sigil, or you could have been a gatekeeper for one of the factions that oversee planar travel.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "constitution",
+                "wisdom",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Alert": {
+            "description": "Always on the lookout for danger, you gain the following benefits:",
+            "benefits": [
+                "You gain a +5 bonus to initiative.",
+                "You can't be surprised while you are conscious.",
+                "Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you."
+            ],
+            "modifies": {
+                "initiative": {
+                    "bonus": 5
+                },
+                "combat": {
+                    "cannot_be_surprised": true,
+                    "unseen_attackers": "no_advantage"
+                }
+            },
+            "source": "PHB",
+            "source_page": 165,
+            "prerequisites": null
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Persuasion",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Cartographer's tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard gate warden equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Cartographer's Tools",
+                            "quantity": 1,
+                            "description": "Cartographer's tools"
+                        },
+                        {
+                            "item": "Ring of Keys",
+                            "quantity": 1,
+                            "description": "A ring of keys to unknown locks"
+                        },
+                        {
+                            "item": "Blank Book",
+                            "quantity": 1,
+                            "description": "A blank book"
+                        },
+                        {
+                            "item": "Ink Pen or Quill",
+                            "quantity": 1,
+                            "description": "An ink pen or quill"
+                        },
+                        {
+                            "item": "Black Ink",
+                            "quantity": 1,
+                            "description": "A bottle of black ink"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "Traveler's clothes"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 10
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Planescape: Adventures in the Multiverse, Updated to 2024",
+    "source_page": 20,
+    "updated": "2025-01-28"
+} 

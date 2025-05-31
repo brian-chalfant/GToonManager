@@ -1,0 +1,125 @@
+{
+    "name": "Folk Hero",
+    "description": "You come from a humble social rank, but you are destined for so much more. Already the people of your home village regard you as their champion, and your destiny calls you to stand against the tyrants and monsters that threaten the common folk everywhere.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "strength",
+                "dexterity",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Lucky": {
+            "description": "You're Lucky",
+            "benefits": [
+                "Luck Points: You have a number of Luck Points equal to your proficiency bonus and can spend the points on the benefits below.  You regain all spent Luck Points when you finish a long rest.",
+                "Advantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the higher result. You can use this benefit only once per turn.",
+                "Disadvantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the lower result."
+            ],
+            "modifies": {
+                "luck": {
+                    "points": "proficiency_bonus",
+                    "spend": "advantage_or_disadvantage"
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Animal Handling",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "One type of artisan's tools",
+            "Land vehicles"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard folk hero equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Artisan's Tools",
+                            "quantity": 1,
+                            "description": "A set of artisan's tools"
+                        },
+                        {
+                            "item": "Shovel",
+                            "quantity": 1,
+                            "description": "A shovel"
+                        },
+                        {
+                            "item": "Iron Pot",
+                            "quantity": 1,
+                            "description": "An iron pot"
+                        },
+                        {
+                            "item": "Common Clothes",
+                            "quantity": 1,
+                            "description": "A set of common clothes"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 10
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2014), Updated to 2024",
+    "source_page": 131,
+    "updated": "2025-01-28"
+} 

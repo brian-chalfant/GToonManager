@@ -1,0 +1,140 @@
+{
+    "name": "Urchin",
+    "description": "You grew up on the streets alone, orphaned, and poor. You had no one to watch over you or provide for you, so you learned to provide for yourself. You fought fiercely over food and kept a constant watch out for other desperate souls who might steal from you.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "dexterity",
+                "constitution",
+                "charisma"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Skilled": {
+            "description": "You have a talent for learning, granting you these benefits:",
+            "benefits": [
+                "You gain proficiency in any combination of three skills or tools of your choice."
+            ],
+            "modifies": {
+                "proficiencies": {
+                    "type": "choice",
+                    "count": 3,
+                    "options": ["skills", "tools"],
+                    "description": "Choose any combination of 3 skills or tools"
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "Sleight of Hand",
+            "Stealth"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Disguise kit",
+            "Thieves' tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard urchin equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Disguise Kit",
+                            "quantity": 1,
+                            "description": "A disguise kit"
+                        },
+                        {
+                            "item": "Thieves' Tools",
+                            "quantity": 1,
+                            "description": "Thieves' tools"
+                        },
+                        {
+                            "item": "Small Knife",
+                            "quantity": 1,
+                            "description": "A small knife"
+                        },
+                        {
+                            "item": "City Map",
+                            "quantity": 1,
+                            "description": "A city map"
+                        },
+                        {
+                            "item": "Pet Mouse",
+                            "quantity": 1,
+                            "description": "A pet mouse"
+                        },
+                        {
+                            "item": "Token to Remember Parents",
+                            "quantity": 1,
+                            "description": "A token to remember your parents"
+                        },
+                        {
+                            "item": "Common Clothes",
+                            "quantity": 1,
+                            "description": "Common clothes"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 10
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Player's Handbook (2014), Updated to 2024",
+    "source_page": 141,
+    "updated": "2025-01-28"
+} 

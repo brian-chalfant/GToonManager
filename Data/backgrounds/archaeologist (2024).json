@@ -1,0 +1,144 @@
+{
+    "name": "Archaeologist",
+    "description": "An archaeologist learns about the long-lost and fallen cultures of the past by studying their remains – their bones, their ruins, their surviving masterworks, and their tombs. Those who practice archaeology travel to the far corners of the world to root through crumbled cities and lost dungeons, digging in search of artifacts that might tell the stories of monarchs and high priests, wars and cataclysms.",
+    "ability_score_improvement": {
+        "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
+        "mechanics": {
+            "ability_scores": [
+                "dexterity",
+                "intelligence",
+                "wisdom"
+            ],
+            "improvement_options": [
+                {
+                    "type": "mixed",
+                    "description": "Increase one ability score by 2 and another by 1",
+                    "distributions": [
+                        {
+                            "count": 1,
+                            "amount": 2
+                        },
+                        {
+                            "count": 1,
+                            "amount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "uniform",
+                    "description": "Increase all three ability scores by 1",
+                    "distributions": [
+                        {
+                            "count": 3,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "max_score": 20
+        }
+    },
+    "feat": {
+        "Magic Initiate (Cleric)": {
+            "description": "You learn some spells from the cleric spell tradition.",
+            "benefits": [
+                "Two Cantrips: You learn two cantrips of your choice from the Cleric spell list.",
+                "1st-Level Spell: You learn one 1st-level spell from the Cleric spell list. You always have this spell prepared. You can cast this spell without expending a spell slot. Once you cast the spell in this way, you can't do so again until you finish a Long Rest. You can also cast the spell using any spell slots you have of the appropriate level.",
+                "Spell Change: Whenever you gain a new level, you can replace one of the spells you chose for this feat with a different spell of the same level from the chosen spell list.",
+                "Spellcasting Ability: Your spellcasting ability for these spells is Wisdom."
+            ],
+            "modifies": {
+                "spells": {
+                    "list": "cleric",
+                    "cantrips": 2,
+                    "first_level": 1,
+                    "ability": "wisdom",
+                    "free_cast": "long_rest"
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "base_feat": "Magic Initiate"
+        }
+    },
+    "proficiency_grants": {
+        "skills": [
+            "History",
+            "Survival"
+        ],
+        "languages": {
+            "count": 2,
+            "type": "choice",
+            "description": "Two languages of your choice"
+        },
+        "tools": [
+            "Cartographer's tools or navigator's tools"
+        ]
+    },
+    "equipment_grants": {
+        "choice": {
+            "description": "Choose one of the following equipment packages",
+            "options": [
+                {
+                    "name": "Equipment Package",
+                    "description": "Standard archaeologist equipment and some gold",
+                    "fixed": [
+                        {
+                            "item": "Wooden Case",
+                            "quantity": 1,
+                            "description": "A wooden case containing a map to a ruin or dungeon"
+                        },
+                        {
+                            "item": "Bullseye Lantern",
+                            "quantity": 1,
+                            "description": "A bullseye lantern"
+                        },
+                        {
+                            "item": "Miner's Pick",
+                            "quantity": 1,
+                            "description": "A miner's pick"
+                        },
+                        {
+                            "item": "Traveler's Clothes",
+                            "quantity": 1,
+                            "description": "Traveler's clothes"
+                        },
+                        {
+                            "item": "Shovel",
+                            "quantity": 1,
+                            "description": "A shovel"
+                        },
+                        {
+                            "item": "Two-Person Tent",
+                            "quantity": 1,
+                            "description": "A 2-person tent"
+                        },
+                        {
+                            "item": "Trinket",
+                            "quantity": 1,
+                            "description": "A trinket"
+                        },
+                        {
+                            "item": "Pouch",
+                            "quantity": 1,
+                            "description": "A pouch"
+                        }
+                    ],
+                    "currency": {
+                        "gold": 25
+                    }
+                },
+                {
+                    "name": "Gold Only",
+                    "description": "Choose gold instead of equipment",
+                    "currency": {
+                        "gold": 50
+                    }
+                }
+            ]
+        }
+    },
+    "source": "Tomb of Annihilation, Updated to 2024",
+    "source_page": 192,
+    "updated": "2025-01-28"
+} 
