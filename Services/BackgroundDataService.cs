@@ -78,31 +78,158 @@ public class BackgroundDataService
         if (backgroundData.TryGetProperty("suggested_characteristics", out var suggestedElement))
             background.SuggestedCharacteristics = suggestedElement.GetString() ?? string.Empty;
 
-        // Parse feature
-        if (backgroundData.TryGetProperty("feature", out var featureElement))
+        // Parse source information (2024 format)
+        if (backgroundData.TryGetProperty("source", out var sourceElement))
+            background.Source = sourceElement.GetString() ?? string.Empty;
+
+        if (backgroundData.TryGetProperty("source_page", out var sourcePageElement))
+            background.SourcePage = sourcePageElement.GetInt32();
+
+        // Parse ability score improvement (2024 format)
+        if (backgroundData.TryGetProperty("ability_score_improvement", out var abilityElement))
+        {
+            background.AbilityScoreImprovement = ParseAbilityScoreImprovement(abilityElement);
+        }
+
+        // Handle new 2024 format feat (replaces old feature)
+        if (backgroundData.TryGetProperty("feat", out var featElement))
+        {
+            background.Feature = ParseFeatAsFeature(featElement);
+        }
+        // Fall back to old format feature
+        else if (backgroundData.TryGetProperty("feature", out var featureElement))
         {
             background.Feature = ParseFeature(featureElement);
         }
 
-        // Parse proficiency grants
+        // Parse proficiency grants (structure is compatible between formats)
         if (backgroundData.TryGetProperty("proficiency_grants", out var proficiencyElement))
         {
             background.ProficiencyGrants = ParseProficiencyGrants(proficiencyElement);
         }
 
-        // Parse equipment grants
+        // Handle new 2024 equipment format with choices
         if (backgroundData.TryGetProperty("equipment_grants", out var equipmentElement))
         {
             background.EquipmentGrants = ParseEquipmentGrants(equipmentElement);
         }
 
-        // Parse personality traits
+        // Parse personality traits (old format only - 2024 format doesn't include them)
         if (backgroundData.TryGetProperty("personality", out var personalityElement))
         {
             background.Personality = ParsePersonalityTraits(personalityElement);
         }
 
         return background;
+    }
+
+    private AbilityScoreImprovement ParseAbilityScoreImprovement(JsonElement abilityElement)
+    {
+        var improvement = new AbilityScoreImprovement();
+
+        if (abilityElement.TryGetProperty("description", out var descElement))
+            improvement.Description = descElement.GetString() ?? string.Empty;
+
+        if (abilityElement.TryGetProperty("mechanics", out var mechanicsElement))
+        {
+            // Parse ability scores
+            if (mechanicsElement.TryGetProperty("ability_scores", out var scoresElement) && 
+                scoresElement.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var score in scoresElement.EnumerateArray())
+                {
+                    var scoreName = score.GetString();
+                    if (!string.IsNullOrEmpty(scoreName))
+                    {
+                        improvement.AbilityScores.Add(scoreName);
+                    }
+                }
+            }
+
+            // Parse improvement options
+            if (mechanicsElement.TryGetProperty("improvement_options", out var optionsElement) && 
+                optionsElement.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var option in optionsElement.EnumerateArray())
+                {
+                    var improvementOption = new ImprovementOption();
+
+                    if (option.TryGetProperty("type", out var typeElement))
+                        improvementOption.Type = typeElement.GetString() ?? string.Empty;
+
+                    if (option.TryGetProperty("description", out var optionDescElement))
+                        improvementOption.Description = optionDescElement.GetString() ?? string.Empty;
+
+                    // Parse distributions
+                    if (option.TryGetProperty("distributions", out var distributionsElement) && 
+                        distributionsElement.ValueKind == JsonValueKind.Array)
+                    {
+                        foreach (var dist in distributionsElement.EnumerateArray())
+                        {
+                            var distribution = new Distribution();
+
+                            if (dist.TryGetProperty("count", out var countElement))
+                                distribution.Count = countElement.GetInt32();
+
+                            if (dist.TryGetProperty("amount", out var amountElement))
+                                distribution.Amount = amountElement.GetInt32();
+
+                            improvementOption.Distributions.Add(distribution);
+                        }
+                    }
+
+                    improvement.ImprovementOptions.Add(improvementOption);
+                }
+            }
+
+            // Parse max score
+            if (mechanicsElement.TryGetProperty("max_score", out var maxScoreElement))
+                improvement.MaxScore = maxScoreElement.GetInt32();
+        }
+
+        return improvement;
+    }
+
+    private BackgroundFeature ParseFeatAsFeature(JsonElement featElement)
+    {
+        var feature = new BackgroundFeature();
+
+        // The feat object contains one property with the feat name as key
+        foreach (var property in featElement.EnumerateObject())
+        {
+            feature.Name = property.Name;
+            
+            if (property.Value.TryGetProperty("description", out var descElement))
+            {
+                var description = descElement.GetString() ?? string.Empty;
+                
+                // Add benefits if they exist
+                if (property.Value.TryGetProperty("benefits", out var benefitsElement) && 
+                    benefitsElement.ValueKind == JsonValueKind.Array)
+                {
+                    var benefits = new List<string>();
+                    foreach (var benefit in benefitsElement.EnumerateArray())
+                    {
+                        var benefitText = benefit.GetString();
+                        if (!string.IsNullOrEmpty(benefitText))
+                        {
+                            benefits.Add(benefitText);
+                        }
+                    }
+                    
+                    if (benefits.Any())
+                    {
+                        description += "\n\nBenefits:\n• " + string.Join("\n• ", benefits);
+                    }
+                }
+                
+                feature.Description = description;
+            }
+            
+            break; // Only process the first (and typically only) feat
+        }
+
+        return feature;
     }
 
     private BackgroundFeature ParseFeature(JsonElement featureElement)
@@ -190,8 +317,50 @@ public class BackgroundDataService
     {
         var grants = new EquipmentGrants();
 
-        // Parse fixed equipment
-        if (equipmentElement.TryGetProperty("fixed", out var fixedElement) && fixedElement.ValueKind == JsonValueKind.Array)
+        // Handle new 2024 format with choices
+        if (equipmentElement.TryGetProperty("choice", out var choiceElement))
+        {
+            // Parse the first equipment package option as the primary equipment
+            if (choiceElement.TryGetProperty("options", out var optionsElement) && 
+                optionsElement.ValueKind == JsonValueKind.Array)
+            {
+                var firstOption = optionsElement.EnumerateArray().FirstOrDefault();
+                if (firstOption.ValueKind != JsonValueKind.Undefined)
+                {
+                    // Parse fixed equipment from the first option
+                    if (firstOption.TryGetProperty("fixed", out var fixedElement))
+                    {
+                        grants.Fixed = ParseEquipmentItems(fixedElement);
+                    }
+
+                    // Parse currency from the first option
+                    if (firstOption.TryGetProperty("currency", out var currencyElement))
+                    {
+                        grants.Currency = ParseCurrency(currencyElement);
+                    }
+                }
+            }
+        }
+        // Handle old format with direct fixed equipment
+        else if (equipmentElement.TryGetProperty("fixed", out var fixedElement))
+        {
+            grants.Fixed = ParseEquipmentItems(fixedElement);
+        }
+
+        // Parse currency (old format)
+        if (equipmentElement.TryGetProperty("currency", out var oldFormatCurrencyElement))
+        {
+            grants.Currency = ParseCurrency(oldFormatCurrencyElement);
+        }
+
+        return grants;
+    }
+
+    private List<EquipmentItem> ParseEquipmentItems(JsonElement fixedElement)
+    {
+        var items = new List<EquipmentItem>();
+
+        if (fixedElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var item in fixedElement.EnumerateArray())
             {
@@ -206,17 +375,11 @@ public class BackgroundDataService
                 if (item.TryGetProperty("description", out var descElement))
                     equipmentItem.Description = descElement.GetString() ?? string.Empty;
 
-                grants.Fixed.Add(equipmentItem);
+                items.Add(equipmentItem);
             }
         }
 
-        // Parse currency
-        if (equipmentElement.TryGetProperty("currency", out var currencyElement))
-        {
-            grants.Currency = ParseCurrency(currencyElement);
-        }
-
-        return grants;
+        return items;
     }
 
     private Currency ParseCurrency(JsonElement currencyElement)
@@ -309,4 +472,4 @@ public class BackgroundDataService
 
         return options;
     }
-} 
+}

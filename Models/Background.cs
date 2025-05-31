@@ -11,6 +11,9 @@ public class Background : INotifyPropertyChanged
     private EquipmentGrants _equipmentGrants = new();
     private PersonalityTraits _personality = new();
     private string _suggestedCharacteristics = string.Empty;
+    private string _source = string.Empty;
+    private int _sourcePage = 0;
+    private AbilityScoreImprovement _abilityScoreImprovement = new();
 
     public string Name
     {
@@ -84,6 +87,36 @@ public class Background : INotifyPropertyChanged
         }
     }
 
+    public string Source
+    {
+        get => _source;
+        set
+        {
+            _source = value;
+            OnPropertyChanged(nameof(Source));
+        }
+    }
+
+    public int SourcePage
+    {
+        get => _sourcePage;
+        set
+        {
+            _sourcePage = value;
+            OnPropertyChanged(nameof(SourcePage));
+        }
+    }
+
+    public AbilityScoreImprovement AbilityScoreImprovement
+    {
+        get => _abilityScoreImprovement;
+        set
+        {
+            _abilityScoreImprovement = value;
+            OnPropertyChanged(nameof(AbilityScoreImprovement));
+        }
+    }
+
     // Legacy properties for backward compatibility
     public string[] SkillProficiencies => ProficiencyGrants.Skills.ToArray();
     public string[] Languages => ProficiencyGrants.Languages.Known.ToArray();
@@ -99,6 +132,27 @@ public class Background : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+}
+
+public class AbilityScoreImprovement
+{
+    public string Description { get; set; } = string.Empty;
+    public List<string> AbilityScores { get; set; } = new();
+    public List<ImprovementOption> ImprovementOptions { get; set; } = new();
+    public int MaxScore { get; set; } = 20;
+}
+
+public class ImprovementOption
+{
+    public string Type { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public List<Distribution> Distributions { get; set; } = new();
+}
+
+public class Distribution
+{
+    public int Count { get; set; }
+    public int Amount { get; set; }
 }
 
 public class BackgroundFeature
