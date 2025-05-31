@@ -1,13 +1,13 @@
 {
-    "name": "Merchant",
-    "description": "You were apprenticed to a trader, caravan master, or shopkeeper, learning the fundamentals of commerce. You traveled broadly, and you earned a living by buying and selling the raw materials artisans need to practice their craft or finished works from such crafters. You might have transported goods from one place to another (by ship, wagon, or caravan) or bought them from traveling traders and sold them in your own shop.",
+    "name": "Sailor",
+    "description": "You lived as a seafarer, wind at your back and decks swaying beneath your feet. You've perched on barstools in more ports of call than you can remember, faced mighty storms, and swapped stories with folk who live beneath the waves.",
     "ability_score_improvement": {
         "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
         "mechanics": {
             "ability_scores": [
-                "constitution",
-                "intelligence",
-                "charisma"
+                "strength",
+                "dexterity",
+                "wisdom"
             ],
             "improvement_options": [
                 {
@@ -39,27 +39,43 @@
         }
     },
     "feat": {
-        "Lucky": {
-            "description": "You're Lucky'",
+        "Tavern Brawler": {
+            "description": "You have spent your life in taverns, fighting, and drinking. You've learned to hold your liquor, intimidate those who can't handle their drinks, and fight just as hard when you're out of drink.",
             "benefits": [
-                "Luck Points: You have a number of Luck Points equal to your proficiency bonus and can spend the points on the benefits below.  You regain all spent Luck Points when you finish a long rest.",
-                "Advantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the higher result. You can use this benefit only once per turn.",
-                "Disadvantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the lower result."
+                "Enhanced Unarmed Strike: When you hit with your unarmed strike and deal damage, you can deal Bludgeoning damage equal to  1d4 plus your Strength modifier instead of the normal damage.",
+                "Damage Rerolls: Whenever you roll a damage die for your Unarmed Strike, you can reroll the die if it rolls a 1, and you must use the new roll.",
+                "Improvised Weaponry: You have proficiency with improvised weapons.",
+                "Push: When you hit a creature with an Unarmed Strike as part of the Attack action on your turn, you can deal damage to the target and also push it 5 feet away from you. You can use this benefit only once per turn."
             ],
             "modifies": {
-                "luck": {
-                    "points": "proficiency_bonus",
-                    "spend": "advantage_or_disadvantage"
+                "unarmed_strike": {
+                    "damage": {
+                        "base": "1d4 + STR",
+                        "type": "bludgeoning",
+                        "reroll_ones": true
+                    },
+                    "special_abilities": [
+                        {
+                            "name": "Push",
+                            "description": "When you hit with an Unarmed Strike as part of the Attack action, you can push the target 5 feet away",
+                            "usage": "once per turn"
+                        }
+                    ]
+                },
+                "proficiencies": {
+                    "weapons": [
+                        "improvised weapons"
+                    ]
                 }
             },
             "source": "PHB 2024",
-            "source_page": 201
+            "source_page": 178
         }
     },
     "proficiency_grants": {
         "skills": [
-            "Animal Handling",
-            "Persuasion"
+            "Acrobatics",
+            "Perception"
         ],
         "languages": {
             "count": 2,
@@ -79,14 +95,19 @@
                     "description": "Standard entertainer equipment and some gold",
                     "fixed": [
                         {
-                            "item": "Navigator's Tools   ",
+                            "item": "Dagger",
                             "quantity": 1,
-                            "description": "A navigator's tools"
+                            "description": "A dagger"
                         },
                         {
-                            "item": "Pouch",
-                            "quantity": 2,
-                            "description": "A set of pouches"
+                            "item": "Navigator's Tools",
+                            "quantity": 1,
+                            "description": "A set of navigator's tools"
+                        },
+                        {
+                            "item": "Rope",
+                            "quantity": 1,
+                            "description": "A rope"
                         },
                         {
                             "item": "Traveler's Clothes",
@@ -95,7 +116,7 @@
                         }
                     ],
                     "currency": {
-                        "gold": 22
+                        "gold": 20
                     }
                 },
                 {
@@ -109,6 +130,6 @@
         }
     },
     "source": "Player's Handbook (2024)",
-    "source_page": 182,
+    "source_page": 184,
     "updated": "2025-05-30"
 }

@@ -1,11 +1,11 @@
 {
-    "name": "Merchant",
-    "description": "You were apprenticed to a trader, caravan master, or shopkeeper, learning the fundamentals of commerce. You traveled broadly, and you earned a living by buying and selling the raw materials artisans need to practice their craft or finished works from such crafters. You might have transported goods from one place to another (by ship, wagon, or caravan) or bought them from traveling traders and sold them in your own shop.",
+    "name": "Sage",
+    "description": "You spent your formative years traveling between manors and monasteries, performing various odd jobs and services in exchange for access to their libraries. You whiled away many a long evening studying books and scrolls, learning the lore of the multiverse-even the rudiments of magic-and your mind yearns for more.",
     "ability_score_improvement": {
         "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
         "mechanics": {
             "ability_scores": [
-                "constitution",
+                "strength",
                 "intelligence",
                 "charisma"
             ],
@@ -39,27 +39,40 @@
         }
     },
     "feat": {
-        "Lucky": {
-            "description": "You're Lucky'",
+        "Magic Initiate (Wizard)": {
+            "description": "You have learned the basics of Wizard spellcasting.",
             "benefits": [
-                "Luck Points: You have a number of Luck Points equal to your proficiency bonus and can spend the points on the benefits below.  You regain all spent Luck Points when you finish a long rest.",
-                "Advantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the higher result. You can use this benefit only once per turn.",
-                "Disadvantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the lower result."
+                "You learn two cantrips of your choice from the Wizard spell list.",
+                "You learn one 1st-level spell from the Wizard spell list.",
+                "You can cast this 1st-level spell at its lowest level, and you must finish a long rest before you can cast it in this way again."
             ],
             "modifies": {
-                "luck": {
-                    "points": "proficiency_bonus",
-                    "spend": "advantage_or_disadvantage"
+                "spellcasting": {
+                    "class_choice": [
+                        "Wizard"
+                    ],
+                    "cantrips": {
+                        "count": 2,
+                        "from": "Wizard"
+                    },
+                    "spells": {
+                        "count": 1,
+                        "level": 1,
+                        "from": "Wizard",
+                        "uses": 1,
+                        "refresh": "long_rest"
+                    }
                 }
             },
             "source": "PHB 2024",
-            "source_page": 201
+            "source_page": 178,
+            "base_feat": "Magic Initiate"
         }
     },
     "proficiency_grants": {
         "skills": [
-            "Animal Handling",
-            "Persuasion"
+            "Arcana",
+            "History"
         ],
         "languages": {
             "count": 2,
@@ -67,7 +80,7 @@
             "description": "Two languages of your choice"
         },
         "tools": [
-            "Navigator's Tools"
+            "Calligrapher's Supplies"
         ]
     },
     "equipment_grants": {
@@ -79,23 +92,28 @@
                     "description": "Standard entertainer equipment and some gold",
                     "fixed": [
                         {
-                            "item": "Navigator's Tools   ",
+                            "item": "Quarterstaff",
                             "quantity": 1,
-                            "description": "A navigator's tools"
+                            "description": "A quarterstaff"
                         },
                         {
-                            "item": "Pouch",
-                            "quantity": 2,
-                            "description": "A set of pouches"
+                            "item": "Calligrapher's Supplies",
+                            "quantity": 1,
+                            "description": "A set of calligrapher's supplies"
                         },
                         {
-                            "item": "Traveler's Clothes",
+                            "item": "History Book",
                             "quantity": 1,
-                            "description": "A set of traveler's clothes"
+                            "description": "A book of history"
+                        },
+                        {
+                            "item": "Parchment",
+                            "quantity": 8,
+                            "description": "8 sheets of parchment"
                         }
                     ],
                     "currency": {
-                        "gold": 22
+                        "gold": 8
                     }
                 },
                 {
@@ -109,6 +127,6 @@
         }
     },
     "source": "Player's Handbook (2024)",
-    "source_page": 182,
+    "source_page": 183,
     "updated": "2025-05-30"
 }

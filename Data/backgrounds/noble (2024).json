@@ -1,11 +1,11 @@
 {
-    "name": "Merchant",
-    "description": "You were apprenticed to a trader, caravan master, or shopkeeper, learning the fundamentals of commerce. You traveled broadly, and you earned a living by buying and selling the raw materials artisans need to practice their craft or finished works from such crafters. You might have transported goods from one place to another (by ship, wagon, or caravan) or bought them from traveling traders and sold them in your own shop.",
+    "name": "Noble",
+    "description": "You were raised in a castle, surrounded by wealth, power, and privilege. Your family of minor aristocrats ensured that you received a first-class education, some of which you appreciated and some of which you resented. Your time in the castle, especially the many hours you spent observing your family at court, also taught you a great deal about leadership.",
     "ability_score_improvement": {
         "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
         "mechanics": {
             "ability_scores": [
-                "constitution",
+                "strength",
                 "intelligence",
                 "charisma"
             ],
@@ -39,26 +39,30 @@
         }
     },
     "feat": {
-        "Lucky": {
-            "description": "You're Lucky'",
+        "Skilled": {
+            "description": "You gain proficiency in any combination of three skills or tools of your choice.",
             "benefits": [
-                "Luck Points: You have a number of Luck Points equal to your proficiency bonus and can spend the points on the benefits below.  You regain all spent Luck Points when you finish a long rest.",
-                "Advantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the higher result. You can use this benefit only once per turn.",
-                "Disadvantage: When you roll a d20 for a d20 check, you can spend 1 Luck Point to roll an additional d20 and use the lower result."
+                "Choose any combination of three skills or tools. You gain proficiency in the chosen skills or tools."
             ],
             "modifies": {
-                "luck": {
-                    "points": "proficiency_bonus",
-                    "spend": "advantage_or_disadvantage"
+                "proficiencies": {
+                    "choose": {
+                        "from": [
+                            "skills",
+                            "tools"
+                        ],
+                        "count": 3
+                    }
                 }
             },
-            "source": "PHB 2024",
-            "source_page": 201
+            "source": "PHB",
+            "source_page": 170,
+            "prerequisites": null
         }
     },
     "proficiency_grants": {
         "skills": [
-            "Animal Handling",
+            "History",
             "Persuasion"
         ],
         "languages": {
@@ -67,7 +71,7 @@
             "description": "Two languages of your choice"
         },
         "tools": [
-            "Navigator's Tools"
+            "Choose one type of gaming set"
         ]
     },
     "equipment_grants": {
@@ -79,23 +83,23 @@
                     "description": "Standard entertainer equipment and some gold",
                     "fixed": [
                         {
-                            "item": "Navigator's Tools   ",
+                            "item": "Gaming Set same as the one you chose",
                             "quantity": 1,
-                            "description": "A navigator's tools"
+                            "description": "A gaming set"
                         },
                         {
-                            "item": "Pouch",
-                            "quantity": 2,
-                            "description": "A set of pouches"
+                            "item": "Fine Clothes",
+                            "quantity": 1,
+                            "description": "A set of fine clothes"
                         },
                         {
-                            "item": "Traveler's Clothes",
+                            "item": "Perfume",
                             "quantity": 1,
-                            "description": "A set of traveler's clothes"
+                            "description": "A bottle of perfume"
                         }
                     ],
                     "currency": {
-                        "gold": 22
+                        "gold": 29
                     }
                 },
                 {

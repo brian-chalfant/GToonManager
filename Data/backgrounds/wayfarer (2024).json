@@ -1,12 +1,12 @@
 {
-    "name": "Merchant",
-    "description": "You were apprenticed to a trader, caravan master, or shopkeeper, learning the fundamentals of commerce. You traveled broadly, and you earned a living by buying and selling the raw materials artisans need to practice their craft or finished works from such crafters. You might have transported goods from one place to another (by ship, wagon, or caravan) or bought them from traveling traders and sold them in your own shop.",
+    "name": "Wayfarer",
+    "description": "You grew up on the streets surrounded by similarly ill-fated castoffs, a few of them friends and a few of them rivals. You slept where you could and did odd jobs for food. At times, when the hunger became unbearable, you resorted to theft. Still, you never lost your pride and never abandoned hope. Fate is not yet finished with you.",
     "ability_score_improvement": {
         "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
         "mechanics": {
             "ability_scores": [
-                "constitution",
-                "intelligence",
+                "dexterity",
+                "wisdom",
                 "charisma"
             ],
             "improvement_options": [
@@ -58,8 +58,8 @@
     },
     "proficiency_grants": {
         "skills": [
-            "Animal Handling",
-            "Persuasion"
+            "Insight",
+            "Stealth"
         ],
         "languages": {
             "count": 2,
@@ -67,7 +67,7 @@
             "description": "Two languages of your choice"
         },
         "tools": [
-            "Navigator's Tools"
+            "Thieves' Tools"
         ]
     },
     "equipment_grants": {
@@ -79,14 +79,29 @@
                     "description": "Standard entertainer equipment and some gold",
                     "fixed": [
                         {
-                            "item": "Navigator's Tools   ",
-                            "quantity": 1,
-                            "description": "A navigator's tools"
+                            "item": "Daggers",
+                            "quantity": 2   ,
+                            "description": "2 daggers"
                         },
                         {
-                            "item": "Pouch",
+                            "item": "Thieves' Tools ",
+                            "quantity": 1,
+                            "description": "A set of Thieves' Tools"
+                        },
+                        {
+                            "item": "Gaming Set",
+                            "quantity": 1,
+                            "description": "A gaming set"
+                        },
+                        {
+                            "item": "Bedroll",
+                            "quantity": 1,
+                            "description": "A bedroll"
+                        },
+                        {
+                            "item": "Pouches",
                             "quantity": 2,
-                            "description": "A set of pouches"
+                            "description": "2 pouches"
                         },
                         {
                             "item": "Traveler's Clothes",
@@ -95,7 +110,7 @@
                         }
                     ],
                     "currency": {
-                        "gold": 22
+                        "gold": 16
                     }
                 },
                 {
@@ -109,6 +124,6 @@
         }
     },
     "source": "Player's Handbook (2024)",
-    "source_page": 182,
+    "source_page": 185,
     "updated": "2025-05-30"
 }
