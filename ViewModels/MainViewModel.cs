@@ -15,6 +15,8 @@ public class MainViewModel : INotifyPropertyChanged
     private string _statusMessage = "Ready";
     private CharacterClass? _selectedClassToAdd;
     private int _selectedLevelToAdd = 1;
+    private Background? _selectedBackground;
+    private ImprovementOption? _selectedBackgroundImprovementOption;
     private readonly CharacterFileService _characterFileService;
     private readonly RaceDataService _raceDataService;
     private readonly ClassDataService _classDataService;
@@ -22,6 +24,9 @@ public class MainViewModel : INotifyPropertyChanged
     private string? _currentFilePath;
     private Settings _settings;
     private StandardArrayViewModel? _standardArrayViewModel;
+    private PointBuyViewModel? _pointBuyViewModel;
+    private RollingViewModel? _rollingViewModel;
+    private FreeEntryViewModel? _freeEntryViewModel;
 
     public MainViewModel()
     {
@@ -35,9 +40,18 @@ public class MainViewModel : INotifyPropertyChanged
             Name = "New Character",
             PlayerName = ""
         };
+        
+        // Set settings reference for calculations
+        _currentCharacter.SetSettings(_settings);
+        
+        // Subscribe to character property changes
+        _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
 
         InitializeData();
         InitializeCommands();
+        
+        // Create the initial ViewModel for the default method
+        CreateViewModelForCurrentMethod();
     }
 
     public Character CurrentCharacter
@@ -45,8 +59,21 @@ public class MainViewModel : INotifyPropertyChanged
         get => _currentCharacter;
         set
         {
+            // Unsubscribe from old character
+            if (_currentCharacter != null)
+            {
+                _currentCharacter.PropertyChanged -= CurrentCharacter_PropertyChanged;
+            }
+            
             _currentCharacter = value;
             OnPropertyChanged(nameof(CurrentCharacter));
+            
+            // Subscribe to new character's property changes and set settings
+            if (_currentCharacter != null)
+            {
+                _currentCharacter.SetSettings(_settings);
+                _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
+            }
         }
     }
 
@@ -71,6 +98,12 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _settings = value;
             OnPropertyChanged(nameof(Settings));
+            
+            // Update current character with new settings
+            if (_currentCharacter != null)
+            {
+                _currentCharacter.SetSettings(_settings);
+            }
         }
     }
 
@@ -84,7 +117,40 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    public PointBuyViewModel? PointBuyViewModel
+    {
+        get => _pointBuyViewModel;
+        set
+        {
+            _pointBuyViewModel = value;
+            OnPropertyChanged(nameof(PointBuyViewModel));
+        }
+    }
+
+    public RollingViewModel? RollingViewModel
+    {
+        get => _rollingViewModel;
+        set
+        {
+            _rollingViewModel = value;
+            OnPropertyChanged(nameof(RollingViewModel));
+        }
+    }
+
+    public FreeEntryViewModel? FreeEntryViewModel
+    {
+        get => _freeEntryViewModel;
+        set
+        {
+            _freeEntryViewModel = value;
+            OnPropertyChanged(nameof(FreeEntryViewModel));
+        }
+    }
+
     public bool IsStandardArrayMode => Settings.AbilityScoreMethod == AbilityScoreGenerationMethod.StandardArray;
+    public bool IsPointBuyMode => Settings.AbilityScoreMethod == AbilityScoreGenerationMethod.PointBuy;
+    public bool IsRollingMode => Settings.AbilityScoreMethod == AbilityScoreGenerationMethod.FourD6DropLowest;
+    public bool IsFreeEntryMode => Settings.AbilityScoreMethod == AbilityScoreGenerationMethod.FreeEntry;
 
     public CharacterClass? SelectedClassToAdd
     {
@@ -129,6 +195,54 @@ public class MainViewModel : INotifyPropertyChanged
     
     public bool HasRequiredSkillSelections => !HasSkillChoices || SelectedSkills.Count == MaxSkillSelections;
 
+    // Background ability score selection properties
+    public Background? SelectedBackground
+    {
+        get => _selectedBackground;
+        set
+        {
+            _selectedBackground = value;
+            OnPropertyChanged(nameof(SelectedBackground));
+            OnPropertyChanged(nameof(HasBackgroundAbilityScoreOptions));
+            OnPropertyChanged(nameof(BackgroundAbilityScoreOptions));
+            OnPropertyChanged(nameof(AvailableAbilityScoresForBackground));
+            
+            // Clear previous selections when background changes
+            SelectedBackgroundImprovementOption = null;
+            BackgroundAbilityScoreSelections.Clear();
+        }
+    }
+
+    public ImprovementOption? SelectedBackgroundImprovementOption
+    {
+        get => _selectedBackgroundImprovementOption;
+        set
+        {
+            _selectedBackgroundImprovementOption = value;
+            OnPropertyChanged(nameof(SelectedBackgroundImprovementOption));
+            OnPropertyChanged(nameof(HasBackgroundImprovementOption));
+            OnPropertyChanged(nameof(BackgroundImprovementOptionDescription));
+            OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+            
+            // Clear selections when option changes
+            BackgroundAbilityScoreSelections.Clear();
+        }
+    }
+
+    public bool HasBackgroundAbilityScoreOptions => SelectedBackground?.AbilityScoreImprovement?.ImprovementOptions?.Count > 0;
+    
+    public List<ImprovementOption> BackgroundAbilityScoreOptions => SelectedBackground?.AbilityScoreImprovement?.ImprovementOptions ?? new List<ImprovementOption>();
+    
+    public List<string> AvailableAbilityScoresForBackground => SelectedBackground?.AbilityScoreImprovement?.AbilityScores ?? new List<string>();
+    
+    public bool HasBackgroundImprovementOption => SelectedBackgroundImprovementOption != null;
+    
+    public string BackgroundImprovementOptionDescription => SelectedBackgroundImprovementOption?.Description ?? "";
+    
+    public ObservableCollection<BackgroundAbilityScoreSelection> BackgroundAbilityScoreSelections { get; } = new();
+    
+    public bool CanApplyBackgroundSelection => HasBackgroundImprovementOption && ValidateBackgroundAbilityScoreSelections();
+
     // Commands
     public ICommand NewCharacterCommand { get; private set; } = null!;
     public ICommand LoadCharacterCommand { get; private set; } = null!;
@@ -143,12 +257,20 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand ExitApplicationCommand { get; private set; } = null!;
     public ICommand ShowAboutCommand { get; private set; } = null!;
     public ICommand OpenStandardArrayCommand { get; private set; } = null!;
+    public ICommand OpenPointBuyCommand { get; private set; } = null!;
+    public ICommand OpenRollingCommand { get; private set; } = null!;
+    public ICommand OpenFreeEntryCommand { get; private set; } = null!;
     
     // Multiclass commands
     public ICommand AddClassCommand { get; private set; } = null!;
     public ICommand RemoveClassCommand { get; private set; } = null!;
     public ICommand AddSkillCommand { get; private set; } = null!;
     public ICommand RemoveSkillCommand { get; private set; } = null!;
+    
+    // Background commands
+    public ICommand ApplyBackgroundCommand { get; private set; } = null!;
+    public ICommand AddBackgroundAbilityScoreCommand { get; private set; } = null!;
+    public ICommand RemoveBackgroundAbilityScoreCommand { get; private set; } = null!;
 
     private void InitializeCommands()
     {
@@ -165,12 +287,20 @@ public class MainViewModel : INotifyPropertyChanged
         ExitApplicationCommand = new RelayCommand(ExitApplication);
         ShowAboutCommand = new RelayCommand(ShowAbout);
         OpenStandardArrayCommand = new RelayCommand(OpenStandardArray);
+        OpenPointBuyCommand = new RelayCommand(OpenPointBuy);
+        OpenRollingCommand = new RelayCommand(OpenRolling);
+        OpenFreeEntryCommand = new RelayCommand(OpenFreeEntry);
         
         // Multiclass commands
         AddClassCommand = new RelayCommand(AddClass);
         RemoveClassCommand = new RelayCommand(RemoveClass, CanRemoveClass);
         AddSkillCommand = new RelayCommand(AddSkill);
         RemoveSkillCommand = new RelayCommand(RemoveSkill);
+        
+        // Background commands
+        ApplyBackgroundCommand = new RelayCommand(ApplyBackground);
+        AddBackgroundAbilityScoreCommand = new RelayCommand(AddBackgroundAbilityScore);
+        RemoveBackgroundAbilityScoreCommand = new RelayCommand(RemoveBackgroundAbilityScore);
     }
 
     private async void InitializeData()
@@ -235,6 +365,21 @@ public class MainViewModel : INotifyPropertyChanged
             Classes.Add(new CharacterClass { Name = "Monk", Description = "Master of martial arts", HitDie = 8, PrimaryAbility = "Dexterity and Wisdom" });
             Classes.Add(new CharacterClass { Name = "Sorcerer", Description = "Innate magical power", HitDie = 6, PrimaryAbility = "Charisma" });
             Classes.Add(new CharacterClass { Name = "Warlock", Description = "Pact magic user", HitDie = 8, PrimaryAbility = "Charisma" });
+        }
+        
+        // After classes are loaded, update any existing StandardArrayViewModel
+        UpdateStandardArrayViewModelClasses();
+    }
+    
+    private void UpdateStandardArrayViewModelClasses()
+    {
+        if (StandardArrayViewModel != null)
+        {
+            StandardArrayViewModel.Classes.Clear();
+            foreach (var characterClass in Classes)
+            {
+                StandardArrayViewModel.Classes.Add(characterClass);
+            }
         }
     }
 
@@ -443,10 +588,21 @@ public class MainViewModel : INotifyPropertyChanged
                 // Settings were applied - they're already updated in the Settings object
                 StatusMessage = "Settings have been updated";
                 
-                // Here you could add logic to apply settings immediately, like:
-                // - Reload data if content sources changed
-                // - Update UI theme if theme changed
-                // - etc.
+                // Update current character with new settings to refresh calculations
+                if (CurrentCharacter != null)
+                {
+                    CurrentCharacter.SetSettings(Settings);
+                }
+                
+                // Notify that settings changed to update any dependent properties
+                OnPropertyChanged(nameof(Settings));
+                OnPropertyChanged(nameof(IsStandardArrayMode));
+                OnPropertyChanged(nameof(IsPointBuyMode));
+                OnPropertyChanged(nameof(IsRollingMode));
+                OnPropertyChanged(nameof(IsFreeEntryMode));
+                
+                // Auto-create the appropriate ViewModel based on current method
+                CreateViewModelForCurrentMethod();
             }
             else
             {
@@ -682,12 +838,6 @@ public class MainViewModel : INotifyPropertyChanged
             }
             
             // Add the class level directly to the character
-            classLevel.PropertyChanged += (s, e) =>
-            {
-                OnPropertyChanged(nameof(CurrentCharacter.Level));
-                OnPropertyChanged(nameof(CurrentCharacter.ProficiencyBonus));
-                OnPropertyChanged(nameof(CurrentCharacter.ClassSummary));
-            };
             CurrentCharacter.ClassLevels.Add(classLevel);
             
             StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name}";
@@ -809,14 +959,258 @@ public class MainViewModel : INotifyPropertyChanged
         if (StandardArrayViewModel == null)
         {
             StandardArrayViewModel = new StandardArrayViewModel(CurrentCharacter);
+            UpdateStandardArrayViewModelClasses();
         }
         else
         {
             // Refresh the standard array with current character data
             StandardArrayViewModel.StandardArray.LoadFromAbilityScores(CurrentCharacter.AbilityScores);
+            // Also ensure classes are up to date
+            UpdateStandardArrayViewModelClasses();
         }
         
         StatusMessage = "Standard Array assignment opened";
+    }
+
+    private void OpenPointBuy()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("OpenPointBuy() called");
+            PointBuyViewModel = new PointBuyViewModel(CurrentCharacter, Settings.PointBuyPoints);
+            StatusMessage = "Point Buy assignment opened";
+            System.Diagnostics.Debug.WriteLine("PointBuyViewModel created successfully");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error opening Point Buy: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error in OpenPointBuy: {ex}");
+        }
+    }
+
+    private void OpenRolling()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("OpenRolling() called");
+            RollingViewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod);
+            StatusMessage = $"{Settings.AbilityScoreMethod} rolling opened";
+            System.Diagnostics.Debug.WriteLine("RollingViewModel created successfully");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error opening Rolling: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error in OpenRolling: {ex}");
+        }
+    }
+
+    private void OpenFreeEntry()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("OpenFreeEntry() called");
+            FreeEntryViewModel = new FreeEntryViewModel(CurrentCharacter);
+            StatusMessage = "Free Entry ability score assignment opened";
+            System.Diagnostics.Debug.WriteLine("FreeEntryViewModel created successfully");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error opening Free Entry: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error in OpenFreeEntry: {ex}");
+        }
+    }
+
+    private void CreateViewModelForCurrentMethod()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine($"CreateViewModelForCurrentMethod() called - Method: {Settings.AbilityScoreMethod}");
+            
+            switch (Settings.AbilityScoreMethod)
+            {
+                case AbilityScoreGenerationMethod.StandardArray:
+                    if (StandardArrayViewModel == null)
+                    {
+                        StandardArrayViewModel = new StandardArrayViewModel(CurrentCharacter);
+                        UpdateStandardArrayViewModelClasses();
+                        System.Diagnostics.Debug.WriteLine("StandardArrayViewModel auto-created");
+                    }
+                    break;
+                    
+                case AbilityScoreGenerationMethod.PointBuy:
+                    PointBuyViewModel = new PointBuyViewModel(CurrentCharacter, Settings.PointBuyPoints);
+                    System.Diagnostics.Debug.WriteLine("PointBuyViewModel auto-created");
+                    break;
+                    
+                case AbilityScoreGenerationMethod.FourD6DropLowest:
+                    RollingViewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod);
+                    System.Diagnostics.Debug.WriteLine("RollingViewModel auto-created");
+                    break;
+                    
+                case AbilityScoreGenerationMethod.FreeEntry:
+                    FreeEntryViewModel = new FreeEntryViewModel(CurrentCharacter);
+                    System.Diagnostics.Debug.WriteLine("FreeEntryViewModel auto-created");
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error in CreateViewModelForCurrentMethod: {ex}");
+            StatusMessage = $"Error creating ability score interface: {ex.Message}";
+        }
+    }
+
+    private void ApplyBackground()
+    {
+        if (SelectedBackground != null && CanApplyBackgroundSelection)
+        {
+            // Apply the background to the character
+            CurrentCharacter.Background = SelectedBackground;
+            
+            // Create and apply the ability score choice
+            var backgroundChoice = new BackgroundAbilityScoreChoice
+            {
+                Background = SelectedBackground,
+                SelectedOption = SelectedBackgroundImprovementOption!,
+                AbilityScoreImprovements = new Dictionary<string, int>()
+            };
+            
+            // Convert selections to improvements dictionary
+            foreach (var selection in BackgroundAbilityScoreSelections)
+            {
+                if (backgroundChoice.AbilityScoreImprovements.ContainsKey(selection.AbilityScore))
+                {
+                    backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] += selection.Improvement;
+                }
+                else
+                {
+                    backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] = selection.Improvement;
+                }
+            }
+            
+            CurrentCharacter.BackgroundAbilityScoreChoice = backgroundChoice;
+            
+            StatusMessage = $"Applied background: {SelectedBackground.Name}";
+            
+            // Clear selections
+            SelectedBackground = null;
+            SelectedBackgroundImprovementOption = null;
+            BackgroundAbilityScoreSelections.Clear();
+        }
+        else
+        {
+            StatusMessage = "Please complete your background ability score selections";
+        }
+    }
+
+    private void AddBackgroundAbilityScore(object? parameter)
+    {
+        if (parameter is string abilityScore && SelectedBackgroundImprovementOption != null)
+        {
+            // Determine what improvement amount to add based on current selections and option
+            var availableImprovements = GetAvailableImprovementsForBackground();
+            if (availableImprovements.Count > 0)
+            {
+                var improvement = availableImprovements.First();
+                BackgroundAbilityScoreSelections.Add(new BackgroundAbilityScoreSelection
+                {
+                    AbilityScore = abilityScore,
+                    Improvement = improvement
+                });
+                
+                OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+                StatusMessage = $"Added +{improvement} to {abilityScore}";
+            }
+        }
+    }
+
+    private void RemoveBackgroundAbilityScore(object? parameter)
+    {
+        if (parameter is BackgroundAbilityScoreSelection selection)
+        {
+            BackgroundAbilityScoreSelections.Remove(selection);
+            OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+            StatusMessage = $"Removed +{selection.Improvement} from {selection.AbilityScore}";
+        }
+    }
+
+    private bool ValidateBackgroundAbilityScoreSelections()
+    {
+        if (SelectedBackgroundImprovementOption?.Distributions == null) return false;
+        
+        var expectedTotals = new Dictionary<int, int>(); // improvement amount -> count
+        foreach (var dist in SelectedBackgroundImprovementOption.Distributions)
+        {
+            expectedTotals[dist.Amount] = dist.Count;
+        }
+        
+        var actualTotals = new Dictionary<int, int>();
+        foreach (var selection in BackgroundAbilityScoreSelections)
+        {
+            if (actualTotals.ContainsKey(selection.Improvement))
+                actualTotals[selection.Improvement]++;
+            else
+                actualTotals[selection.Improvement] = 1;
+        }
+        
+        // Check if actual matches expected
+        foreach (var expected in expectedTotals)
+        {
+            if (!actualTotals.TryGetValue(expected.Key, out var actual) || actual != expected.Value)
+                return false;
+        }
+        
+        // Check for no extra selections
+        foreach (var actual in actualTotals)
+        {
+            if (!expectedTotals.ContainsKey(actual.Key))
+                return false;
+        }
+        
+        // Verify all selections are valid ability scores for this background
+        var validAbilities = AvailableAbilityScoresForBackground;
+        return BackgroundAbilityScoreSelections.All(s => validAbilities.Contains(s.AbilityScore, StringComparer.OrdinalIgnoreCase));
+    }
+
+    private List<int> GetAvailableImprovementsForBackground()
+    {
+        if (SelectedBackgroundImprovementOption?.Distributions == null) return new List<int>();
+        
+        var needed = new List<int>();
+        foreach (var dist in SelectedBackgroundImprovementOption.Distributions)
+        {
+            for (int i = 0; i < dist.Count; i++)
+            {
+                needed.Add(dist.Amount);
+            }
+        }
+        
+        // Remove already selected improvements
+        var used = BackgroundAbilityScoreSelections.Select(s => s.Improvement).ToList();
+        foreach (var improvement in used)
+        {
+            needed.Remove(improvement);
+        }
+        
+        return needed.OrderByDescending(x => x).ToList();
+    }
+
+    private void CurrentCharacter_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Character.Background))
+        {
+            // When a background is selected from dropdown, set it as the selected background for configuration
+            if (CurrentCharacter.Background != null)
+            {
+                // Only trigger if this isn't the same as what we're already configuring
+                if (SelectedBackground?.Name != CurrentCharacter.Background.Name)
+                {
+                    SelectedBackground = CurrentCharacter.Background;
+                    // Clear the current character's background temporarily so user can configure ability scores
+                    CurrentCharacter.Background = null;
+                }
+            }
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -830,4 +1224,10 @@ public class MainViewModel : INotifyPropertyChanged
 public class SkillSelectionItem
 {
     public string SkillName { get; set; } = string.Empty;
+}
+
+public class BackgroundAbilityScoreSelection
+{
+    public string AbilityScore { get; set; } = string.Empty;
+    public int Improvement { get; set; }
 } 

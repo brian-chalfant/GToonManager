@@ -216,4 +216,19 @@ public class IdealOption
 {
     public string Ideal { get; set; } = string.Empty;
     public string Alignment { get; set; } = string.Empty;
+}
+
+public class BackgroundAbilityScoreChoice
+{
+    public Background Background { get; set; } = null!;
+    public ImprovementOption SelectedOption { get; set; } = null!;
+    public Dictionary<string, int> AbilityScoreImprovements { get; set; } = new();
+    
+    public bool IsValid => AbilityScoreImprovements.Values.Sum() == GetExpectedTotal();
+    
+    private int GetExpectedTotal()
+    {
+        if (SelectedOption?.Distributions == null) return 0;
+        return SelectedOption.Distributions.Sum(d => d.Count * d.Amount);
+    }
 } 

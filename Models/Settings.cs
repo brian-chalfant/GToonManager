@@ -7,8 +7,7 @@ public enum AbilityScoreGenerationMethod
     StandardArray,
     PointBuy,
     FourD6DropLowest,
-    ThreeD6Straight,
-    Custom
+    FreeEntry
 }
 
 public enum HitPointCalculationMethod
@@ -50,7 +49,7 @@ public class Settings : INotifyPropertyChanged
 
     // Default Character Options
     private int _defaultStartingLevel = 1;
-    private HitPointCalculationMethod _hitPointCalculation = HitPointCalculationMethod.Average;
+    private HitPointCalculationMethod _hitPointCalculation = HitPointCalculationMethod.Rolled;
     private StartingEquipmentMethod _startingEquipment = StartingEquipmentMethod.ByClassAndBackground;
     private bool _useVariantHuman = false;
     private bool _useOptionalClassFeatures = false;

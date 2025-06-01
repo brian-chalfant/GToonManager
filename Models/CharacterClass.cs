@@ -15,6 +15,9 @@ public class CharacterClass
     
     // New property for parsed skill choices
     public SkillChoiceOptions? SkillChoices { get; set; }
+    
+    // Standard array recommendation for 2024 PHB
+    public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
 
     public override string ToString() => Name;
 }

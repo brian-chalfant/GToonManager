@@ -6,6 +6,14 @@
         "strength",
         "charisma"
     ],
+    "standard_array_recommendation": {
+        "strength": 15,
+        "charisma": 14,
+        "constitution": 13,
+        "wisdom": 12,
+        "dexterity": 10,
+        "intelligence": 8
+    },
     "saving_throw_proficiencies": [
         "wisdom",
         "charisma"

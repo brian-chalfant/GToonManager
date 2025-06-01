@@ -5,6 +5,14 @@
     "primary_ability": [
         "strength"
     ],
+    "standard_array_recommendation": {
+        "strength": 15,
+        "constitution": 14,
+        "dexterity": 13,
+        "wisdom": 12,
+        "charisma": 10,
+        "intelligence": 8
+    },
     "saving_throw_proficiencies": [
         "strength",
         "constitution"

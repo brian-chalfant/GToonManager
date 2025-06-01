@@ -3,6 +3,14 @@
     "description": "A scoundrel who uses stealth and trickery to overcome obstacles and enemies.",
     "hit_dice": "1d8",
     "primary_ability": ["dexterity"],
+    "standard_array_recommendation": {
+        "dexterity": 15,
+        "constitution": 14,
+        "intelligence": 13,
+        "wisdom": 12,
+        "charisma": 10,
+        "strength": 8
+    },
     "saving_throw_proficiencies": ["dexterity", "intelligence"],
     "armor_proficiencies": [
         "light armor"

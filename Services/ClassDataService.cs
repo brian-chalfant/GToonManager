@@ -138,6 +138,12 @@ public class ClassDataService
             characterClass.StartingEquipment = ParseStartingEquipment(equipmentElement);
         }
 
+        // Parse standard array recommendation for 2024 PHB
+        if (classData.TryGetProperty("standard_array_recommendation", out var standardArrayElement))
+        {
+            characterClass.StandardArrayRecommendation = ParseStandardArrayRecommendation(standardArrayElement);
+        }
+
         return characterClass;
     }
 
@@ -277,6 +283,24 @@ public class ClassDataService
         }
 
         return equipment.ToArray();
+    }
+
+    private Dictionary<string, int>? ParseStandardArrayRecommendation(JsonElement standardArrayElement)
+    {
+        if (standardArrayElement.ValueKind != JsonValueKind.Object)
+            return null;
+
+        var recommendation = new Dictionary<string, int>();
+
+        foreach (var property in standardArrayElement.EnumerateObject())
+        {
+            if (property.Value.ValueKind == JsonValueKind.Number)
+            {
+                recommendation[property.Name] = property.Value.GetInt32();
+            }
+        }
+
+        return recommendation.Count > 0 ? recommendation : null;
     }
 
     private string CapitalizeName(string name)

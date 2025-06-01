@@ -36,6 +36,7 @@ public partial class SettingsWindow : Window
         if (_viewModel != null)
         {
             _viewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            _viewModel.Dispose();
         }
         base.OnClosed(e);
     }

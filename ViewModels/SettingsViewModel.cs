@@ -10,12 +10,17 @@ public class SettingsViewModel : INotifyPropertyChanged
 {
     private Settings _originalSettings;
     private Settings _currentSettings;
+    private bool _hasUnappliedChanges = false;
+    private bool _hasAppliedChanges = false;
 
     public SettingsViewModel(Settings originalSettings)
     {
         _originalSettings = originalSettings;
         _currentSettings = new Settings();
         CopySettings(_originalSettings, _currentSettings);
+        
+        // Subscribe to changes in current settings
+        _currentSettings.PropertyChanged += CurrentSettings_PropertyChanged;
         
         InitializeCommands();
     }
@@ -25,10 +30,46 @@ public class SettingsViewModel : INotifyPropertyChanged
         get => _currentSettings;
         set
         {
+            if (_currentSettings != null)
+            {
+                _currentSettings.PropertyChanged -= CurrentSettings_PropertyChanged;
+            }
+            
             _currentSettings = value;
+            
+            if (_currentSettings != null)
+            {
+                _currentSettings.PropertyChanged += CurrentSettings_PropertyChanged;
+            }
+            
             OnPropertyChanged();
         }
     }
+
+    // Properties for UI state
+    public bool HasUnappliedChanges
+    {
+        get => _hasUnappliedChanges;
+        private set
+        {
+            _hasUnappliedChanges = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ApplyButtonText));
+        }
+    }
+
+    public bool HasAppliedChanges
+    {
+        get => _hasAppliedChanges;
+        private set
+        {
+            _hasAppliedChanges = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ApplyButtonText));
+        }
+    }
+
+    public string ApplyButtonText => HasUnappliedChanges ? "Apply" : "Close";
 
     // Commands
     public ICommand ApplyCommand { get; private set; } = null!;
@@ -51,14 +92,65 @@ public class SettingsViewModel : INotifyPropertyChanged
 
     private void Apply()
     {
-        // Copy current settings back to original
-        CopySettings(_currentSettings, _originalSettings);
-        DialogResult = true;
+        if (HasUnappliedChanges)
+        {
+            // Copy current settings back to original
+            CopySettings(_currentSettings, _originalSettings);
+            HasUnappliedChanges = false;
+            HasAppliedChanges = true;
+        }
+        else
+        {
+            // Acting as Close button
+            DialogResult = true;
+            OnPropertyChanged(nameof(DialogResult));
+        }
     }
 
     private void Cancel()
     {
-        DialogResult = false;
+        if (HasUnappliedChanges)
+        {
+            // Revert current settings to original values
+            _currentSettings.PropertyChanged -= CurrentSettings_PropertyChanged;
+            CopySettings(_originalSettings, _currentSettings);
+            _currentSettings.PropertyChanged += CurrentSettings_PropertyChanged;
+            OnPropertyChanged(nameof(CurrentSettings));
+            HasUnappliedChanges = false;
+        }
+        
+        DialogResult = HasAppliedChanges;
+        OnPropertyChanged(nameof(DialogResult));
+    }
+
+    private void CurrentSettings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        // When any setting changes, mark as having unapplied changes
+        HasUnappliedChanges = true;
+        
+        // Apply the setting immediately to the original for real-time UI updates
+        // This creates the immediate visual feedback the user requested
+        ApplySettingImmediately(e.PropertyName);
+    }
+
+    private void ApplySettingImmediately(string? propertyName)
+    {
+        if (string.IsNullOrEmpty(propertyName)) return;
+        
+        // Apply specific high-impact settings immediately for real-time feedback
+        // This affects the main UI while still tracking unapplied state
+        switch (propertyName)
+        {
+            case nameof(Settings.HitPointCalculation):
+                // Update the original settings object directly
+                _originalSettings.HitPointCalculation = _currentSettings.HitPointCalculation;
+                break;
+            case nameof(Settings.AbilityScoreMethod):
+                _originalSettings.AbilityScoreMethod = _currentSettings.AbilityScoreMethod;
+                break;
+            // Add other critical settings that need immediate feedback here
+            // Theme changes might be too disruptive for immediate application
+        }
     }
 
     private void BrowseHomebrewPath()
@@ -164,6 +256,14 @@ public class SettingsViewModel : INotifyPropertyChanged
         target.AutoApplyRacialBonuses = source.AutoApplyRacialBonuses;
         target.AutoUpdateProficiencyBonus = source.AutoUpdateProficiencyBonus;
         target.EnableSpellSlotTracking = source.EnableSpellSlotTracking;
+    }
+
+    public void Dispose()
+    {
+        if (_currentSettings != null)
+        {
+            _currentSettings.PropertyChanged -= CurrentSettings_PropertyChanged;
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

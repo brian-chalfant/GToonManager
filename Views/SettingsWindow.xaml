@@ -85,8 +85,7 @@
                                     <models:AbilityScoreGenerationMethod>StandardArray</models:AbilityScoreGenerationMethod>
                                     <models:AbilityScoreGenerationMethod>PointBuy</models:AbilityScoreGenerationMethod>
                                     <models:AbilityScoreGenerationMethod>FourD6DropLowest</models:AbilityScoreGenerationMethod>
-                                    <models:AbilityScoreGenerationMethod>ThreeD6Straight</models:AbilityScoreGenerationMethod>
-                                    <models:AbilityScoreGenerationMethod>Custom</models:AbilityScoreGenerationMethod>
+                                    <models:AbilityScoreGenerationMethod>FreeEntry</models:AbilityScoreGenerationMethod>
                                 </ComboBox.Items>
                             </ComboBox>
                             
@@ -341,7 +340,7 @@
                         Background="#95a5a6" Foreground="White" 
                         Padding="15,8" Margin="0,0,10,0" 
                         BorderThickness="0" FontWeight="Bold"/>
-                <Button Content="Apply" 
+                <Button Content="{Binding ApplyButtonText}" 
                         Command="{Binding ApplyCommand}"
                         Background="#27ae60" Foreground="White" 
                         Padding="15,8" Margin="0" 

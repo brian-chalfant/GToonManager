@@ -87,6 +87,31 @@
                 <TextBlock Text="Standard Array Assignment" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                 <TextBlock Text="Assign the standard array values (15, 14, 13, 12, 10, 8) to your ability scores" 
                            FontSize="14" HorizontalAlignment="Center" Foreground="Gray" Margin="0,5,0,0"/>
+                           
+                <!-- Class Recommendation Section -->
+                <Border Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="1" Padding="15" Margin="0,15,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Class Recommendation (Optional)" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" 
+                                      ItemsSource="{Binding Classes}"
+                                      SelectedItem="{Binding SelectedClass}"
+                                      DisplayMemberPath="Name" 
+                                      Padding="8" Margin="0,0,10,0"/>
+                            <Button Grid.Column="1" Content="Auto-Assign" 
+                                    Command="{Binding ApplyClassRecommendationCommand}"
+                                    Background="#28a745" Foreground="White" 
+                                    Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                        </Grid>
+                        <TextBlock Text="{Binding ClassRecommendationText}" 
+                                   FontStyle="Italic" Foreground="#6c757d" Margin="0,5,0,0"
+                                   Visibility="{Binding HasClassRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
             
             <!-- Available Values -->

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 using GToonManager.Models;
 
 namespace GToonManager.ViewModels;
@@ -9,11 +10,14 @@ public class StandardArrayViewModel : INotifyPropertyChanged
     private StandardArray _standardArray;
     private Character _character;
     private bool _isApplied = false;
+    private CharacterClass? _selectedClass;
+    private ObservableCollection<CharacterClass> _classes;
 
     public StandardArrayViewModel(Character character)
     {
         _character = character;
         _standardArray = new StandardArray();
+        _classes = new ObservableCollection<CharacterClass>();
         
         // Load current ability scores if they match standard array values
         _standardArray.LoadFromAbilityScores(character.AbilityScores);
@@ -64,10 +68,57 @@ public class StandardArrayViewModel : INotifyPropertyChanged
 
     public bool IsExpanded => !IsApplied;
 
+    public ObservableCollection<CharacterClass> Classes
+    {
+        get => _classes;
+        set
+        {
+            _classes = value;
+            OnPropertyChanged(nameof(Classes));
+        }
+    }
+
+    public CharacterClass? SelectedClass
+    {
+        get => _selectedClass;
+        set
+        {
+            _selectedClass = value;
+            OnPropertyChanged(nameof(SelectedClass));
+            OnPropertyChanged(nameof(HasClassRecommendation));
+            OnPropertyChanged(nameof(ClassRecommendationText));
+        }
+    }
+
+    public bool HasClassRecommendation 
+    { 
+        get 
+        {
+            var hasRec = SelectedClass?.StandardArrayRecommendation != null;
+            System.Diagnostics.Debug.WriteLine($"HasClassRecommendation: {hasRec}, SelectedClass: {SelectedClass?.Name}, StandardArrayRecommendation null: {SelectedClass?.StandardArrayRecommendation == null}");
+            return hasRec;
+        }
+    }
+    
+    public string ClassRecommendationText
+    {
+        get
+        {
+            if (!HasClassRecommendation || SelectedClass?.StandardArrayRecommendation == null)
+                return string.Empty;
+                
+            var rec = SelectedClass.StandardArrayRecommendation;
+            return $"Recommended for {SelectedClass.Name}: " +
+                   $"Str:{rec["strength"]}, Dex:{rec["dexterity"]}, Con:{rec["constitution"]}, " +
+                   $"Int:{rec["intelligence"]}, Wis:{rec["wisdom"]}, Cha:{rec["charisma"]}";
+        }
+    }
+
     // Commands
     public ICommand ApplyStandardArrayCommand { get; private set; } = null!;
     public ICommand ResetStandardArrayCommand { get; private set; } = null!;
     public ICommand ClearAssignmentCommand { get; private set; } = null!;
+    public ICommand ApplyClassRecommendationCommand { get; private set; } = null!;
 
     // Separate commands for each ability
     public ICommand AssignStrengthCommand { get; private set; } = null!;
@@ -82,6 +133,7 @@ public class StandardArrayViewModel : INotifyPropertyChanged
         ApplyStandardArrayCommand = new RelayCommand(ApplyStandardArray, CanApplyStandardArray);
         ResetStandardArrayCommand = new RelayCommand(ResetStandardArray);
         ClearAssignmentCommand = new RelayCommand(ClearAssignment);
+        ApplyClassRecommendationCommand = new RelayCommand(ApplyClassRecommendation, CanApplyClassRecommendation);
         
         // Individual ability assignment commands
         AssignStrengthCommand = new RelayCommand(parameter => AssignValueToAbility("Strength", parameter));
@@ -133,6 +185,47 @@ public class StandardArrayViewModel : INotifyPropertyChanged
         {
             StandardArray.ClearAssignment(ability);
         }
+    }
+
+    private void ApplyClassRecommendation()
+    {
+        System.Diagnostics.Debug.WriteLine("ApplyClassRecommendation called");
+        
+        if (!HasClassRecommendation || SelectedClass?.StandardArrayRecommendation == null)
+        {
+            System.Diagnostics.Debug.WriteLine("No class recommendation available");
+            return;
+        }
+
+        var rec = SelectedClass.StandardArrayRecommendation;
+        
+        // Clear current assignments
+        ResetStandardArray();
+        
+        // Apply recommended assignments
+        try
+        {
+            // The JSON uses lowercase keys, but StandardArray expects capitalized ability names
+            StandardArray.AssignValue("Strength", rec["strength"]);
+            StandardArray.AssignValue("Dexterity", rec["dexterity"]);
+            StandardArray.AssignValue("Constitution", rec["constitution"]);
+            StandardArray.AssignValue("Intelligence", rec["intelligence"]);
+            StandardArray.AssignValue("Wisdom", rec["wisdom"]);
+            StandardArray.AssignValue("Charisma", rec["charisma"]);
+            
+            System.Diagnostics.Debug.WriteLine($"Successfully applied class recommendation for {SelectedClass.Name}");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to apply class recommendation: {ex.Message}");
+            // If assignment fails, just reset and let user know
+            ResetStandardArray();
+        }
+    }
+
+    private bool CanApplyClassRecommendation()
+    {
+        return HasClassRecommendation;
     }
 
     private void StandardArray_PropertyChanged(object? sender, PropertyChangedEventArgs e)

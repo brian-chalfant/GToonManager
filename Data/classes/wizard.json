@@ -5,6 +5,14 @@
     "source_page": 112,
     "hit_dice": "1d6",
     "primary_ability": ["intelligence"],
+    "standard_array_recommendation": {
+        "intelligence": 15,
+        "dexterity": 14,
+        "constitution": 13,
+        "wisdom": 12,
+        "charisma": 10,
+        "strength": 8
+    },
     "saving_throw_proficiencies": ["intelligence", "wisdom"],
     "armor_proficiencies": [],
     "weapon_proficiencies": [

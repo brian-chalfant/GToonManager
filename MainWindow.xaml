@@ -158,10 +158,108 @@
                         <!-- Background Selection -->
                         <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,20">
                             <Label Content="Background" FontWeight="Bold"/>
-                            <ComboBox ItemsSource="{Binding Backgrounds}" 
-                                      SelectedItem="{Binding CurrentCharacter.Background}"
-                                      DisplayMemberPath="Name" Padding="8" 
-                                      BorderBrush="#ddd" BorderThickness="1"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <!-- Current Background Display -->
+                                <TextBlock Grid.Row="0" Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
+                                          FontWeight="Bold" Margin="0,0,0,5"
+                                          Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <!-- Background Selection for Change -->
+                                <ComboBox Grid.Row="1" ItemsSource="{Binding Backgrounds}" 
+                                          SelectedItem="{Binding CurrentCharacter.Background}"
+                                          DisplayMemberPath="Name" Padding="8" 
+                                          BorderBrush="#ddd" BorderThickness="1"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Background Ability Score Selection -->
+                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,0,0,20" 
+                                   Visibility="{Binding HasBackgroundAbilityScoreOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Label Content="Background Ability Scores" FontWeight="Bold"/>
+                            <Border BorderBrush="#ddd" BorderThickness="1" Padding="10" Background="White">
+                                <StackPanel>
+                                    <!-- Current Character Background Display -->
+                                    <TextBlock Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
+                                              FontWeight="Bold" Margin="0,0,0,10"
+                                              Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    
+                                    <!-- Background Selection Info -->
+                                    <TextBlock Text="{Binding SelectedBackground.Name, StringFormat='Configuring: {0}'}" 
+                                              FontWeight="Bold" Margin="0,0,0,10"/>
+                                    
+                                    <!-- Improvement Option Selection -->
+                                    <TextBlock Text="Choose ability score improvement option:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <ComboBox ItemsSource="{Binding BackgroundAbilityScoreOptions}"
+                                              SelectedItem="{Binding SelectedBackgroundImprovementOption}"
+                                              DisplayMemberPath="Description" Padding="8" Margin="0,0,0,10"/>
+                                    
+                                    <!-- Ability Score Selections -->
+                                    <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="Select ability scores to improve:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
+                                                  FontStyle="Italic" Margin="0,0,0,10"/>
+                                        
+                                        <!-- Available Ability Scores -->
+                                        <TextBlock Text="Available ability scores:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <ItemsControl ItemsSource="{Binding AvailableAbilityScoresForBackground}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding}" 
+                                                            Command="{Binding DataContext.AddBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            CommandParameter="{Binding}"
+                                                            Background="#3498db" Foreground="White" 
+                                                            Padding="8,4" Margin="2" BorderThickness="0"
+                                                            Style="{DynamicResource {x:Static ToolBar.ButtonStyleKey}}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        
+                                        <!-- Current Selections -->
+                                        <TextBlock Text="Current selections:" FontWeight="Bold" Margin="0,10,0,5"/>
+                                        <ItemsControl ItemsSource="{Binding BackgroundAbilityScoreSelections}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" 
+                                                           Margin="0,2" Padding="8">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                                                                                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                 <TextBlock Text="{Binding AbilityScore}" FontWeight="Bold"/>
+                                                                 <TextBlock Text=" +" Margin="5,0,0,0"/>
+                                                                 <TextBlock Text="{Binding Improvement}" FontWeight="Bold"/>
+                                                             </StackPanel>
+                                                            <Button Grid.Column="1" Content="Remove"
+                                                                    Command="{Binding DataContext.RemoveBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Background="#e74c3c" Foreground="White" 
+                                                                    Padding="5,2" BorderThickness="0"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        
+                                        <!-- Apply Button -->
+                                        <Button Content="Apply Background" 
+                                                Command="{Binding ApplyBackgroundCommand}"
+                                                Background="#27ae60" Foreground="White" 
+                                                Padding="15,8" Margin="0,15,0,0" BorderThickness="0"
+                                                FontWeight="Bold" FontSize="14"
+                                                IsEnabled="{Binding CanApplyBackgroundSelection}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
 
                         <!-- Classes Section 
@@ -465,30 +563,373 @@
 
                         <TextBlock Grid.Row="0" Text="Ability Scores" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
 
-                        <!-- Standard Array Section -->
-                        <Border Grid.Row="1" Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="2" 
+                        <!-- Ability Score Generation Section -->
+                        <Border Grid.Row="1" Background="#f8f9fa" BorderBrush="#6c757d" BorderThickness="2" 
                                 Padding="15" Margin="0,0,0,20">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
-                                    <TextBlock Text="Standard Array (2024 D&amp;D Rules)" FontSize="16" FontWeight="Bold" 
-                                               VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                    <Button Content="Assign Standard Array" 
-                                            Command="{Binding OpenStandardArrayCommand}"
-                                            Background="#3498db" Foreground="White" 
-                                            Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Settings.AbilityScoreMethod, StringFormat='Current Method: {0}'}" 
+                                          FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                
+                                <!-- Standard Array -->
+                                <StackPanel Visibility="{Binding IsStandardArrayMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="Standard Array (15, 14, 13, 12, 10, 8)" FontSize="14" FontWeight="Bold" 
+                                                   VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                        <Button Content="Assign Standard Array" 
+                                                Command="{Binding OpenStandardArrayCommand}"
+                                                Background="#3498db" Foreground="White" 
+                                                Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Standard Array Control -->
+                                    <ContentPresenter Content="{Binding StandardArrayViewModel}" Margin="0,15,0,0">
+                                        <ContentPresenter.Resources>
+                                            <DataTemplate DataType="{x:Type vm:StandardArrayViewModel}">
+                                                <controls:StandardArrayControl DataContext="{Binding}"/>
+                                            </DataTemplate>
+                                        </ContentPresenter.Resources>
+                                    </ContentPresenter>
                                 </StackPanel>
                                 
-                                <TextBlock Text="Use the standard array values (15, 14, 13, 12, 10, 8) to assign your base ability scores before racial bonuses." 
-                                           HorizontalAlignment="Center" FontStyle="Italic" Foreground="#2c3e50"/>
+                                <!-- Point Buy -->
+                                <StackPanel Visibility="{Binding IsPointBuyMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="{Binding Settings.PointBuyPoints, StringFormat='Point Buy ({0} points)'}" FontSize="14" FontWeight="Bold" 
+                                                   VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                        <Button Content="Open Point Buy" 
+                                                Command="{Binding OpenPointBuyCommand}"
+                                                Background="#9b59b6" Foreground="White" 
+                                                Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Text="Spend points to buy ability scores (8-15 range, costs vary)" 
+                                               HorizontalAlignment="Center" FontStyle="Italic" Foreground="#6c757d" Margin="0,0,0,15"/>
+                                    
+                                    <!-- Point Buy Control -->
+                                    <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" Padding="15">
+                                        <Grid DataContext="{Binding PointBuyViewModel}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                                <TextBlock Text="{Binding UsedPoints, StringFormat='Used: \{0\}'}" 
+                                                          FontSize="16" FontWeight="Bold" Margin="0,0,10,0"/>
+                                                <TextBlock Text=" / " FontSize="16" FontWeight="Bold" Margin="0,0,5,0"/>
+                                                <TextBlock Text="{Binding TotalPoints, StringFormat='\{0\} Points'}" 
+                                                          FontSize="16" FontWeight="Bold" Margin="0,0,20,0"/>
+                                                <TextBlock Text="{Binding AvailablePoints, StringFormat='(Available: \{0\})'}" 
+                                                          FontSize="14" Foreground="#6c757d" Margin="0,0,20,0"/>
+                                                <Button Content="Reset" Command="{Binding ResetPointBuyCommand}"
+                                                        Background="#6c757d" Foreground="White" Padding="10,5" BorderThickness="0" Margin="0,0,10,0"/>
+                                                <Button Content="Apply to Character" Command="{Binding ApplyPointBuyCommand}"
+                                                        Background="#007bff" Foreground="White" Padding="15,8" BorderThickness="0" FontWeight="Bold"
+                                                        IsEnabled="{Binding CanApplyPointBuy}"/>
+                                            </StackPanel>
+                                            
+                                            <UniformGrid Grid.Row="1" Columns="3" Rows="2">
+                                                <!-- Point Buy Controls for each ability -->
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Strength" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding StrengthCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding StrengthValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Dexterity" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding DexterityCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding DexterityValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Constitution" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding ConstitutionCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding ConstitutionValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Intelligence" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding IntelligenceCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding IntelligenceValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Wisdom" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding WisdomCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding WisdomValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Charisma" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                        <TextBox Text="{Binding CharismaCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding CharismaValue, StringFormat='= {0}'}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </UniformGrid>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
                                 
-                                <!-- Standard Array Control -->
-                                <ContentPresenter Content="{Binding StandardArrayViewModel}" Margin="0,15,0,0">
-                                    <ContentPresenter.Resources>
-                                        <DataTemplate DataType="{x:Type vm:StandardArrayViewModel}">
-                                            <controls:StandardArrayControl DataContext="{Binding}"/>
-                                        </DataTemplate>
-                                    </ContentPresenter.Resources>
-                                </ContentPresenter>
+                                <!-- Rolling Methods -->
+                                <StackPanel Visibility="{Binding IsRollingMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="Random Generation (4d6 drop lowest)" FontSize="14" FontWeight="Bold" 
+                                                   VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                        <Button Content="Open Rolling Interface" 
+                                                Command="{Binding OpenRollingCommand}"
+                                                Background="#e74c3c" Foreground="White" 
+                                                Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Rolling Control -->
+                                    <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" Padding="15">
+                                        <Grid DataContext="{Binding RollingViewModel}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <!-- Step 1: Generate Scores -->
+                                            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                                <TextBlock Text="Step 1: Generate Ability Scores" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                                <TextBlock Text="{Binding MethodDescription}" FontStyle="Italic" Margin="0,0,0,10"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <Button Content="Generate 6 Scores" Command="{Binding GenerateScoresCommand}"
+                                                            Background="#27ae60" Foreground="White" Padding="15,8" BorderThickness="0"
+                                                            IsEnabled="{Binding CanRoll}" Margin="0,0,10,0"/>
+                                                    <Button Content="Reroll" Command="{Binding RerollCommand}"
+                                                            Background="#e67e22" Foreground="White" Padding="15,8" BorderThickness="0"
+                                                            Visibility="{Binding HasRolled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            
+                                            <!-- Generated Scores Display -->
+                                            <Border Grid.Row="1" Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" 
+                                                   Padding="15" Margin="0,0,0,15"
+                                                   Visibility="{Binding HasRolledScores, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <StackPanel>
+                                                    <TextBlock Text="Generated Scores:" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                    <ItemsControl ItemsSource="{Binding RolledScores}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="#007bff" Margin="5" Padding="10" CornerRadius="5">
+                                                                    <TextBlock Text="{Binding}" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                    <TextBlock Text="{Binding TotalPoints, StringFormat='Total Points: {0}'}" 
+                                                              FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Step 2: Assignment -->
+                                            <StackPanel Grid.Row="2" 
+                                                       Visibility="{Binding HasRolledScores, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Text="Step 2: Assign Scores to Abilities" FontWeight="Bold" FontSize="14" Margin="0,0,0,15"/>
+                                                
+                                                <!-- Assignment Interface -->
+                                                <ContentPresenter Content="{Binding AssignmentViewModel}">
+                                                    <ContentPresenter.Resources>
+                                                        <DataTemplate DataType="{x:Type vm:AbilityScoreAssignmentViewModel}">
+                                                            <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" Padding="15">
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+                                                                    
+                                                                    <!-- Class Recommendation Section -->
+                                                                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                                                        <TextBlock Text="Class Recommendation (Optional)" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <ComboBox Grid.Column="0" 
+                                                                                      ItemsSource="{Binding DataContext.Classes, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                      SelectedItem="{Binding SelectedClass}"
+                                                                                      DisplayMemberPath="Name" 
+                                                                                      Padding="8" Margin="0,0,10,0"/>
+                                                                            <Button Grid.Column="1" Content="Auto-Assign" 
+                                                                                    Command="{Binding ApplyClassRecommendationCommand}"
+                                                                                    Background="#28a745" Foreground="White" 
+                                                                                    Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                                                        </Grid>
+                                                                        <TextBlock Text="{Binding ClassRecommendationText}" 
+                                                                                   FontStyle="Italic" Foreground="#6c757d" Margin="0,5,0,0"
+                                                                                   Visibility="{Binding HasClassRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                                    </StackPanel>
+                                                                    
+                                                                    <!-- Assignment Grid -->
+                                                                    <UniformGrid Grid.Row="1" Columns="3" Rows="2" Margin="0,0,0,15">
+                                                                        <!-- Strength Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Strength" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding StrengthAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                        
+                                                                        <!-- Dexterity Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Dexterity" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding DexterityAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                        
+                                                                        <!-- Constitution Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Constitution" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding ConstitutionAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                        
+                                                                        <!-- Intelligence Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Intelligence" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding IntelligenceAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                        
+                                                                        <!-- Wisdom Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Wisdom" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding WisdomAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                        
+                                                                        <!-- Charisma Assignment -->
+                                                                        <StackPanel Margin="5">
+                                                                            <TextBlock Text="Charisma" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                                            <ComboBox ItemsSource="{Binding GeneratedScores}" 
+                                                                                      SelectedItem="{Binding CharismaAssignment}"
+                                                                                      HorizontalAlignment="Center" Width="80" Padding="5"/>
+                                                                        </StackPanel>
+                                                                    </UniformGrid>
+                                                                    
+                                                                    <!-- Action Buttons -->
+                                                                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                                                        <Button Content="Clear All" Command="{Binding ClearAssignmentsCommand}"
+                                                                                Background="#6c757d" Foreground="White" Padding="15,8" BorderThickness="0" Margin="0,0,10,0"/>
+                                                                        <Button Content="Apply to Character" Command="{Binding ApplyAssignmentsCommand}"
+                                                                                Background="#007bff" Foreground="White" Padding="15,8" BorderThickness="0" FontWeight="Bold"
+                                                                                IsEnabled="{Binding CanApplyAssignments}"/>
+                                                                    </StackPanel>
+                                                                    
+                                                                    <!-- Status Message -->
+                                                                    <TextBlock Grid.Row="3" Text="Assign each generated score to an ability. Each score can only be used once." 
+                                                                               FontStyle="Italic" Foreground="#6c757d" HorizontalAlignment="Center"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ContentPresenter.Resources>
+                                                </ContentPresenter>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                                
+                                <!-- Free Entry -->
+                                <StackPanel Visibility="{Binding IsFreeEntryMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="Free Entry (Manual Input)" FontSize="14" FontWeight="Bold" 
+                                                   VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                        <Button Content="Open Free Entry" 
+                                                Command="{Binding OpenFreeEntryCommand}"
+                                                Background="#f39c12" Foreground="White" 
+                                                Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Text="Enter ability scores directly (recommended range: 3-18)" 
+                                               HorizontalAlignment="Center" FontStyle="Italic" Foreground="#6c757d" Margin="0,0,0,15"/>
+                                    
+                                    <!-- Free Entry Control -->
+                                    <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" Padding="15">
+                                        <Grid DataContext="{Binding FreeEntryViewModel}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                                <Button Content="Set Defaults (10s)" Command="{Binding SetDefaultsCommand}"
+                                                        Background="#6c757d" Foreground="White" Padding="10,5" BorderThickness="0" Margin="0,0,10,0"/>
+                                                <Button Content="Elite Array" Command="{Binding SetEliteArrayCommand}"
+                                                        Background="#28a745" Foreground="White" Padding="10,5" BorderThickness="0"/>
+                                            </StackPanel>
+                                            
+                                            <TextBlock Grid.Row="1" Text="{Binding TotalPoints, StringFormat='Total Points: {0}'}" 
+                                                      FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            
+                                            <UniformGrid Grid.Row="2" Columns="3" Rows="2">
+                                                <!-- Free entry controls for each ability -->
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Strength" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding StrengthValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Dexterity" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding DexterityValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Constitution" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding ConstitutionValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Intelligence" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding IntelligenceValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Wisdom" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding WisdomValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="Charisma" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBox Text="{Binding CharismaValue}" Width="60" TextAlignment="Center" 
+                                                            FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </UniformGrid>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -502,12 +943,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.StrengthRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.StrengthBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.StrengthTotal}" 
@@ -527,12 +973,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.DexterityRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.DexterityBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.DexterityTotal}" 
@@ -552,12 +1003,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.ConstitutionRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.ConstitutionBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.ConstitutionTotal}" 
@@ -577,12 +1033,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.IntelligenceRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.IntelligenceBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.IntelligenceTotal}" 
@@ -602,12 +1063,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.WisdomRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.WisdomBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.WisdomTotal}" 
@@ -627,12 +1093,17 @@
                                              FontSize="18" FontWeight="Bold" TextAlignment="Center" 
                                              Padding="8" BorderBrush="#ddd" BorderThickness="2" Width="60"/>
                                     
-                                    <!-- Racial Bonus Display -->
+                                    <!-- Bonuses Display -->
                                     <StackPanel HorizontalAlignment="Center" Margin="0,5,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding CurrentCharacter.CharismaRacialBonus, StringFormat='{}{0:+#;-#;0}'}" 
                                                        Foreground="Green" FontWeight="Bold" FontSize="12"/>
                                             <TextBlock Text=" (Racial)" Foreground="Gray" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CurrentCharacter.CharismaBackgroundBonus, StringFormat='{}{0:+#;-#;0}'}" 
+                                                       Foreground="Blue" FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text=" (Background)" Foreground="Gray" FontSize="12"/>
                                         </StackPanel>
                                         <Border BorderBrush="#ccc" BorderThickness="0,1,0,0" Margin="5,2,5,2"/>
                                         <TextBlock Text="{Binding CurrentCharacter.CharismaTotal}" 
@@ -649,28 +1120,112 @@
                         <StackPanel Grid.Row="3">
                             <TextBlock Text="Skill Proficiencies" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
                             
-                            <!-- Racial Skill Proficiencies -->
-                            <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" Padding="15" Margin="0,0,0,20">
-                                <StackPanel>
-                                    <TextBlock Text="Racial Skill Proficiencies" FontWeight="Bold" Margin="0,0,0,10"/>
-                                    <ItemsControl ItemsSource="{Binding CurrentCharacter.RacialSkillProficiencies}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Background="#28a745" Margin="2" Padding="5,2" CornerRadius="3">
-                                                    <TextBlock Text="{Binding}" Foreground="White" FontSize="12"/>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                    <TextBlock Text="No racial skill proficiencies" FontStyle="Italic" Foreground="Gray" 
-                                               x:Name="NoSkillsText"/>
-                                </StackPanel>
-                            </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Racial Skill Proficiencies -->
+                                <Border Grid.Column="0" Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" Padding="15" Margin="0,0,5,20">
+                                    <StackPanel>
+                                        <TextBlock Text="Racial Skill Proficiencies" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <ItemsControl ItemsSource="{Binding CurrentCharacter.RacialSkillProficiencies}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#28a745" Margin="2" Padding="5,2" CornerRadius="3">
+                                                        <TextBlock Text="{Binding}" Foreground="White" FontSize="12"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <TextBlock Text="No racial skill proficiencies" FontStyle="Italic" Foreground="Gray">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CurrentCharacter.RacialSkillProficiencies.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <!-- Background Skill Proficiencies -->
+                                <Border Grid.Column="1" Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="1" Padding="15" Margin="5,0,5,20">
+                                    <StackPanel>
+                                        <TextBlock Text="Background Skill Proficiencies" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <ItemsControl ItemsSource="{Binding CurrentCharacter.BackgroundSkillProficiencies}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#3498db" Margin="2" Padding="5,2" CornerRadius="3">
+                                                        <TextBlock Text="{Binding}" Foreground="White" FontSize="12"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <TextBlock Text="No background skill proficiencies" FontStyle="Italic" Foreground="Gray">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CurrentCharacter.BackgroundSkillProficiencies.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <!-- Class Skill Proficiencies -->
+                                <Border Grid.Column="2" Background="#fff3cd" BorderBrush="#ffc107" BorderThickness="1" Padding="15" Margin="5,0,0,20">
+                                    <StackPanel>
+                                        <TextBlock Text="Class Skill Proficiencies" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <ItemsControl ItemsSource="{Binding CurrentCharacter.ClassSkillProficiencies}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#ffc107" Margin="2" Padding="5,2" CornerRadius="3">
+                                                        <TextBlock Text="{Binding}" Foreground="White" FontSize="12"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <TextBlock Text="No class skill proficiencies" FontStyle="Italic" Foreground="Gray">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CurrentCharacter.ClassSkillProficiencies.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
@@ -688,35 +1243,74 @@
                     <StackPanel Grid.Column="0" Margin="0,0,20,0">
                         <TextBlock Text="Combat Stats" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Armor Class" FontWeight="Bold"/>
-                            <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.ArmorClass}" 
-                                     Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1"/>
-                        </Grid>
+                        <!-- Armor Class Section -->
+                        <Border Margin="0,0,0,15" Padding="15" Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Armor Class" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Calculated AC: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding CurrentCharacter.CalculatedArmorClass}" FontWeight="Bold" Foreground="#3498db"/>
+                                        <TextBlock Text=" (10 + Dex modifier)" FontStyle="Italic" Foreground="Gray" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                    <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.ArmorClass}" 
+                                             Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1" Margin="10,0"/>
+                                    <Button Grid.Column="2" Content="Apply Calculated AC" 
+                                            Background="#3498db" Foreground="White" Padding="8,4" BorderThickness="0"
+                                            Click="ApplyCalculatedArmorClass_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Hit Points" FontWeight="Bold"/>
-                            <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.HitPoints}" 
-                                     Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1"/>
-                        </Grid>
+                        <!-- Hit Points Section -->
+                        <Border Margin="0,0,0,15" Padding="15" Background="#fff3cd" BorderBrush="#ffc107" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Hit Points" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                
+                                <!-- Calculated Max HP Display -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Calculated Max HP: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding CurrentCharacter.CalculatedMaxHitPoints}" FontWeight="Bold" Foreground="#e67e22"/>
+                                        <TextBlock Text="{Binding CurrentCharacter.HitPointCalculationMethodDescription, StringFormat=' ({0})'}" FontStyle="Italic" Foreground="Gray" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Apply Calculated HP" 
+                                            Background="#e67e22" Foreground="White" Padding="8,4" BorderThickness="0"
+                                            Click="ApplyCalculatedHitPoints_Click"/>
+                                </Grid>
+                                
+                                <!-- Current HP Input -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Current Hit Points" FontWeight="Bold"/>
+                                    <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.HitPoints}" 
+                                             Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1"/>
+                                </Grid>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Max Hit Points" FontWeight="Bold"/>
-                            <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.MaxHitPoints}" 
-                                     Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1"/>
-                        </Grid>
+                                <!-- Max HP Input -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Max Hit Points" FontWeight="Bold"/>
+                                    <TextBox Grid.Column="1" Text="{Binding CurrentCharacter.MaxHitPoints}" 
+                                             Width="80" Padding="5" BorderBrush="#ddd" BorderThickness="1"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
