@@ -46,6 +46,7 @@ public class Settings : INotifyPropertyChanged
     // Ability Score Generation
     private AbilityScoreGenerationMethod _abilityScoreMethod = AbilityScoreGenerationMethod.StandardArray;
     private int _pointBuyPoints = 27;
+    private int _rerollLimit = 1;
 
     // Default Character Options
     private int _defaultStartingLevel = 1;
@@ -91,6 +92,12 @@ public class Settings : INotifyPropertyChanged
     {
         get => _pointBuyPoints;
         set { _pointBuyPoints = Math.Max(15, Math.Min(35, value)); OnPropertyChanged(); }
+    }
+
+    public int RerollLimit
+    {
+        get => _rerollLimit;
+        set { _rerollLimit = Math.Max(0, Math.Min(10, value)); OnPropertyChanged(); }
     }
 
     // Default Character Options

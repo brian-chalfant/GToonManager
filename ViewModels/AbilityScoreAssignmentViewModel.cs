@@ -108,9 +108,121 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<int> AvailableScores => GeneratedScores.Where(score => !_assignments.Values.Contains(score)).ToList();
+    public List<int> AvailableScores
+    {
+        get
+        {
+            // Create a list that accounts for duplicates
+            var available = new List<int>(GeneratedScores);
+            
+            // Remove assigned scores one by one (handles duplicates correctly)
+            foreach (var assignment in _assignments.Values)
+            {
+                if (assignment.HasValue)
+                {
+                    available.Remove(assignment.Value);
+                }
+            }
+            
+            return available.OrderByDescending(x => x).ToList();
+        }
+    }
+
+    // Properties to provide available scores for each ability (including currently assigned value)
+    public List<int?> StrengthAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null }; // Add null option to clear assignment
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (StrengthAssignment.HasValue && !scores.Contains(StrengthAssignment.Value))
+            {
+                scores.Add(StrengthAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
+
+    public List<int?> DexterityAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null };
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (DexterityAssignment.HasValue && !scores.Contains(DexterityAssignment.Value))
+            {
+                scores.Add(DexterityAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
+
+    public List<int?> ConstitutionAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null };
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (ConstitutionAssignment.HasValue && !scores.Contains(ConstitutionAssignment.Value))
+            {
+                scores.Add(ConstitutionAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
+
+    public List<int?> IntelligenceAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null };
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (IntelligenceAssignment.HasValue && !scores.Contains(IntelligenceAssignment.Value))
+            {
+                scores.Add(IntelligenceAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
+
+    public List<int?> WisdomAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null };
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (WisdomAssignment.HasValue && !scores.Contains(WisdomAssignment.Value))
+            {
+                scores.Add(WisdomAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
+
+    public List<int?> CharismaAvailableScores
+    {
+        get
+        {
+            var scores = new List<int?> { null };
+            scores.AddRange(AvailableScores.Cast<int?>());
+            if (CharismaAssignment.HasValue && !scores.Contains(CharismaAssignment.Value))
+            {
+                scores.Add(CharismaAssignment.Value);
+                scores = scores.OrderByDescending(x => x).ToList();
+            }
+            return scores;
+        }
+    }
 
     public bool CanApplyAssignments => _assignments.Values.All(v => v.HasValue) && _assignments.Values.Count == 6;
+
+    // Event for when scores are applied to character
+    public event EventHandler? ScoresApplied;
 
     // Commands
     public ICommand ApplyClassRecommendationCommand { get; private set; } = null!;
@@ -136,20 +248,40 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
 
     private void SetAssignment(string ability, int? value)
     {
-        // Clear any existing assignment of this value
+        // Check if we can assign this value (do we have it available?)
         if (value.HasValue)
         {
-            var existingAssignment = _assignments.FirstOrDefault(kvp => kvp.Value == value);
-            if (existingAssignment.Key != null && existingAssignment.Key != ability)
+            var available = new List<int>(GeneratedScores);
+            
+            // Remove all currently assigned scores except for the one we're potentially replacing
+            foreach (var kvp in _assignments)
             {
-                _assignments[existingAssignment.Key] = null;
-                OnPropertyChanged($"{existingAssignment.Key}Assignment");
+                if (kvp.Key != ability && kvp.Value.HasValue)
+                {
+                    available.Remove(kvp.Value.Value);
+                }
+            }
+            
+            // Check if the value we want to assign is still available
+            if (!available.Contains(value.Value))
+            {
+                // Value is not available, don't assign it
+                return;
             }
         }
-
+        
+        // Simply set the assignment - this allows duplicate scores to be assigned to different abilities
         _assignments[ability] = value;
         OnPropertyChanged(nameof(AvailableScores));
         OnPropertyChanged(nameof(CanApplyAssignments));
+        
+        // Notify all available scores properties have changed
+        OnPropertyChanged(nameof(StrengthAvailableScores));
+        OnPropertyChanged(nameof(DexterityAvailableScores));
+        OnPropertyChanged(nameof(ConstitutionAvailableScores));
+        OnPropertyChanged(nameof(IntelligenceAvailableScores));
+        OnPropertyChanged(nameof(WisdomAvailableScores));
+        OnPropertyChanged(nameof(CharismaAvailableScores));
     }
 
     private bool CanApplyClassRecommendation()
@@ -234,6 +366,14 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         IntelligenceAssignment = null;
         WisdomAssignment = null;
         CharismaAssignment = null;
+        
+        // Notify all available scores properties have changed
+        OnPropertyChanged(nameof(StrengthAvailableScores));
+        OnPropertyChanged(nameof(DexterityAvailableScores));
+        OnPropertyChanged(nameof(ConstitutionAvailableScores));
+        OnPropertyChanged(nameof(IntelligenceAvailableScores));
+        OnPropertyChanged(nameof(WisdomAvailableScores));
+        OnPropertyChanged(nameof(CharismaAvailableScores));
     }
 
     private void ApplyAssignments()
@@ -246,6 +386,9 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         _character.AbilityScores.Intelligence = IntelligenceAssignment ?? 10;
         _character.AbilityScores.Wisdom = WisdomAssignment ?? 10;
         _character.AbilityScores.Charisma = CharismaAssignment ?? 10;
+
+        // Raise the event to notify that scores have been applied
+        ScoresApplied?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetGeneratedScores(IEnumerable<int> scores)
@@ -258,6 +401,14 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         
         ClearAssignments();
         OnPropertyChanged(nameof(AvailableScores));
+        
+        // Notify all available scores properties have changed
+        OnPropertyChanged(nameof(StrengthAvailableScores));
+        OnPropertyChanged(nameof(DexterityAvailableScores));
+        OnPropertyChanged(nameof(ConstitutionAvailableScores));
+        OnPropertyChanged(nameof(IntelligenceAvailableScores));
+        OnPropertyChanged(nameof(WisdomAvailableScores));
+        OnPropertyChanged(nameof(CharismaAvailableScores));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -75,6 +75,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             
                             <Label Grid.Row="0" Grid.Column="0" Content="Method:" Style="{StaticResource SettingLabelStyle}"/>
@@ -94,6 +95,11 @@
                                      Text="{Binding CurrentSettings.PointBuyPoints}"
                                      Style="{StaticResource SettingInputStyle}"
                                      IsEnabled="{Binding CurrentSettings.AbilityScoreMethod, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            
+                            <Label Grid.Row="2" Grid.Column="0" Content="Reroll Limit:" Style="{StaticResource SettingLabelStyle}"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" 
+                                     Text="{Binding CurrentSettings.RerollLimit}"
+                                     Style="{StaticResource SettingInputStyle}"/>
                         </Grid>
 
                         <!-- Default Character Options -->

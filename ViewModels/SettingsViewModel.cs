@@ -148,6 +148,9 @@ public class SettingsViewModel : INotifyPropertyChanged
             case nameof(Settings.AbilityScoreMethod):
                 _originalSettings.AbilityScoreMethod = _currentSettings.AbilityScoreMethod;
                 break;
+            case nameof(Settings.RerollLimit):
+                _originalSettings.RerollLimit = _currentSettings.RerollLimit;
+                break;
             // Add other critical settings that need immediate feedback here
             // Theme changes might be too disruptive for immediate application
         }
@@ -223,6 +226,7 @@ public class SettingsViewModel : INotifyPropertyChanged
         // Ability Score Generation
         target.AbilityScoreMethod = source.AbilityScoreMethod;
         target.PointBuyPoints = source.PointBuyPoints;
+        target.RerollLimit = source.RerollLimit;
 
         // Default Character Options
         target.DefaultStartingLevel = source.DefaultStartingLevel;

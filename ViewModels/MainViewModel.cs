@@ -132,7 +132,20 @@ public class MainViewModel : INotifyPropertyChanged
         get => _rollingViewModel;
         set
         {
+            // Unsubscribe from old rolling view model
+            if (_rollingViewModel != null)
+            {
+                _rollingViewModel.ScoresApplied -= OnRollingScoresApplied;
+            }
+            
             _rollingViewModel = value;
+            
+            // Subscribe to new rolling view model
+            if (_rollingViewModel != null)
+            {
+                _rollingViewModel.ScoresApplied += OnRollingScoresApplied;
+            }
+            
             OnPropertyChanged(nameof(RollingViewModel));
         }
     }
@@ -258,7 +271,6 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand ShowAboutCommand { get; private set; } = null!;
     public ICommand OpenStandardArrayCommand { get; private set; } = null!;
     public ICommand OpenPointBuyCommand { get; private set; } = null!;
-    public ICommand OpenRollingCommand { get; private set; } = null!;
     public ICommand OpenFreeEntryCommand { get; private set; } = null!;
     
     // Multiclass commands
@@ -288,7 +300,6 @@ public class MainViewModel : INotifyPropertyChanged
         ShowAboutCommand = new RelayCommand(ShowAbout);
         OpenStandardArrayCommand = new RelayCommand(OpenStandardArray);
         OpenPointBuyCommand = new RelayCommand(OpenPointBuy);
-        OpenRollingCommand = new RelayCommand(OpenRolling);
         OpenFreeEntryCommand = new RelayCommand(OpenFreeEntry);
         
         // Multiclass commands
@@ -988,22 +999,6 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private void OpenRolling()
-    {
-        try
-        {
-            System.Diagnostics.Debug.WriteLine("OpenRolling() called");
-            RollingViewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod);
-            StatusMessage = $"{Settings.AbilityScoreMethod} rolling opened";
-            System.Diagnostics.Debug.WriteLine("RollingViewModel created successfully");
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error opening Rolling: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"Error in OpenRolling: {ex}");
-        }
-    }
-
     private void OpenFreeEntry()
     {
         try
@@ -1043,8 +1038,12 @@ public class MainViewModel : INotifyPropertyChanged
                     break;
                     
                 case AbilityScoreGenerationMethod.FourD6DropLowest:
-                    RollingViewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod);
-                    System.Diagnostics.Debug.WriteLine("RollingViewModel auto-created");
+                    if (RollingViewModel == null || RollingViewModel.IsCompleted)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Creating RollingViewModel with Settings.RerollLimit: {Settings.RerollLimit}");
+                        RollingViewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod, Settings.RerollLimit);
+                        System.Diagnostics.Debug.WriteLine("RollingViewModel auto-created");
+                    }
                     break;
                     
                 case AbilityScoreGenerationMethod.FreeEntry:
@@ -1058,6 +1057,13 @@ public class MainViewModel : INotifyPropertyChanged
             System.Diagnostics.Debug.WriteLine($"Error in CreateViewModelForCurrentMethod: {ex}");
             StatusMessage = $"Error creating ability score interface: {ex.Message}";
         }
+    }
+
+    private void OnRollingScoresApplied(object? sender, EventArgs e)
+    {
+        // Close the rolling interface by clearing the view model
+        RollingViewModel = null;
+        StatusMessage = "Ability scores applied successfully";
     }
 
     private void ApplyBackground()
