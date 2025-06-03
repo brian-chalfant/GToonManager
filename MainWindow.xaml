@@ -256,7 +256,8 @@
                                                 Background="#27ae60" Foreground="White" 
                                                 Padding="15,8" Margin="0,15,0,0" BorderThickness="0"
                                                 FontWeight="Bold" FontSize="14"
-                                                IsEnabled="{Binding CanApplyBackgroundSelection}"/>
+                                                IsEnabled="{Binding CanApplyBackgroundSelection}"
+                                                ToolTip="Apply background to character. Uniform ability improvements will be applied automatically."/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

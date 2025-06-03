@@ -236,6 +236,7 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(HasBackgroundImprovementOption));
             OnPropertyChanged(nameof(BackgroundImprovementOptionDescription));
             OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+            OnPropertyChanged(nameof(IsUniformDistribution));
             
             // Clear selections when option changes
             BackgroundAbilityScoreSelections.Clear();
@@ -254,7 +255,12 @@ public class MainViewModel : INotifyPropertyChanged
     
     public ObservableCollection<BackgroundAbilityScoreSelection> BackgroundAbilityScoreSelections { get; } = new();
     
-    public bool CanApplyBackgroundSelection => HasBackgroundImprovementOption && ValidateBackgroundAbilityScoreSelections();
+    public bool CanApplyBackgroundSelection => HasBackgroundImprovementOption && 
+                                               (ValidateBackgroundAbilityScoreSelections() || 
+                                                (BackgroundAbilityScoreSelections.Count == 0 && IsUniformDistribution));
+
+    public bool IsUniformDistribution => SelectedBackgroundImprovementOption?.Distributions?.Count == 1 && 
+                                        SelectedBackgroundImprovementOption.Distributions[0].Count > 1;
 
     // Commands
     public ICommand NewCharacterCommand { get; private set; } = null!;
@@ -1068,44 +1074,58 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ApplyBackground()
     {
-        if (SelectedBackground != null && CanApplyBackgroundSelection)
+        if (SelectedBackground != null && HasBackgroundImprovementOption)
         {
-            // Apply the background to the character
-            CurrentCharacter.Background = SelectedBackground;
-            
-            // Create and apply the ability score choice
-            var backgroundChoice = new BackgroundAbilityScoreChoice
+            // Auto-apply uniform distributions if no manual selections have been made
+            if (BackgroundAbilityScoreSelections.Count == 0 && IsUniformDistribution)
             {
-                Background = SelectedBackground,
-                SelectedOption = SelectedBackgroundImprovementOption!,
-                AbilityScoreImprovements = new Dictionary<string, int>()
-            };
-            
-            // Convert selections to improvements dictionary
-            foreach (var selection in BackgroundAbilityScoreSelections)
-            {
-                if (backgroundChoice.AbilityScoreImprovements.ContainsKey(selection.AbilityScore))
-                {
-                    backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] += selection.Improvement;
-                }
-                else
-                {
-                    backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] = selection.Improvement;
-                }
+                AutoApplyUniformDistribution();
             }
             
-            CurrentCharacter.BackgroundAbilityScoreChoice = backgroundChoice;
-            
-            StatusMessage = $"Applied background: {SelectedBackground.Name}";
-            
-            // Clear selections
-            SelectedBackground = null;
-            SelectedBackgroundImprovementOption = null;
-            BackgroundAbilityScoreSelections.Clear();
+            // Check if we can apply after auto-application
+            if (CanApplyBackgroundSelection)
+            {
+                // Apply the background to the character
+                CurrentCharacter.Background = SelectedBackground;
+                
+                // Create and apply the ability score choice
+                var backgroundChoice = new BackgroundAbilityScoreChoice
+                {
+                    Background = SelectedBackground,
+                    SelectedOption = SelectedBackgroundImprovementOption!,
+                    AbilityScoreImprovements = new Dictionary<string, int>()
+                };
+                
+                // Convert selections to improvements dictionary
+                foreach (var selection in BackgroundAbilityScoreSelections)
+                {
+                    if (backgroundChoice.AbilityScoreImprovements.ContainsKey(selection.AbilityScore))
+                    {
+                        backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] += selection.Improvement;
+                    }
+                    else
+                    {
+                        backgroundChoice.AbilityScoreImprovements[selection.AbilityScore] = selection.Improvement;
+                    }
+                }
+                
+                CurrentCharacter.BackgroundAbilityScoreChoice = backgroundChoice;
+                
+                StatusMessage = $"Applied background: {SelectedBackground.Name}";
+                
+                // Clear selections
+                SelectedBackground = null;
+                SelectedBackgroundImprovementOption = null;
+                BackgroundAbilityScoreSelections.Clear();
+            }
+            else
+            {
+                StatusMessage = "Please complete your background ability score selections";
+            }
         }
         else
         {
-            StatusMessage = "Please complete your background ability score selections";
+            StatusMessage = "Please select a background and improvement option";
         }
     }
 
@@ -1138,6 +1158,36 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(CanApplyBackgroundSelection));
             StatusMessage = $"Removed +{selection.Improvement} from {selection.AbilityScore}";
         }
+    }
+
+
+
+    private void AutoApplyUniformDistribution()
+    {
+        if (SelectedBackgroundImprovementOption?.Distributions == null || !IsUniformDistribution) return;
+
+        var distribution = SelectedBackgroundImprovementOption.Distributions[0];
+        var improvementAmount = distribution.Amount;
+        var requiredCount = distribution.Count;
+        var availableAbilities = AvailableAbilityScoresForBackground;
+
+        // Clear any existing selections first
+        BackgroundAbilityScoreSelections.Clear();
+
+        // Auto-apply the improvements to the available abilities
+        var abilitiesToImprove = availableAbilities.Take(requiredCount).ToList();
+        
+        foreach (var ability in abilitiesToImprove)
+        {
+            BackgroundAbilityScoreSelections.Add(new BackgroundAbilityScoreSelection
+            {
+                AbilityScore = ability,
+                Improvement = improvementAmount
+            });
+        }
+
+        OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+        StatusMessage = $"Auto-applied +{improvementAmount} to {string.Join(", ", abilitiesToImprove)}";
     }
 
     private bool ValidateBackgroundAbilityScoreSelections()

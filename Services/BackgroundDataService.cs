@@ -10,7 +10,7 @@ public class BackgroundDataService
 
     public BackgroundDataService()
     {
-        _backgroundDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "backgrounds");
+        _backgroundDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "backgrounds", "2024");
     }
 
     public async Task<List<Background>> LoadAllBackgroundsAsync()
