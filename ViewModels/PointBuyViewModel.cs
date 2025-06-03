@@ -209,7 +209,7 @@ public class PointBuyViewModel : INotifyPropertyChanged
         CalculateAvailablePoints();
     }
 
-    private void ApplyPointBuy()
+    public void ApplyPointBuy()
     {
         // Values are already applied to character through property setters
         // This could trigger additional logic if needed

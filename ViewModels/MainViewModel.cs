@@ -277,6 +277,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand ShowAboutCommand { get; private set; } = null!;
     public ICommand OpenStandardArrayCommand { get; private set; } = null!;
     public ICommand OpenPointBuyCommand { get; private set; } = null!;
+    public ICommand OpenRollingCommand { get; private set; } = null!;
     public ICommand OpenFreeEntryCommand { get; private set; } = null!;
     
     // Multiclass commands
@@ -306,6 +307,7 @@ public class MainViewModel : INotifyPropertyChanged
         ShowAboutCommand = new RelayCommand(ShowAbout);
         OpenStandardArrayCommand = new RelayCommand(OpenStandardArray);
         OpenPointBuyCommand = new RelayCommand(OpenPointBuy);
+        OpenRollingCommand = new RelayCommand(OpenRolling);
         OpenFreeEntryCommand = new RelayCommand(OpenFreeEntry);
         
         // Multiclass commands
@@ -392,11 +394,16 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (StandardArrayViewModel != null)
         {
-            StandardArrayViewModel.Classes.Clear();
-            foreach (var characterClass in Classes)
-            {
-                StandardArrayViewModel.Classes.Add(characterClass);
-            }
+            UpdateStandardArrayViewModelClasses(StandardArrayViewModel);
+        }
+    }
+    
+    private void UpdateStandardArrayViewModelClasses(StandardArrayViewModel viewModel)
+    {
+        viewModel.Classes.Clear();
+        foreach (var characterClass in Classes)
+        {
+            viewModel.Classes.Add(characterClass);
         }
     }
 
@@ -973,35 +980,84 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void OpenStandardArray()
     {
-        if (StandardArrayViewModel == null)
+        try
         {
-            StandardArrayViewModel = new StandardArrayViewModel(CurrentCharacter);
-            UpdateStandardArrayViewModelClasses();
+            var viewModel = new StandardArrayViewModel(CurrentCharacter);
+            UpdateStandardArrayViewModelClasses(viewModel);
+            
+            var control = new Controls.StandardArrayControl();
+            var window = new Views.AbilityScoreGenerationWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.SetContent("Standard Array Assignment", control, viewModel);
+            
+            var result = window.ShowDialog();
+            if (result == true)
+            {
+                StatusMessage = "Standard Array applied to character";
+            }
+            else
+            {
+                StatusMessage = "Standard Array assignment cancelled";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Refresh the standard array with current character data
-            StandardArrayViewModel.StandardArray.LoadFromAbilityScores(CurrentCharacter.AbilityScores);
-            // Also ensure classes are up to date
-            UpdateStandardArrayViewModelClasses();
+            StatusMessage = $"Error opening Standard Array: {ex.Message}";
         }
-        
-        StatusMessage = "Standard Array assignment opened";
     }
 
     private void OpenPointBuy()
     {
         try
         {
-            System.Diagnostics.Debug.WriteLine("OpenPointBuy() called");
-            PointBuyViewModel = new PointBuyViewModel(CurrentCharacter, Settings.PointBuyPoints);
-            StatusMessage = "Point Buy assignment opened";
-            System.Diagnostics.Debug.WriteLine("PointBuyViewModel created successfully");
+            var viewModel = new PointBuyViewModel(CurrentCharacter, Settings.PointBuyPoints);
+            
+            // Create a control for point buy - we'll need to make one
+            var control = new Views.PointBuyControl();
+            var window = new Views.AbilityScoreGenerationWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.SetContent("Point Buy Assignment", control, viewModel);
+            
+            var result = window.ShowDialog();
+            if (result == true)
+            {
+                StatusMessage = "Point Buy applied to character";
+            }
+            else
+            {
+                StatusMessage = "Point Buy assignment cancelled";
+            }
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error opening Point Buy: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"Error in OpenPointBuy: {ex}");
+        }
+    }
+
+    private void OpenRolling()
+    {
+        try
+        {
+            var viewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod, Settings.RerollLimit);
+            
+            var control = new Controls.RollingControl();
+            var window = new Views.AbilityScoreGenerationWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.SetContent("Dice Rolling", control, viewModel);
+            
+            var result = window.ShowDialog();
+            if (result == true)
+            {
+                StatusMessage = "Rolled scores applied to character";
+            }
+            else
+            {
+                StatusMessage = "Dice rolling cancelled";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error opening Rolling: {ex.Message}";
         }
     }
 
@@ -1009,15 +1065,26 @@ public class MainViewModel : INotifyPropertyChanged
     {
         try
         {
-            System.Diagnostics.Debug.WriteLine("OpenFreeEntry() called");
-            FreeEntryViewModel = new FreeEntryViewModel(CurrentCharacter);
-            StatusMessage = "Free Entry ability score assignment opened";
-            System.Diagnostics.Debug.WriteLine("FreeEntryViewModel created successfully");
+            var viewModel = new FreeEntryViewModel(CurrentCharacter);
+            
+            var control = new Controls.FreeEntryControl();
+            var window = new Views.AbilityScoreGenerationWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.SetContent("Manual Entry", control, viewModel);
+            
+            var result = window.ShowDialog();
+            if (result == true)
+            {
+                StatusMessage = "Manual scores applied to character";
+            }
+            else
+            {
+                StatusMessage = "Manual entry cancelled";
+            }
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error opening Free Entry: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"Error in OpenFreeEntry: {ex}");
         }
     }
 

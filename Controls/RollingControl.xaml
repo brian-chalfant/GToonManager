@@ -1,0 +1,51 @@
+<UserControl x:Class="GToonManager.Controls.RollingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel>
+        <TextBlock Text="Roll for Ability Scores" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TextBlock Text="{Binding MethodDescription}" TextWrapping="Wrap" Margin="0,0,0,20"/>
+        
+        <!-- Roll Button -->
+        <Button Content="Roll Scores" Command="{Binding GenerateScoresCommand}"
+                Background="#007bff" Foreground="White" FontWeight="Bold"
+                Padding="20,10" Margin="0,0,0,20" BorderThickness="0"/>
+        
+        <!-- Rolled Scores Display -->
+        <StackPanel Visibility="{Binding HasRolledScores, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Rolled Scores:" FontWeight="Bold" Margin="0,0,0,10"/>
+            <ItemsControl ItemsSource="{Binding RolledScores}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#e9ecef" BorderBrush="#ced4da" BorderThickness="1" 
+                               Margin="5" Padding="15,10" MinWidth="60">
+                            <TextBlock Text="{Binding}" FontSize="20" FontWeight="Bold" 
+                                      HorizontalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                <TextBlock Text="{Binding TotalPoints, StringFormat='Total: \{0\} points'}" 
+                          FontWeight="Bold" Margin="0,0,20,0"/>
+                <Button Content="Reroll" Command="{Binding RerollCommand}"
+                        Background="#ffc107" Foreground="Black" FontWeight="Bold"
+                        Padding="15,8" BorderThickness="0"
+                        Visibility="{Binding CanReroll, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- Assignment Interface -->
+        <ContentPresenter Content="{Binding AssignmentViewModel}" Margin="0,20,0,0"
+                         Visibility="{Binding AssignmentViewModel, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </StackPanel>
+</UserControl> 

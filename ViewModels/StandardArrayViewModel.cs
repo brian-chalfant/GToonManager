@@ -144,7 +144,7 @@ public class StandardArrayViewModel : INotifyPropertyChanged
         AssignCharismaCommand = new RelayCommand(parameter => AssignValueToAbility("Charisma", parameter));
     }
 
-    private void ApplyStandardArray()
+    public void ApplyStandardArray()
     {
         if (StandardArray.IsComplete)
         {
@@ -153,7 +153,7 @@ public class StandardArrayViewModel : INotifyPropertyChanged
         }
     }
 
-    private bool CanApplyStandardArray()
+    public bool CanApplyStandardArray()
     {
         return StandardArray.IsComplete;
     }

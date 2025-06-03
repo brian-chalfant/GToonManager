@@ -1,0 +1,80 @@
+<UserControl x:Class="GToonManager.Views.PointBuyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Point Buy System" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
+        <TextBlock Text="Allocate your points to purchase ability scores. Higher scores cost more points."
+                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Points Summary -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                <TextBlock Text="{Binding UsedPoints, StringFormat='Used: \{0\}'}" 
+                          FontSize="16" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock Text=" / " FontSize="16" FontWeight="Bold" Margin="0,0,5,0"/>
+                <TextBlock Text="{Binding TotalPoints, StringFormat='\{0\} Points'}" 
+                          FontSize="16" FontWeight="Bold" Margin="0,0,20,0"/>
+                <TextBlock Text="{Binding AvailablePoints, StringFormat='(Available: \{0\})'}" 
+                          FontSize="14" Foreground="#6c757d" Margin="0,0,20,0"/>
+                <Button Content="Reset" Command="{Binding ResetPointBuyCommand}"
+                        Background="#6c757d" Foreground="White" Padding="10,5" BorderThickness="0"/>
+            </StackPanel>
+            
+            <!-- Ability Score Controls -->
+            <UniformGrid Grid.Row="1" Columns="3" Rows="2">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Strength" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding StrengthCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding StrengthValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Margin="5">
+                    <TextBlock Text="Dexterity" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding DexterityCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding DexterityValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Margin="5">
+                    <TextBlock Text="Constitution" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding ConstitutionCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding ConstitutionValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Margin="5">
+                    <TextBlock Text="Intelligence" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding IntelligenceCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding IntelligenceValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Margin="5">
+                    <TextBlock Text="Wisdom" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding WisdomCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding WisdomValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Margin="5">
+                    <TextBlock Text="Charisma" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                        <TextBox Text="{Binding CharismaCost}" Width="50" TextAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding CharismaValue, StringFormat='= \{0\}'}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </UniformGrid>
+        </Grid>
+    </StackPanel>
+</UserControl> 

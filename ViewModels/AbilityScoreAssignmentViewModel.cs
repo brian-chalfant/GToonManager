@@ -376,7 +376,7 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(CharismaAvailableScores));
     }
 
-    private void ApplyAssignments()
+    public void ApplyAssignments()
     {
         if (!CanApplyAssignments) return;
 
