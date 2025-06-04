@@ -98,235 +98,314 @@
         <TabControl Grid.Row="2" Margin="20" Background="White">
             <!-- Basic Info Tab -->
             <TabItem Header="Basic Info" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="20">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Character Name -->
-                        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,20">
-                            <Label Content="Character Name" FontWeight="Bold" FontSize="14"/>
-                            <TextBox Text="{Binding CurrentCharacter.Name}" FontSize="16" Padding="10" 
-                                     BorderBrush="#ddd" BorderThickness="2"/>
-                        </StackPanel>
-
-                        <!-- Player Name -->
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,20">
-                            <Label Content="Player Name" FontWeight="Bold"/>
-                            <TextBox Text="{Binding CurrentCharacter.PlayerName}" Padding="8" 
-                                     BorderBrush="#ddd" BorderThickness="1"/>
-                        </StackPanel>
-
-                        <!-- Level -->
-                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,20">
-                            <Label Content="Total Level" FontWeight="Bold"/>
-                            <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Padding="8">
-                                <TextBlock Text="{Binding CurrentCharacter.Level}" FontSize="14" FontWeight="Bold" 
-                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TabItem.Resources>
+                    <!-- Medieval Theme Resources -->
+                    <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+                    <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+                    <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+                    <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+                    
+                    <!-- Text Input Style -->
+                    <Style TargetType="TextBox" x:Key="MedievalTextBoxStyle">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border x:Name="border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="6">
+                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                                      HorizontalScrollBarVisibility="Hidden" 
+                                                      VerticalScrollBarVisibility="Hidden"
+                                                      Padding="{TemplateBinding Padding}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                            <Setter TargetName="border" Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#D4AF37" BlurRadius="8" ShadowDepth="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="#FFD700"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- ComboBox Style -->
+                    <Style TargetType="ComboBox" x:Key="MedievalComboBoxStyle">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                    
+                    <!-- TextBlock Style -->
+                    <Style TargetType="TextBlock" x:Key="MedievalLabelStyle">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                    
+                    <!-- Button Style -->
+                    <Style TargetType="Button" x:Key="MedievalButtonStyle">
+                        <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="8,4"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="6">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                            <Setter TargetName="border" Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#D4AF37" BlurRadius="5" ShadowDepth="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- Panel Style -->
+                    <Style TargetType="Border" x:Key="MedievalPanelStyle">
+                        <Setter Property="Background" Value="#F5E6C8"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Padding" Value="15"/>
+                    </Style>
+                </TabItem.Resources>
+                
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="3">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Title Bar -->
+                            <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20,15">
+                                <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1">
+                                    <TextBlock Text="⚔️ Character Basic Information ⚔️" 
+                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                               Foreground="{StaticResource PrimaryGold}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Padding="10,5">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="2"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Border>
                             </Border>
-                            <TextBlock Text="(Calculated from class levels)" FontSize="10" FontStyle="Italic" 
-                                      Foreground="Gray" HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                        </StackPanel>
-
-                        <!-- Race Selection -->
-                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,20">
-                            <Label Content="Race" FontWeight="Bold"/>
-                            <ComboBox ItemsSource="{Binding Races}" 
-                                      SelectedItem="{Binding CurrentCharacter.Race}"
-                                      DisplayMemberPath="Name" Padding="8" 
-                                      BorderBrush="#ddd" BorderThickness="1"/>
-                        </StackPanel>
-
-                        <!-- Subrace Selection -->
-                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,20">
-                            <Label Content="Subrace" FontWeight="Bold"/>
-                            <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubraces}" 
-                                      SelectedItem="{Binding CurrentCharacter.Subrace}"
-                                      DisplayMemberPath="Name" Padding="8" 
-                                      BorderBrush="#ddd" BorderThickness="1"
-                                      IsEnabled="{Binding CurrentCharacter.HasSubraces}"/>
-                        </StackPanel>
-
-                        <!-- Background Selection -->
-                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,20">
-                            <Label Content="Background" FontWeight="Bold"/>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <!-- Current Background Display -->
-                                <TextBlock Grid.Row="0" Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
-                                          FontWeight="Bold" Margin="0,0,0,5"
-                                          Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                <!-- Background Selection for Change -->
-                                <ComboBox Grid.Row="1" ItemsSource="{Binding Backgrounds}" 
-                                          SelectedItem="{Binding CurrentCharacter.Background}"
-                                          DisplayMemberPath="Name" Padding="8" 
-                                          BorderBrush="#ddd" BorderThickness="1"/>
-                            </Grid>
-                        </StackPanel>
-
-                        <!-- Background Ability Score Selection -->
-                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,0,0,20" 
-                                   Visibility="{Binding HasBackgroundAbilityScoreOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Label Content="Background Ability Scores" FontWeight="Bold"/>
-                            <Border BorderBrush="#ddd" BorderThickness="1" Padding="10" Background="White">
+                            
+                            <!-- Content Area -->
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="30">
                                 <StackPanel>
-                                    <!-- Current Character Background Display -->
-                                    <TextBlock Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
-                                              FontWeight="Bold" Margin="0,0,0,10"
-                                              Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                    
-                                    <!-- Background Selection Info -->
-                                    <TextBlock Text="{Binding SelectedBackground.Name, StringFormat='Configuring: {0}'}" 
-                                              FontWeight="Bold" Margin="0,0,0,10"/>
-                                    
-                                    <!-- Improvement Option Selection -->
-                                    <TextBlock Text="Choose ability score improvement option:" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <ComboBox ItemsSource="{Binding BackgroundAbilityScoreOptions}"
-                                              SelectedItem="{Binding SelectedBackgroundImprovementOption}"
-                                              DisplayMemberPath="Description" Padding="8" Margin="0,0,0,10"/>
-                                    
-                                    <!-- Ability Score Selections -->
-                                    <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <TextBlock Text="Select ability scores to improve:" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
-                                                  FontStyle="Italic" Margin="0,0,0,10"/>
-                                        
-                                        <!-- Available Ability Scores -->
-                                        <TextBlock Text="Available ability scores:" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <ItemsControl ItemsSource="{Binding AvailableAbilityScoresForBackground}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="{Binding}" 
-                                                            Command="{Binding DataContext.AddBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                            CommandParameter="{Binding}"
-                                                            Background="#3498db" Foreground="White" 
-                                                            Padding="8,4" Margin="2" BorderThickness="0"
-                                                            Style="{DynamicResource {x:Static ToolBar.ButtonStyleKey}}"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        
-                                        <!-- Current Selections -->
-                                        <TextBlock Text="Current selections:" FontWeight="Bold" Margin="0,10,0,5"/>
-                                        <ItemsControl ItemsSource="{Binding BackgroundAbilityScoreSelections}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" 
-                                                           Margin="0,2" Padding="8">
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                                                                                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                                 <TextBlock Text="{Binding AbilityScore}" FontWeight="Bold"/>
-                                                                 <TextBlock Text=" +" Margin="5,0,0,0"/>
-                                                                 <TextBlock Text="{Binding Improvement}" FontWeight="Bold"/>
-                                                             </StackPanel>
-                                                            <Button Grid.Column="1" Content="Remove"
-                                                                    Command="{Binding DataContext.RemoveBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    <!-- Character Name Row (Full Width) -->
+                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="🏰 Character Name" Style="{StaticResource MedievalLabelStyle}" 
+                                                       FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            <TextBox Text="{Binding CurrentCharacter.Name}" Style="{StaticResource MedievalTextBoxStyle}" 
+                                                     FontSize="18" FontWeight="Bold" MaxWidth="400"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Player Name Row (Full Width) -->
+                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="👤 Player Name" Style="{StaticResource MedievalLabelStyle}" 
+                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            <TextBox Text="{Binding CurrentCharacter.PlayerName}" Style="{StaticResource MedievalTextBoxStyle}"
+                                                     MaxWidth="400"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Race & Subrace Row (Full Width) -->
+                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="🧝 Race &amp; Subrace" Style="{StaticResource MedievalLabelStyle}" 
+                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            
+                                            <!-- Race Selection -->
+                                            <StackPanel Margin="0,0,0,15">
+                                                <TextBlock Text="Race:" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" 
+                                                          HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                <ComboBox ItemsSource="{Binding Races}" 
+                                                          SelectedItem="{Binding CurrentCharacter.Race}"
+                                                          DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
+                                                          MaxWidth="400"/>
+                                            </StackPanel>
+                                            
+                                            <!-- Subrace Selection -->
+                                            <StackPanel>
+                                                <TextBlock Text="Subrace:" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" 
+                                                          HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubraces}" 
+                                                          SelectedItem="{Binding CurrentCharacter.Subrace}"
+                                                          DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
+                                                          MaxWidth="400"
+                                                          IsEnabled="{Binding CurrentCharacter.HasSubraces}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Background Selection Row (Full Width) -->
+                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="📜 Background" Style="{StaticResource MedievalLabelStyle}" 
+                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            
+                                            <!-- Current Background Display -->
+                                            <TextBlock Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
+                                                      FontFamily="Garamond" FontWeight="Bold" FontSize="14" 
+                                                      Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,10" TextAlignment="Center"
+                                                      Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            
+                                            <!-- Background Selection -->
+                                            <ComboBox ItemsSource="{Binding Backgrounds}" 
+                                                      SelectedItem="{Binding CurrentCharacter.Background}"
+                                                      DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
+                                                      MaxWidth="400"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Background Ability Score Selection (Full Width) -->
+                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20"
+                                           Visibility="{Binding HasBackgroundAbilityScoreOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="⚡ Background Abilities" Style="{StaticResource MedievalLabelStyle}" 
+                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                            
+                                            <!-- Background Selection Info -->
+                                            <TextBlock Text="{Binding SelectedBackground.Name, StringFormat='Configuring: {0}'}" 
+                                                      FontFamily="Garamond" FontWeight="Bold" FontSize="14" 
+                                                      Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,15" TextAlignment="Center"/>
+                                            
+                                            <!-- Improvement Option Selection -->
+                                            <TextBlock Text="Choose improvement option:" FontFamily="Garamond" FontWeight="Bold" 
+                                                      Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
+                                            <ComboBox ItemsSource="{Binding BackgroundAbilityScoreOptions}"
+                                                      SelectedItem="{Binding SelectedBackgroundImprovementOption}"
+                                                      DisplayMemberPath="Description" Style="{StaticResource MedievalComboBoxStyle}" 
+                                                      MaxWidth="400" Margin="0,0,0,15"/>
+                                            
+                                            <!-- Ability Score Selections -->
+                                            <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Text="Select ability scores to improve:" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
+                                                <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
+                                                          FontFamily="Garamond" FontStyle="Italic" FontSize="12"
+                                                          Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,15" TextAlignment="Center"/>
+                                                
+                                                <!-- Available Ability Scores -->
+                                                <TextBlock Text="Available scores:" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
+                                                <ItemsControl ItemsSource="{Binding AvailableAbilityScoresForBackground}" Margin="0,0,0,15">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="{Binding}" 
+                                                                    Command="{Binding DataContext.AddBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                     CommandParameter="{Binding}"
-                                                                    Background="#e74c3c" Foreground="White" 
-                                                                    Padding="5,2" BorderThickness="0"/>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        
-                                        <!-- Apply Button -->
-                                        <Button Content="Apply Background" 
-                                                Command="{Binding ApplyBackgroundCommand}"
-                                                Background="#27ae60" Foreground="White" 
-                                                Padding="15,8" Margin="0,15,0,0" BorderThickness="0"
-                                                FontWeight="Bold" FontSize="14"
-                                                IsEnabled="{Binding CanApplyBackgroundSelection}"
-                                                ToolTip="Apply background to character. Uniform ability improvements will be applied automatically."/>
-                                    </StackPanel>
+                                                                    Style="{StaticResource MedievalButtonStyle}"
+                                                                    Margin="5" FontSize="14"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                
+                                                <!-- Current Selections -->
+                                                <TextBlock Text="Current selections:" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
+                                                <ItemsControl ItemsSource="{Binding BackgroundAbilityScoreSelections}" Margin="0,0,0,15">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{StaticResource PanelBlue}" BorderBrush="{StaticResource PrimaryGold}" 
+                                                                   BorderThickness="2" CornerRadius="6" Margin="5" Padding="12">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding AbilityScore}" FontFamily="Garamond" FontWeight="Bold" 
+                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
+                                                                    <TextBlock Text=" +" FontFamily="Garamond" Margin="5,0" 
+                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
+                                                                    <TextBlock Text="{Binding Improvement}" FontFamily="Garamond" FontWeight="Bold" 
+                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
+                                                                    <Button Content="❌" Margin="10,0,0,0"
+                                                                            Command="{Binding DataContext.RemoveBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                            CommandParameter="{Binding}"
+                                                                            Style="{StaticResource MedievalButtonStyle}"
+                                                                            FontSize="10" Padding="6"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                
+                                                <!-- Apply Button -->
+                                                <Button Content="🗡️ Apply Background" 
+                                                        Command="{Binding ApplyBackgroundCommand}"
+                                                        Style="{StaticResource MedievalButtonStyle}"
+                                                        FontSize="16" Padding="20,10"
+                                                        IsEnabled="{Binding CanApplyBackgroundSelection}"
+                                                        ToolTip="Apply background to character. Uniform ability improvements will be applied automatically."/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- Classes Section 
-                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,0,0,20">
-                            <Label Content="Classes" FontWeight="Bold"/>
-                            <Border BorderBrush="#ddd" BorderThickness="1" Padding="10" Background="White">
-                                <StackPanel>-->
-                                    <!-- Current Classes List
-                                    <TextBlock Text="Current Classes:" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <ItemsControl ItemsSource="{Binding CurrentCharacter.ClassLevels}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding ClassName}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="1" Text="Level:" Margin="10,0,5,0" VerticalAlignment="Center"/>
-                                                    <TextBox Grid.Column="2" Text="{Binding Level}" Width="40" 
-                                                            TextAlignment="Center" Padding="2"/>
-                                                    <Button Grid.Column="3" Content="Remove" 
-                                                            Command="{Binding DataContext.RemoveClassCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                            CommandParameter="{Binding}"
-                                                            Background="#e74c3c" Foreground="White" 
-                                                            Padding="5,2" Margin="5,0,0,0" BorderThickness="0"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl> -->
-                                    
-                                    <!-- Add New Class 
-                                    <Separator Margin="0,10"/>
-                                    <TextBlock Text="Add Class:" FontWeight="Bold" Margin="0,5,0,5"/>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox Grid.Column="0" ItemsSource="{Binding Classes}" 
-                                                  SelectedItem="{Binding SelectedClassToAdd}"
-                                                  DisplayMemberPath="Name" Padding="5" Margin="0,0,5,0"/>
-                                        <TextBlock Grid.Column="1" Text="Level:" VerticalAlignment="Center" Margin="5,0"/>
-                                        <TextBox Grid.Column="2" Text="{Binding SelectedLevelToAdd}" 
-                                                Width="40" TextAlignment="Center" Padding="2" Margin="0,0,5,0"/>
-                                        <Button Grid.Column="3" Content="Add" 
-                                                Command="{Binding AddClassCommand}"
-                                                Background="#27ae60" Foreground="White" 
-                                                Padding="10,5" BorderThickness="0"/>
-                                    </Grid> -->
-                                    
-                                    <!-- Total Level Display 
-                                    <TextBlock Text="{Binding CurrentCharacter.Level, StringFormat='Total Level: {0}'}" 
-                                               FontWeight="Bold" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel> -->
-                        
-
-
-                    </Grid>
-                </ScrollViewer>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Border>
             </TabItem>
 
             <!-- Multiclassing Tab -->
