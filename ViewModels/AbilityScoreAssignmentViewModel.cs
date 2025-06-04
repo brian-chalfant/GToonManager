@@ -51,61 +51,37 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
     public int? StrengthAssignment
     {
         get => _assignments.GetValueOrDefault("Strength");
-        set
-        {
-            SetAssignment("Strength", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Strength", value);
     }
 
     public int? DexterityAssignment
     {
         get => _assignments.GetValueOrDefault("Dexterity");
-        set
-        {
-            SetAssignment("Dexterity", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Dexterity", value);
     }
 
     public int? ConstitutionAssignment
     {
         get => _assignments.GetValueOrDefault("Constitution");
-        set
-        {
-            SetAssignment("Constitution", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Constitution", value);
     }
 
     public int? IntelligenceAssignment
     {
         get => _assignments.GetValueOrDefault("Intelligence");
-        set
-        {
-            SetAssignment("Intelligence", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Intelligence", value);
     }
 
     public int? WisdomAssignment
     {
         get => _assignments.GetValueOrDefault("Wisdom");
-        set
-        {
-            SetAssignment("Wisdom", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Wisdom", value);
     }
 
     public int? CharismaAssignment
     {
         get => _assignments.GetValueOrDefault("Charisma");
-        set
-        {
-            SetAssignment("Charisma", value);
-            OnPropertyChanged();
-        }
+        set => SetAssignment("Charisma", value);
     }
 
     public List<int> AvailableScores
@@ -270,18 +246,26 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
             }
         }
         
-        // Simply set the assignment - this allows duplicate scores to be assigned to different abilities
-        _assignments[ability] = value;
-        OnPropertyChanged(nameof(AvailableScores));
-        OnPropertyChanged(nameof(CanApplyAssignments));
-        
-        // Notify all available scores properties have changed
-        OnPropertyChanged(nameof(StrengthAvailableScores));
-        OnPropertyChanged(nameof(DexterityAvailableScores));
-        OnPropertyChanged(nameof(ConstitutionAvailableScores));
-        OnPropertyChanged(nameof(IntelligenceAvailableScores));
-        OnPropertyChanged(nameof(WisdomAvailableScores));
-        OnPropertyChanged(nameof(CharismaAvailableScores));
+        // Only update if the value actually changed
+        if (_assignments[ability] != value)
+        {
+            _assignments[ability] = value;
+            
+            // Notify the specific assignment property that changed
+            OnPropertyChanged($"{ability}Assignment");
+            
+            // Notify dependent properties
+            OnPropertyChanged(nameof(AvailableScores));
+            OnPropertyChanged(nameof(CanApplyAssignments));
+            
+            // Notify all available scores properties have changed
+            OnPropertyChanged(nameof(StrengthAvailableScores));
+            OnPropertyChanged(nameof(DexterityAvailableScores));
+            OnPropertyChanged(nameof(ConstitutionAvailableScores));
+            OnPropertyChanged(nameof(IntelligenceAvailableScores));
+            OnPropertyChanged(nameof(WisdomAvailableScores));
+            OnPropertyChanged(nameof(CharismaAvailableScores));
+        }
     }
 
     private bool CanApplyClassRecommendation()
