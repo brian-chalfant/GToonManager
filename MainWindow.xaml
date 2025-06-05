@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GToonManager.ViewModels"
         xmlns:controls="clr-namespace:GToonManager.Controls"
+        xmlns:converters="clr-namespace:GToonManager.Converters"
         mc:Ignorable="d"
         Title="GToon Manager - Character Creator" 
-        Height="800" Width="1200"
-        WindowState="Maximized"
+        Height="1200" Width="1000"
+        WindowStartupLocation="CenterScreen"
         Background="#f5f5f5">
 
     <Window.DataContext>
@@ -17,6 +18,14 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:AbilityScoreBorderConverter x:Key="AbilityScoreBorderConverter"/>
+        <converters:AbilityScoreBorderThicknessConverter x:Key="AbilityScoreBorderThicknessConverter"/>
+        <converters:AbilityScoreBonusTextConverter x:Key="AbilityScoreBonusTextConverter"/>
+        <converters:AbilityScoreBonusVisibilityConverter x:Key="AbilityScoreBonusVisibilityConverter"/>
+        <converters:AbilityScoreBorderMultiConverter x:Key="AbilityScoreBorderMultiConverter"/>
+        <converters:AbilityScoreBorderThicknessMultiConverter x:Key="AbilityScoreBorderThicknessMultiConverter"/>
+        <converters:AbilityScoreBonusTextMultiConverter x:Key="AbilityScoreBonusTextMultiConverter"/>
+        <converters:AbilityScoreBonusVisibilityMultiConverter x:Key="AbilityScoreBonusVisibilityMultiConverter"/>
     </Window.Resources>
 
     <Window.InputBindings>
@@ -239,111 +248,125 @@
                             </Border>
                             
                             <!-- Content Area -->
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="30">
-                                <StackPanel>
-                                    <!-- Character Name Row (Full Width) -->
-                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
-                                        <StackPanel>
-                                            <TextBlock Text="🏰 Character Name" Style="{StaticResource MedievalLabelStyle}" 
-                                                       FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                            <TextBox Text="{Binding CurrentCharacter.Name}" Style="{StaticResource MedievalTextBoxStyle}" 
-                                                     FontSize="18" FontWeight="Bold" MaxWidth="400"/>
-                                        </StackPanel>
-                                    </Border>
+                            <Grid Grid.Row="1" Margin="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Character Name (Top Left) -->
+                                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource MedievalPanelStyle}" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="🏰 Character Name" Style="{StaticResource MedievalLabelStyle}" 
+                                                   FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                        <TextBox Text="{Binding CurrentCharacter.Name}" Style="{StaticResource MedievalTextBoxStyle}" 
+                                                 FontSize="16" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Border>
 
-                                    <!-- Player Name Row (Full Width) -->
-                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
-                                        <StackPanel>
-                                            <TextBlock Text="👤 Player Name" Style="{StaticResource MedievalLabelStyle}" 
-                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                            <TextBox Text="{Binding CurrentCharacter.PlayerName}" Style="{StaticResource MedievalTextBoxStyle}"
-                                                     MaxWidth="400"/>
-                                        </StackPanel>
-                                    </Border>
+                                <!-- Player Name (Top Right) -->
+                                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource MedievalPanelStyle}" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="👤 Player Name" Style="{StaticResource MedievalLabelStyle}" 
+                                                   FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                        <TextBox Text="{Binding CurrentCharacter.PlayerName}" Style="{StaticResource MedievalTextBoxStyle}"/>
+                                    </StackPanel>
+                                </Border>
 
-                                    <!-- Race & Subrace Row (Full Width) -->
-                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
-                                        <StackPanel>
-                                            <TextBlock Text="🧝 Race &amp; Subrace" Style="{StaticResource MedievalLabelStyle}" 
-                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                            
-                                            <!-- Race Selection -->
-                                            <StackPanel Margin="0,0,0,15">
-                                                <TextBlock Text="Race:" FontFamily="Garamond" FontWeight="Bold" 
-                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" 
-                                                          HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                                <ComboBox ItemsSource="{Binding Races}" 
-                                                          SelectedItem="{Binding CurrentCharacter.Race}"
-                                                          DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
-                                                          MaxWidth="400"/>
-                                            </StackPanel>
-                                            
-                                            <!-- Subrace Selection -->
-                                            <StackPanel>
-                                                <TextBlock Text="Subrace:" FontFamily="Garamond" FontWeight="Bold" 
-                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" 
-                                                          HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                                <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubraces}" 
-                                                          SelectedItem="{Binding CurrentCharacter.Subrace}"
-                                                          DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
-                                                          MaxWidth="400"
-                                                          IsEnabled="{Binding CurrentCharacter.HasSubraces}"/>
-                                            </StackPanel>
+                                <!-- Race & Subrace (Middle Left) -->
+                                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource MedievalPanelStyle}" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="🧝 Race &amp; Subrace" Style="{StaticResource MedievalLabelStyle}" 
+                                                   FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                        
+                                        <!-- Race Selection -->
+                                        <StackPanel Margin="0,0,0,10">
+                                            <TextBlock Text="Race:" FontFamily="Garamond" FontWeight="Bold" 
+                                                      Foreground="{StaticResource PrimaryRed}" FontSize="12" 
+                                                      HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                            <ComboBox ItemsSource="{Binding Races}" 
+                                                      SelectedItem="{Binding CurrentCharacter.Race}"
+                                                      DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"/>
                                         </StackPanel>
-                                    </Border>
-
-                                    <!-- Background Selection Row (Full Width) -->
-                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20" Margin="0,0,0,20">
+                                        
+                                        <!-- Subrace Selection -->
                                         <StackPanel>
-                                            <TextBlock Text="📜 Background" Style="{StaticResource MedievalLabelStyle}" 
-                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                            
-                                            <!-- Current Background Display -->
-                                            <TextBlock Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
-                                                      FontFamily="Garamond" FontWeight="Bold" FontSize="14" 
-                                                      Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,10" TextAlignment="Center"
-                                                      Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            
-                                            <!-- Background Selection -->
-                                            <ComboBox ItemsSource="{Binding Backgrounds}" 
-                                                      SelectedItem="{Binding CurrentCharacter.Background}"
+                                            <TextBlock Text="Subrace:" FontFamily="Garamond" FontWeight="Bold" 
+                                                      Foreground="{StaticResource PrimaryRed}" FontSize="12" 
+                                                      HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                            <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubraces}" 
+                                                      SelectedItem="{Binding CurrentCharacter.Subrace}"
                                                       DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"
-                                                      MaxWidth="400"/>
+                                                      IsEnabled="{Binding CurrentCharacter.HasSubraces}"/>
                                         </StackPanel>
-                                    </Border>
+                                    </StackPanel>
+                                </Border>
 
-                                    <!-- Background Ability Score Selection (Full Width) -->
-                                    <Border Style="{StaticResource MedievalPanelStyle}" Padding="20"
-                                           Visibility="{Binding HasBackgroundAbilityScoreOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <StackPanel>
-                                            <TextBlock Text="⚡ Background Abilities" Style="{StaticResource MedievalLabelStyle}" 
-                                                       FontSize="18" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                            
-                                            <!-- Background Selection Info -->
-                                            <TextBlock Text="{Binding SelectedBackground.Name, StringFormat='Configuring: {0}'}" 
+                                <!-- Background Selection (Middle Right) -->
+                                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource MedievalPanelStyle}" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="📜 Background" Style="{StaticResource MedievalLabelStyle}" 
+                                                   FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                        
+                                        <!-- Current Background Display -->
+                                        <TextBlock Text="{Binding CurrentCharacter.Background.Name, StringFormat='Current: {0}'}" 
+                                                  FontFamily="Garamond" FontWeight="Bold" FontSize="12" 
+                                                  Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,10" TextAlignment="Center"
+                                                  Visibility="{Binding CurrentCharacter.Background, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        
+                                        <!-- Background Selection -->
+                                        <ComboBox ItemsSource="{Binding Backgrounds}" 
+                                                  SelectedItem="{Binding CurrentCharacter.Background}"
+                                                  DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Background Ability Score Selection (Bottom - Full Width) -->
+                                <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource MedievalPanelStyle}" Padding="20"
+                                       Visibility="{Binding HasBackgroundAbilityScoreOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="⚡ Background Abilities Configuration" Style="{StaticResource MedievalLabelStyle}" 
+                                                   FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                        
+                                        <!-- Background Selection Info -->
+                                        <Border Background="{StaticResource PrimaryRed}" BorderBrush="{StaticResource PrimaryGold}" 
+                                               BorderThickness="2" CornerRadius="6" Padding="10" Margin="0,0,0,20">
+                                            <TextBlock Text="{Binding SelectedBackground.Name, StringFormat='Configuring abilities for: {0}'}" 
                                                       FontFamily="Garamond" FontWeight="Bold" FontSize="14" 
-                                                      Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,15" TextAlignment="Center"/>
-                                            
-                                            <!-- Improvement Option Selection -->
-                                            <TextBlock Text="Choose improvement option:" FontFamily="Garamond" FontWeight="Bold" 
+                                                      Foreground="{StaticResource PrimaryGold}" TextAlignment="Center"/>
+                                        </Border>
+                                        
+                                        <!-- Improvement Option Selection -->
+                                        <StackPanel Margin="0,0,0,20">
+                                            <TextBlock Text="Step 1: Choose your improvement option" FontFamily="Garamond" FontWeight="Bold" 
                                                       Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
                                             <ComboBox ItemsSource="{Binding BackgroundAbilityScoreOptions}"
                                                       SelectedItem="{Binding SelectedBackgroundImprovementOption}"
                                                       DisplayMemberPath="Description" Style="{StaticResource MedievalComboBoxStyle}" 
-                                                      MaxWidth="400" Margin="0,0,0,15"/>
+                                                      MaxWidth="500"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Ability Score Selection Area -->
+                                        <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <!-- Description -->
+                                            <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
+                                                      FontFamily="Garamond" FontStyle="Italic" FontSize="12"
+                                                      Foreground="{StaticResource PrimaryRed}" TextAlignment="Center" Margin="0,0,0,20"/>
                                             
-                                            <!-- Ability Score Selections -->
-                                            <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <TextBlock Text="Select ability scores to improve:" FontFamily="Garamond" FontWeight="Bold" 
-                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
-                                                <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
-                                                          FontFamily="Garamond" FontStyle="Italic" FontSize="12"
-                                                          Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,15" TextAlignment="Center"/>
+                                            <!-- Available Ability Scores with Selection Indicators -->
+                                            <StackPanel Margin="0,0,0,20">
+                                                <TextBlock Text="Step 2: Select ability scores to improve" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,5" TextAlignment="Center"/>
+                                                <TextBlock Text="(First selection gets +2, second selection gets +1)" FontFamily="Garamond" FontStyle="Italic" 
+                                                          Foreground="Gray" FontSize="12" Margin="0,0,0,15" TextAlignment="Center"/>
                                                 
-                                                <!-- Available Ability Scores -->
-                                                <TextBlock Text="Available scores:" FontFamily="Garamond" FontWeight="Bold" 
-                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
-                                                <ItemsControl ItemsSource="{Binding AvailableAbilityScoresForBackground}" Margin="0,0,0,15">
+                                                <!-- Available Ability Scores with Border -->
+                                                <ItemsControl ItemsSource="{Binding AvailableAbilityScoresForBackground}">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
                                                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
@@ -351,58 +374,105 @@
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Button Content="{Binding}" 
-                                                                    Command="{Binding DataContext.AddBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                    CommandParameter="{Binding}"
-                                                                    Style="{StaticResource MedievalButtonStyle}"
-                                                                    Margin="5" FontSize="14"/>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                
-                                                <!-- Current Selections -->
-                                                <TextBlock Text="Current selections:" FontFamily="Garamond" FontWeight="Bold" 
-                                                          Foreground="{StaticResource PrimaryRed}" FontSize="14" Margin="0,0,0,10" TextAlignment="Center"/>
-                                                <ItemsControl ItemsSource="{Binding BackgroundAbilityScoreSelections}" Margin="0,0,0,15">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{StaticResource PanelBlue}" BorderBrush="{StaticResource PrimaryGold}" 
-                                                                   BorderThickness="2" CornerRadius="6" Margin="5" Padding="12">
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock Text="{Binding AbilityScore}" FontFamily="Garamond" FontWeight="Bold" 
-                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
-                                                                    <TextBlock Text=" +" FontFamily="Garamond" Margin="5,0" 
-                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
-                                                                    <TextBlock Text="{Binding Improvement}" FontFamily="Garamond" FontWeight="Bold" 
-                                                                              Foreground="{StaticResource PrimaryGold}" FontSize="14"/>
-                                                                    <Button Content="❌" Margin="10,0,0,0"
-                                                                            Command="{Binding DataContext.RemoveBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                            CommandParameter="{Binding}"
-                                                                            Style="{StaticResource MedievalButtonStyle}"
-                                                                            FontSize="10" Padding="6"/>
+                                                            <Border CornerRadius="8" Margin="12" Padding="4">
+                                                                <Border.BorderBrush>
+                                                                    <MultiBinding Converter="{StaticResource AbilityScoreBorderMultiConverter}">
+                                                                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext"/>
+                                                                        <Binding Path="."/>
+                                                                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.BackgroundAbilityScoreSelections"/>
+                                                                    </MultiBinding>
+                                                                </Border.BorderBrush>
+                                                                <Border.BorderThickness>
+                                                                    <MultiBinding Converter="{StaticResource AbilityScoreBorderThicknessMultiConverter}">
+                                                                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext"/>
+                                                                        <Binding Path="."/>
+                                                                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.BackgroundAbilityScoreSelections"/>
+                                                                    </MultiBinding>
+                                                                </Border.BorderThickness>
+                                                                <StackPanel>
+                                                                    <Button 
+                                                                        Content="{Binding}"
+                                                                        Command="{Binding DataContext.AddBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Style="{StaticResource MedievalButtonStyle}"
+                                                                        FontSize="16" Padding="25,15" MinWidth="140"/>
+                                                                    <TextBlock FontFamily="Garamond" FontWeight="Bold" FontSize="14"
+                                                                               Foreground="#2E8B57" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding Converter="{StaticResource AbilityScoreBonusTextMultiConverter}">
+                                                                                <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext"/>
+                                                                                <Binding Path="."/>
+                                                                                <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.BackgroundAbilityScoreSelections"/>
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                        <TextBlock.Visibility>
+                                                                            <MultiBinding Converter="{StaticResource AbilityScoreBonusVisibilityMultiConverter}">
+                                                                                <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext"/>
+                                                                                <Binding Path="."/>
+                                                                                <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.BackgroundAbilityScoreSelections"/>
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Visibility>
+                                                                    </TextBlock>
                                                                 </StackPanel>
                                                             </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                                 
-                                                <!-- Apply Button -->
-                                                <Button Content="🗡️ Apply Background" 
+                                                <!-- Selection Status Display -->
+                                                <Border Background="#E8F4FD" BorderBrush="#3498db" BorderThickness="2" 
+                                                       CornerRadius="8" Padding="15" Margin="0,15,0,0"
+                                                       Visibility="{Binding BackgroundAbilityScoreSelections.Count, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <StackPanel>
+                                                        <TextBlock Text="Current Selections:" FontFamily="Garamond" FontWeight="Bold" 
+                                                                  FontSize="14" Foreground="{StaticResource PrimaryRed}" 
+                                                                  HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                                        <ItemsControl ItemsSource="{Binding BackgroundAbilityScoreSelections}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" 
+                                                                           BorderThickness="2" CornerRadius="6" Margin="5" Padding="12,8">
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <TextBlock Text="{Binding AbilityScore}" FontFamily="Garamond" FontWeight="Bold" 
+                                                                                      Foreground="{StaticResource PrimaryRed}" FontSize="16"/>
+                                                                            <TextBlock Text=" +" FontFamily="Garamond" Margin="5,0" 
+                                                                                      Foreground="{StaticResource PrimaryRed}" FontSize="16"/>
+                                                                            <TextBlock Text="{Binding Improvement}" FontFamily="Garamond" FontWeight="Bold" 
+                                                                                      Foreground="#2E8B57" FontSize="18"/>
+                                                                            <Button Content="✖" Margin="10,0,0,0"
+                                                                                    Command="{Binding DataContext.RemoveBackgroundAbilityScoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                    CommandParameter="{Binding}"
+                                                                                    Background="#e74c3c" Foreground="White"
+                                                                                    BorderThickness="0" Padding="6,4" FontSize="10"
+                                                                                    ToolTip="Remove this selection"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                            
+                                            <!-- Apply Button -->
+                                            <Border Background="{StaticResource PrimaryGold}" BorderBrush="{StaticResource PrimaryRed}" 
+                                                   BorderThickness="2" CornerRadius="8" Padding="2">
+                                                <Button Content="🗡️ Apply Background Abilities" 
                                                         Command="{Binding ApplyBackgroundCommand}"
                                                         Style="{StaticResource MedievalButtonStyle}"
-                                                        FontSize="16" Padding="20,10"
+                                                        FontSize="16" Padding="25,12" Width="300"
                                                         IsEnabled="{Binding CanApplyBackgroundSelection}"
-                                                        ToolTip="Apply background to character. Uniform ability improvements will be applied automatically."/>
-                                            </StackPanel>
+                                                        ToolTip="Apply selected background abilities to your character"/>
+                                            </Border>
                                         </StackPanel>
-                                    </Border>
-                                </StackPanel>
-                            </ScrollViewer>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </Grid>
                     </Border>
                 </Border>

@@ -47,6 +47,14 @@ public class MainViewModel : INotifyPropertyChanged
         // Subscribe to character property changes
         _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
 
+        // Ensure UI updates when BackgroundAbilityScoreSelections changes
+        BackgroundAbilityScoreSelections.CollectionChanged += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"BackgroundAbilityScoreSelections.CollectionChanged fired: Action={e.Action}");
+            OnPropertyChanged(nameof(BackgroundAbilityScoreSelections));
+            System.Diagnostics.Debug.WriteLine("Raised PropertyChanged for BackgroundAbilityScoreSelections");
+        };
+
         InitializeData();
         InitializeCommands();
         
@@ -1200,20 +1208,44 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (parameter is string abilityScore && SelectedBackgroundImprovementOption != null)
         {
-            // Determine what improvement amount to add based on current selections and option
+            System.Diagnostics.Debug.WriteLine($"AddBackgroundAbilityScore called with: '{abilityScore}'");
+            
+            // If already selected, remove it (toggle off)
+            var existing = BackgroundAbilityScoreSelections.FirstOrDefault(
+                s => string.Equals(s.AbilityScore, abilityScore, StringComparison.OrdinalIgnoreCase));
+            if (existing != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Removing existing selection: '{existing.AbilityScore}' +{existing.Improvement}");
+                BackgroundAbilityScoreSelections.Remove(existing);
+                OnPropertyChanged(nameof(CanApplyBackgroundSelection));
+                StatusMessage = $"Removed selection for {abilityScore}";
+                return;
+            }
+
+            // Otherwise, add as before
             var availableImprovements = GetAvailableImprovementsForBackground();
+            System.Diagnostics.Debug.WriteLine($"Available improvements: [{string.Join(", ", availableImprovements)}]");
             if (availableImprovements.Count > 0)
             {
                 var improvement = availableImprovements.First();
+                System.Diagnostics.Debug.WriteLine($"Adding new selection: '{abilityScore}' +{improvement}");
                 BackgroundAbilityScoreSelections.Add(new BackgroundAbilityScoreSelection
                 {
                     AbilityScore = abilityScore,
                     Improvement = improvement
                 });
-                
+
                 OnPropertyChanged(nameof(CanApplyBackgroundSelection));
                 StatusMessage = $"Added +{improvement} to {abilityScore}";
             }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("No available improvements!");
+            }
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"AddBackgroundAbilityScore invalid parameters: abilityScore='{parameter}', hasOption={SelectedBackgroundImprovementOption != null}");
         }
     }
 
@@ -1226,8 +1258,6 @@ public class MainViewModel : INotifyPropertyChanged
             StatusMessage = $"Removed +{selection.Improvement} from {selection.AbilityScore}";
         }
     }
-
-
 
     private void AutoApplyUniformDistribution()
     {
@@ -1334,6 +1364,30 @@ public class MainViewModel : INotifyPropertyChanged
                 }
             }
         }
+    }
+
+    // --- Ability Score Selection Helpers for XAML ---
+    public int? GetAbilityScoreBonus(string abilityScore)
+    {
+        System.Diagnostics.Debug.WriteLine($"GetAbilityScoreBonus called with: '{abilityScore}'");
+        System.Diagnostics.Debug.WriteLine($"Current selections count: {BackgroundAbilityScoreSelections.Count}");
+        foreach (var selection in BackgroundAbilityScoreSelections)
+        {
+            System.Diagnostics.Debug.WriteLine($"  Selection: '{selection.AbilityScore}' -> +{selection.Improvement}");
+        }
+        
+        var sel = BackgroundAbilityScoreSelections.FirstOrDefault(s => string.Equals(s.AbilityScore, abilityScore, StringComparison.OrdinalIgnoreCase));
+        var result = sel?.Improvement;
+        System.Diagnostics.Debug.WriteLine($"GetAbilityScoreBonus result: {result}");
+        return result;
+    }
+
+    public bool IsAbilityScoreSelected(string abilityScore)
+    {
+        System.Diagnostics.Debug.WriteLine($"IsAbilityScoreSelected called with: '{abilityScore}'");
+        var result = BackgroundAbilityScoreSelections.Any(s => string.Equals(s.AbilityScore, abilityScore, StringComparison.OrdinalIgnoreCase));
+        System.Diagnostics.Debug.WriteLine($"IsAbilityScoreSelected result: {result}");
+        return result;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
