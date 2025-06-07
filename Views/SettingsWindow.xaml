@@ -6,39 +6,142 @@
         xmlns:vm="clr-namespace:GToonManager.ViewModels"
         xmlns:models="clr-namespace:GToonManager.Models"
         mc:Ignorable="d"
-        Title="Settings - GToon Manager" 
+        Title="⚔️ Settings - GToon Manager ⚔️" 
         Height="650" Width="800"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="#f5f5f5">
+        Background="#F5E6C8">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
+        <!-- Medieval Theme Resources -->
+        <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+        <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+        
         <!-- Style for section headers -->
         <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#2c3e50"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
         </Style>
         
         <!-- Style for labels -->
         <Style x:Key="SettingLabelStyle" TargetType="Label">
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,10,0"/>
         </Style>
         
         <!-- Style for controls -->
         <Style x:Key="SettingControlStyle" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="0,8"/>
+        </Style>
+        
+        <!-- Medieval TextBox Style -->
+        <Style x:Key="MedievalTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                          HorizontalScrollBarVisibility="Hidden" 
+                                          VerticalScrollBarVisibility="Hidden"
+                                          Padding="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#D4AF37" BlurRadius="6" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFD700"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Medieval ComboBox Style -->
+        <Style x:Key="MedievalComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8"/>
             <Setter Property="Margin" Value="0,5"/>
         </Style>
         
-        <!-- Style for input controls -->
-        <Style x:Key="SettingInputStyle" TargetType="Control">
-            <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Padding" Value="5"/>
+        <!-- Medieval CheckBox Style -->
+        <Style x:Key="MedievalCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+        
+        <!-- Medieval Button Style -->
+        <Style x:Key="MedievalButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFD700"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -50,308 +153,362 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#2c3e50" Padding="20">
-            <StackPanel>
-                <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="Configure GToon Manager preferences" FontSize="12" Foreground="#bdc3c7"/>
-            </StackPanel>
+        <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="0,0,0,3">
+            <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" CornerRadius="6" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="⚙️ Settings ⚙️" FontSize="28" FontWeight="Bold" 
+                               Foreground="{StaticResource PrimaryGold}" FontFamily="Garamond" HorizontalAlignment="Center"/>
+                    <TextBlock Text="🏰 Configure GToon Manager Preferences 🏰" FontSize="14" 
+                               Foreground="{StaticResource PrimaryGold}" FontFamily="Garamond" 
+                               HorizontalAlignment="Center" Opacity="0.9" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
         </Border>
 
         <!-- Settings Content -->
-        <TabControl Grid.Row="1" Margin="20" Background="White">
+        <TabControl Grid.Row="1" Margin="20" Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2">
             
             <!-- Character Creation Tab -->
-            <TabItem Header="Character Creation" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        
-                        <!-- Ability Score Generation -->
-                        <TextBlock Text="Ability Score Generation" Style="{StaticResource SectionHeaderStyle}"/>
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Label Grid.Row="0" Grid.Column="0" Content="Method:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.AbilityScoreMethod}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:AbilityScoreGenerationMethod>StandardArray</models:AbilityScoreGenerationMethod>
-                                    <models:AbilityScoreGenerationMethod>PointBuy</models:AbilityScoreGenerationMethod>
-                                    <models:AbilityScoreGenerationMethod>FourD6DropLowest</models:AbilityScoreGenerationMethod>
-                                    <models:AbilityScoreGenerationMethod>FreeEntry</models:AbilityScoreGenerationMethod>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                            <Label Grid.Row="1" Grid.Column="0" Content="Point Buy Points:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.PointBuyPoints}"
-                                     Style="{StaticResource SettingInputStyle}"
-                                     IsEnabled="{Binding CurrentSettings.AbilityScoreMethod, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            
-                            <Label Grid.Row="2" Grid.Column="0" Content="Reroll Limit:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.RerollLimit}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                        </Grid>
+            <TabItem Header="⚔️ Character Creation" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
+                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="25">
+                                
+                                <!-- Ability Score Generation -->
+                                <TextBlock Text="🎲 Ability Score Generation" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Method:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.AbilityScoreMethod}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}">
+                                            <ComboBox.Items>
+                                                <models:AbilityScoreGenerationMethod>StandardArray</models:AbilityScoreGenerationMethod>
+                                                <models:AbilityScoreGenerationMethod>PointBuy</models:AbilityScoreGenerationMethod>
+                                                <models:AbilityScoreGenerationMethod>FourD6DropLowest</models:AbilityScoreGenerationMethod>
+                                                <models:AbilityScoreGenerationMethod>FreeEntry</models:AbilityScoreGenerationMethod>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Point Buy Points:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.PointBuyPoints}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                        
+                                        <Label Grid.Row="2" Grid.Column="0" Content="Reroll Limit:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.RerollLimit}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                    </Grid>
+                                </Border>
 
-                        <!-- Default Character Options -->
-                        <TextBlock Text="Default Character Options" Style="{StaticResource SectionHeaderStyle}"/>
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Label Grid.Row="0" Grid.Column="0" Content="Starting Level:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.DefaultStartingLevel}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                            
-                            <Label Grid.Row="1" Grid.Column="0" Content="Hit Point Calculation:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.HitPointCalculation}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:HitPointCalculationMethod>Average</models:HitPointCalculationMethod>
-                                    <models:HitPointCalculationMethod>Rolled</models:HitPointCalculationMethod>
-                                    <models:HitPointCalculationMethod>Maximum</models:HitPointCalculationMethod>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                            <Label Grid.Row="2" Grid.Column="0" Content="Starting Equipment:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="2" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.StartingEquipment}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:StartingEquipmentMethod>ByClassAndBackground</models:StartingEquipmentMethod>
-                                    <models:StartingEquipmentMethod>StartingGold</models:StartingEquipmentMethod>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                            <Label Grid.Row="3" Grid.Column="0" Content="Variant Rules:" Style="{StaticResource SettingLabelStyle}"/>
-                            <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource SettingControlStyle}">
-                                <CheckBox Content="Use Variant Human" IsChecked="{Binding CurrentSettings.UseVariantHuman}" Margin="0,2"/>
-                                <CheckBox Content="Use Optional Class Features" IsChecked="{Binding CurrentSettings.UseOptionalClassFeatures}" Margin="0,2"/>
+                                <!-- Default Character Options -->
+                                <TextBlock Text="🏰 Default Character Options" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Starting Level:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.DefaultStartingLevel}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Hit Point Calculation:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="1" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.HitPointCalculation}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}">
+                                            <ComboBox.Items>
+                                                <models:HitPointCalculationMethod>Average</models:HitPointCalculationMethod>
+                                                <models:HitPointCalculationMethod>Rolled</models:HitPointCalculationMethod>
+                                                <models:HitPointCalculationMethod>Maximum</models:HitPointCalculationMethod>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                        
+                                        <Label Grid.Row="2" Grid.Column="0" Content="Starting Equipment:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="2" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.StartingEquipment}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}">
+                                            <ComboBox.Items>
+                                                <models:StartingEquipmentMethod>ByClassAndBackground</models:StartingEquipmentMethod>
+                                                <models:StartingEquipmentMethod>StartingGold</models:StartingEquipmentMethod>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                        
+                                        <Label Grid.Row="3" Grid.Column="0" Content="Variant Rules:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource SettingControlStyle}">
+                                            <CheckBox Content="Use Variant Human" IsChecked="{Binding CurrentSettings.UseVariantHuman}" 
+                                                      Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                            <CheckBox Content="Use Optional Class Features" IsChecked="{Binding CurrentSettings.UseOptionalClassFeatures}" 
+                                                      Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
             </TabItem>
 
             <!-- Data Sources Tab -->
-            <TabItem Header="Data Sources" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        
-                        <!-- Content Sources -->
-                        <TextBlock Text="Content Sources" Style="{StaticResource SectionHeaderStyle}"/>
-                        <StackPanel Margin="0,0,0,20">
-                            <CheckBox Content="Enable Core Books (PHB, DMG, MM)" 
-                                      IsChecked="{Binding CurrentSettings.EnableCoreBooks}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                            <CheckBox Content="Enable Expansion Books (Xanathar&apos;s, Tasha&apos;s, etc.)" 
-                                      IsChecked="{Binding CurrentSettings.EnableExpansionBooks}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                            <CheckBox Content="Enable Homebrew Content" 
-                                      IsChecked="{Binding CurrentSettings.EnableHomebrewContent}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                        </StackPanel>
+            <TabItem Header="📚 Data Sources" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
+                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="25">
+                                
+                                <!-- Content Sources -->
+                                <TextBlock Text="📖 Content Sources" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <StackPanel>
+                                        <CheckBox Content="Enable Core Books (PHB, DMG, MM)" 
+                                                  IsChecked="{Binding CurrentSettings.EnableCoreBooks}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        <CheckBox Content="Enable Expansion Books (Xanathar's, Tasha's, etc.)" 
+                                                  IsChecked="{Binding CurrentSettings.EnableExpansionBooks}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        <CheckBox Content="Enable Homebrew Content" 
+                                                  IsChecked="{Binding CurrentSettings.EnableHomebrewContent}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                    </StackPanel>
+                                </Border>
 
-                        <!-- Homebrew Settings -->
-                        <TextBlock Text="Homebrew Settings" Style="{StaticResource SectionHeaderStyle}"/>
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Label Grid.Row="0" Grid.Column="0" Content="Content Path:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.HomebrewContentPath}"
-                                     Style="{StaticResource SettingInputStyle}"
-                                     IsEnabled="{Binding CurrentSettings.EnableHomebrewContent}"/>
-                            <Button Grid.Row="0" Grid.Column="2" Content="Browse..." 
-                                    Command="{Binding BrowseHomebrewPathCommand}"
-                                    Style="{StaticResource SettingInputStyle}"
-                                    IsEnabled="{Binding CurrentSettings.EnableHomebrewContent}"
-                                    Margin="5,5,0,5"/>
-                            
-                            <Label Grid.Row="1" Grid.Column="0" Content="Data Validation:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.DataValidationLevel}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:DataValidationLevel>StrictOfficial</models:DataValidationLevel>
-                                    <models:DataValidationLevel>AllowHomebrew</models:DataValidationLevel>
-                                </ComboBox.Items>
-                            </ComboBox>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+                                <!-- Homebrew Settings -->
+                                <TextBlock Text="🏠 Homebrew Settings" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Content Path:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.HomebrewContentPath}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"
+                                                 IsEnabled="{Binding CurrentSettings.EnableHomebrewContent}"/>
+                                        <Button Grid.Row="0" Grid.Column="2" Content="📂 Browse..." 
+                                                Command="{Binding BrowseHomebrewPathCommand}"
+                                                Style="{StaticResource MedievalButtonStyle}"
+                                                IsEnabled="{Binding CurrentSettings.EnableHomebrewContent}"/>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Data Validation:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="1" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.DataValidationLevel}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                                  IsEnabled="{Binding CurrentSettings.EnableHomebrewContent}">
+                                            <ComboBox.Items>
+                                                <models:DataValidationLevel>StrictOfficial</models:DataValidationLevel>
+                                                <models:DataValidationLevel>AllowHomebrew</models:DataValidationLevel>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
             </TabItem>
 
             <!-- Export Settings Tab -->
-            <TabItem Header="Export Settings" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        
-                        <!-- PDF Export Settings -->
-                        <TextBlock Text="PDF Export Settings" Style="{StaticResource SectionHeaderStyle}"/>
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Label Grid.Row="0" Grid.Column="0" Content="Character Sheet Style:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.CharacterSheetStyle}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:CharacterSheetStyle>OfficialDnD</models:CharacterSheetStyle>
-                                    <models:CharacterSheetStyle>Custom</models:CharacterSheetStyle>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                            <Label Grid.Row="1" Grid.Column="0" Content="Include Sections:" Style="{StaticResource SettingLabelStyle}"/>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingControlStyle}">
-                                <CheckBox Content="Include Spell Lists" IsChecked="{Binding CurrentSettings.IncludeSpellLists}" Margin="0,2"/>
-                                <CheckBox Content="Include Equipment Details" IsChecked="{Binding CurrentSettings.IncludeEquipmentDetails}" Margin="0,2"/>
-                                <CheckBox Content="Include Backstory" IsChecked="{Binding CurrentSettings.IncludeBackstory}" Margin="0,2"/>
+            <TabItem Header="📤 Export Settings" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
+                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="25">
+                                
+                                <!-- PDF Export Settings -->
+                                <TextBlock Text="📄 PDF Export Settings" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Character Sheet Style:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.CharacterSheetStyle}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}">
+                                            <ComboBox.Items>
+                                                <models:CharacterSheetStyle>OfficialDnD</models:CharacterSheetStyle>
+                                                <models:CharacterSheetStyle>Custom</models:CharacterSheetStyle>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Include Sections:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <StackPanel Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingControlStyle}">
+                                            <CheckBox Content="Include Spell Lists" IsChecked="{Binding CurrentSettings.IncludeSpellLists}" 
+                                                      Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                            <CheckBox Content="Include Equipment Details" IsChecked="{Binding CurrentSettings.IncludeEquipmentDetails}" 
+                                                      Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                            <CheckBox Content="Include Backstory" IsChecked="{Binding CurrentSettings.IncludeBackstory}" 
+                                                      Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        </StackPanel>
+                                        
+                                        <Label Grid.Row="2" Grid.Column="0" Content="PDF Compression (1-9):" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.PdfCompressionLevel}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
-                            
-                            <Label Grid.Row="2" Grid.Column="0" Content="PDF Compression (1-9):" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.PdfCompressionLevel}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
             </TabItem>
 
             <!-- Interface Tab -->
-            <TabItem Header="Interface" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        
-                        <!-- User Interface Settings -->
-                        <TextBlock Text="User Interface" Style="{StaticResource SectionHeaderStyle}"/>
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Label Grid.Row="0" Grid.Column="0" Content="Theme:" Style="{StaticResource SettingLabelStyle}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" 
-                                      SelectedItem="{Binding CurrentSettings.Theme}"
-                                      Style="{StaticResource SettingInputStyle}">
-                                <ComboBox.Items>
-                                    <models:Theme>Light</models:Theme>
-                                    <models:Theme>Dark</models:Theme>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                            <Label Grid.Row="1" Grid.Column="0" Content="Font Size:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.FontSize}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                            
-                            <Label Grid.Row="2" Grid.Column="0" Content="Auto-save (minutes):" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.AutoSaveInterval}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                            
-                            <Label Grid.Row="3" Grid.Column="0" Content="Backup Location:" Style="{StaticResource SettingLabelStyle}"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" 
-                                     Text="{Binding CurrentSettings.BackupLocation}"
-                                     Style="{StaticResource SettingInputStyle}"/>
-                            <Button Grid.Row="3" Grid.Column="2" Content="Browse..." 
-                                    Command="{Binding BrowseBackupLocationCommand}"
-                                    Style="{StaticResource SettingInputStyle}"
-                                    Margin="5,5,0,5"/>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+            <TabItem Header="🎨 Interface" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
+                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="25">
+                                
+                                <!-- User Interface Settings -->
+                                <TextBlock Text="🖥️ User Interface" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Theme:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" 
+                                                  SelectedItem="{Binding CurrentSettings.Theme}"
+                                                  Style="{StaticResource MedievalComboBoxStyle}">
+                                            <ComboBox.Items>
+                                                <models:Theme>Light</models:Theme>
+                                                <models:Theme>Dark</models:Theme>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Font Size:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.FontSize}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                        
+                                        <Label Grid.Row="2" Grid.Column="0" Content="Auto-save (minutes):" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.AutoSaveInterval}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                        
+                                        <Label Grid.Row="3" Grid.Column="0" Content="Backup Location:" Style="{StaticResource SettingLabelStyle}"/>
+                                        <TextBox Grid.Row="3" Grid.Column="1" 
+                                                 Text="{Binding CurrentSettings.BackupLocation}"
+                                                 Style="{StaticResource MedievalTextBoxStyle}"/>
+                                        <Button Grid.Row="3" Grid.Column="2" Content="📂 Browse..." 
+                                                Command="{Binding BrowseBackupLocationCommand}"
+                                                Style="{StaticResource MedievalButtonStyle}"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
             </TabItem>
 
             <!-- Automation Tab -->
-            <TabItem Header="Automation" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        
-                        <!-- Calculations & Automation -->
-                        <TextBlock Text="Calculations &amp; Automation" Style="{StaticResource SectionHeaderStyle}"/>
-                        <StackPanel Margin="0,0,0,20">
-                            <CheckBox Content="Auto-calculate ability modifiers" 
-                                      IsChecked="{Binding CurrentSettings.AutoCalculateModifiers}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                            <CheckBox Content="Auto-apply racial ability bonuses" 
-                                      IsChecked="{Binding CurrentSettings.AutoApplyRacialBonuses}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                            <CheckBox Content="Auto-update proficiency bonus" 
-                                      IsChecked="{Binding CurrentSettings.AutoUpdateProficiencyBonus}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                            <CheckBox Content="Enable spell slot tracking for multiclass" 
-                                      IsChecked="{Binding CurrentSettings.EnableSpellSlotTracking}" 
-                                      Style="{StaticResource SettingInputStyle}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </ScrollViewer>
+            <TabItem Header="🤖 Automation" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
+                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="25">
+                                
+                                <!-- Calculations & Automation -->
+                                <TextBlock Text="⚙️ Calculations &amp; Automation" Style="{StaticResource SectionHeaderStyle}"/>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                        CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                                    <StackPanel>
+                                        <CheckBox Content="Auto-calculate ability modifiers" 
+                                                  IsChecked="{Binding CurrentSettings.AutoCalculateModifiers}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        <CheckBox Content="Auto-apply racial ability bonuses" 
+                                                  IsChecked="{Binding CurrentSettings.AutoApplyRacialBonuses}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        <CheckBox Content="Auto-update proficiency bonus" 
+                                                  IsChecked="{Binding CurrentSettings.AutoUpdateProficiencyBonus}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                        <CheckBox Content="Enable spell slot tracking for multiclass" 
+                                                  IsChecked="{Binding CurrentSettings.EnableSpellSlotTracking}" 
+                                                  Style="{StaticResource MedievalCheckBoxStyle}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
             </TabItem>
         </TabControl>
 
         <!-- Button Panel -->
-        <Border Grid.Row="2" Background="#ecf0f1" Padding="20" BorderBrush="#bdc3c7" BorderThickness="0,1,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Reset to Defaults" 
-                        Command="{Binding ResetToDefaultsCommand}"
-                        Background="#e74c3c" Foreground="White" 
-                        Padding="15,8" Margin="0,0,10,0" 
-                        BorderThickness="0" FontWeight="Bold"/>
-                <Button Content="Cancel" 
-                        Command="{Binding CancelCommand}"
-                        Background="#95a5a6" Foreground="White" 
-                        Padding="15,8" Margin="0,0,10,0" 
-                        BorderThickness="0" FontWeight="Bold"/>
-                <Button Content="{Binding ApplyButtonText}" 
-                        Command="{Binding ApplyCommand}"
-                        Background="#27ae60" Foreground="White" 
-                        Padding="15,8" Margin="0" 
-                        BorderThickness="0" FontWeight="Bold"/>
-            </StackPanel>
+        <Border Grid.Row="2" Background="{StaticResource PrimaryRed}" Padding="20" 
+                BorderBrush="{StaticResource PrimaryGold}" BorderThickness="0,3,0,0">
+            <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" CornerRadius="6" Padding="15">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="🔄 Reset to Defaults" 
+                            Command="{Binding ResetToDefaultsCommand}"
+                            Style="{StaticResource MedievalButtonStyle}"
+                            Background="#8B0000" Margin="0,0,10,0"/>
+                    <Button Content="❌ Cancel" 
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource MedievalButtonStyle}"
+                            Background="#696969" Margin="0,0,10,0"/>
+                    <Button Content="{Binding ApplyButtonText}" 
+                            Command="{Binding ApplyCommand}"
+                            Style="{StaticResource MedievalButtonStyle}"
+                            Background="#228B22" Margin="0"/>
+                </StackPanel>
+            </Border>
         </Border>
     </Grid>
 </Window> 

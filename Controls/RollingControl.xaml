@@ -3,49 +3,110 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <!-- Medieval Theme Resources -->
+        <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+        
+        <!-- Medieval Button Style -->
+        <Style TargetType="Button" x:Key="MedievalButtonStyle">
+            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#D4AF37" BlurRadius="8" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFD700"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Medieval TextBlock Style -->
+        <Style TargetType="TextBlock" x:Key="MedievalTextStyle">
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </UserControl.Resources>
     
-    <StackPanel>
-        <TextBlock Text="Roll for Ability Scores" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-        <TextBlock Text="{Binding MethodDescription}" TextWrapping="Wrap" Margin="0,0,0,20"/>
-        
-        <!-- Roll Button -->
-        <Button Content="Roll Scores" Command="{Binding GenerateScoresCommand}"
-                Background="#007bff" Foreground="White" FontWeight="Bold"
-                Padding="20,10" Margin="0,0,0,20" BorderThickness="0"/>
-        
-        <!-- Rolled Scores Display -->
-        <StackPanel Visibility="{Binding HasRolledScores, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <TextBlock Text="Rolled Scores:" FontWeight="Bold" Margin="0,0,0,10"/>
-            <ItemsControl ItemsSource="{Binding RolledScores}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="#e9ecef" BorderBrush="#ced4da" BorderThickness="1" 
-                               Margin="5" Padding="15,10" MinWidth="60">
-                            <TextBlock Text="{Binding}" FontSize="20" FontWeight="Bold" 
-                                      HorizontalAlignment="Center"/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            
-            <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                <TextBlock Text="{Binding TotalPoints, StringFormat='Total: \{0\} points'}" 
-                          FontWeight="Bold" Margin="0,0,20,0"/>
-                <Button Content="Reroll" Command="{Binding RerollCommand}"
-                        Background="#ffc107" Foreground="Black" FontWeight="Bold"
-                        Padding="15,8" BorderThickness="0"
-                        Visibility="{Binding CanReroll, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+        <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+            <StackPanel Margin="20">
+                <TextBlock Text="🎲 Roll for Ability Scores 🎲" FontSize="20" FontWeight="Bold" 
+                           Style="{StaticResource MedievalTextStyle}" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                <TextBlock Text="{Binding MethodDescription}" TextWrapping="Wrap" 
+                           Style="{StaticResource MedievalTextStyle}" FontSize="14" FontWeight="SemiBold"
+                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <!-- Roll Button -->
+                <Button Content="⚔️ Roll Scores ⚔️" Command="{Binding GenerateScoresCommand}"
+                        Style="{StaticResource MedievalButtonStyle}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <!-- Rolled Scores Display -->
+                <StackPanel Visibility="{Binding HasRolledScores, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="🏆 Rolled Scores:" FontWeight="Bold" Style="{StaticResource MedievalTextStyle}" 
+                               FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <ItemsControl ItemsSource="{Binding RolledScores}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                       Margin="8" Padding="15,10" MinWidth="60" CornerRadius="6">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#D4AF37" BlurRadius="4" ShadowDepth="2"/>
+                                    </Border.Effect>
+                                    <TextBlock Text="{Binding}" FontSize="20" FontWeight="Bold" 
+                                              FontFamily="Garamond" Foreground="{StaticResource PrimaryRed}"
+                                              HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                        <TextBlock Text="{Binding TotalPoints, StringFormat='💰 Total: \{0\} points'}" 
+                                  FontWeight="Bold" Style="{StaticResource MedievalTextStyle}" FontSize="16" Margin="0,0,20,0"/>
+                        <Button Content="🔄 Reroll" Command="{Binding RerollCommand}"
+                                Style="{StaticResource MedievalButtonStyle}" Background="#B8860B" Padding="15,8"
+                                Visibility="{Binding CanReroll, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- Assignment Interface -->
+                <ContentPresenter Content="{Binding AssignmentViewModel}" Margin="0,20,0,0"
+                                 Visibility="{Binding AssignmentViewModel, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </StackPanel>
-        </StackPanel>
-        
-        <!-- Assignment Interface -->
-        <ContentPresenter Content="{Binding AssignmentViewModel}" Margin="0,20,0,0"
-                         Visibility="{Binding AssignmentViewModel, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-    </StackPanel>
+        </Border>
+    </Border>
 </UserControl> 

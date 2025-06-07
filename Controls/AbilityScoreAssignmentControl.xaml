@@ -10,142 +10,233 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
         <converters:NullableIntToStringConverter x:Key="NullableIntToStringConverter"/>
+        
+        <!-- Medieval Theme Resources -->
+        <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+        
+        <!-- Medieval Button Style -->
+        <Style TargetType="Button" x:Key="MedievalButtonStyle">
+            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#D4AF37" BlurRadius="8" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFD700"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Medieval ComboBox Style -->
+        <Style TargetType="ComboBox" x:Key="MedievalComboBoxStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+        
+        <!-- Medieval TextBlock Style -->
+        <Style TargetType="TextBlock" x:Key="MedievalTextStyle">
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </UserControl.Resources>
     
-    <StackPanel>
-        <TextBlock Text="Assign Ability Scores" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
-        
-        <!-- Class Recommendation Section -->
-        <Border Background="#e3f2fd" BorderBrush="#2196f3" BorderThickness="1" Padding="15" Margin="0,0,0,20"
-                Visibility="{Binding HasClassRecommendation, Converter={StaticResource BoolToVisConverter}}">
-            <StackPanel>
-                <TextBlock Text="{Binding ClassRecommendationText}" FontWeight="Bold" Margin="0,0,0,10"/>
-                <Button Content="Apply Class Recommendation" Command="{Binding ApplyClassRecommendationCommand}"
-                        Background="#2196f3" Foreground="White" FontWeight="Bold"
-                        Padding="15,8" BorderThickness="0"/>
-            </StackPanel>
-        </Border>
-        
-        <!-- Available Scores Display -->
-        <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" Padding="15" Margin="0,0,0,20">
-            <StackPanel>
-                <TextBlock Text="Available Scores:" FontWeight="Bold" Margin="0,0,0,10"/>
-                <ItemsControl ItemsSource="{Binding AvailableScores}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="#28a745" Margin="3" Padding="10,5">
-                                <TextBlock Text="{Binding}" Foreground="White" FontWeight="Bold" FontSize="16"/>
+    <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
+        <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+            <StackPanel Margin="20">
+                <TextBlock Text="⚔️ Assign Ability Scores ⚔️" FontSize="20" FontWeight="Bold" 
+                           Style="{StaticResource MedievalTextStyle}" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                
+                <!-- Class Recommendation Section -->
+                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                        CornerRadius="8" Padding="20" Margin="0,0,0,25"
+                        Visibility="{Binding HasClassRecommendation, Converter={StaticResource BoolToVisConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ClassRecommendationText}" FontWeight="Bold" 
+                                   Style="{StaticResource MedievalTextStyle}" FontSize="14" Margin="0,0,0,15"/>
+                        <Button Content="⚡ Apply Class Recommendation" Command="{Binding ApplyClassRecommendationCommand}"
+                                Style="{StaticResource MedievalButtonStyle}" Background="#228B22" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Available Scores Display -->
+                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                        CornerRadius="8" Padding="20" Margin="0,0,0,25">
+                    <StackPanel>
+                        <TextBlock Text="💎 Available Scores:" FontWeight="Bold" Style="{StaticResource MedievalTextStyle}" 
+                                   FontSize="16" Margin="0,0,0,15"/>
+                        <ItemsControl ItemsSource="{Binding AvailableScores}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource PrimaryRed}" BorderBrush="{StaticResource PrimaryGold}" 
+                                            BorderThickness="2" Margin="5" Padding="12,8" CornerRadius="6">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#D4AF37" BlurRadius="4" ShadowDepth="2"/>
+                                        </Border.Effect>
+                                        <TextBlock Text="{Binding}" Foreground="{StaticResource PrimaryGold}" 
+                                                   FontWeight="Bold" FontSize="18" FontFamily="Garamond"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="🏆 All scores have been assigned" FontStyle="Italic" Style="{StaticResource MedievalTextStyle}" 
+                                   FontSize="14" HorizontalAlignment="Center"
+                                   Visibility="{Binding AvailableScores.Count, Converter={StaticResource CountToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Ability Score Assignment Grid -->
+                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                        CornerRadius="8" Padding="20" Margin="0,0,0,25">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Left Column -->
+                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                            <!-- Strength -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="💪 Strength:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding StrengthAvailableScores}" 
+                                              SelectedItem="{Binding StrengthAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
                             </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <TextBlock Text="All scores have been assigned" FontStyle="Italic" Foreground="Gray" 
-                           Visibility="{Binding AvailableScores.Count, Converter={StaticResource CountToVisibilityConverter}}"/>
+                            
+                            <!-- Dexterity -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="🏹 Dexterity:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding DexterityAvailableScores}" 
+                                              SelectedItem="{Binding DexterityAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Constitution -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="🛡️ Constitution:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ConstitutionAvailableScores}" 
+                                              SelectedItem="{Binding ConstitutionAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- Right Column -->
+                        <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                            <!-- Intelligence -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="📚 Intelligence:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding IntelligenceAvailableScores}" 
+                                              SelectedItem="{Binding IntelligenceAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Wisdom -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="🦉 Wisdom:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding WisdomAvailableScores}" 
+                                              SelectedItem="{Binding WisdomAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Charisma -->
+                            <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                    BorderThickness="1" Margin="0,0,0,15" Padding="15" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="👑 Charisma:" Style="{StaticResource MedievalTextStyle}" 
+                                               VerticalAlignment="Center" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding CharismaAvailableScores}" 
+                                              SelectedItem="{Binding CharismaAssignment}" Style="{StaticResource MedievalComboBoxStyle}"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="🗑️ Clear All" Command="{Binding ClearAssignmentsCommand}"
+                            Style="{StaticResource MedievalButtonStyle}" Background="#8B0000"/>
+                </StackPanel>
             </StackPanel>
         </Border>
-        
-        <!-- Ability Score Assignment Grid -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <!-- Left Column -->
-            <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                <!-- Strength -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Strength:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding StrengthAvailableScores}" 
-                                  SelectedItem="{Binding StrengthAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-                
-                <!-- Dexterity -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Dexterity:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding DexterityAvailableScores}" 
-                                  SelectedItem="{Binding DexterityAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-                
-                <!-- Constitution -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Constitution:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding ConstitutionAvailableScores}" 
-                                  SelectedItem="{Binding ConstitutionAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-            </StackPanel>
-            
-            <!-- Right Column -->
-            <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                <!-- Intelligence -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Intelligence:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding IntelligenceAvailableScores}" 
-                                  SelectedItem="{Binding IntelligenceAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-                
-                <!-- Wisdom -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Wisdom:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding WisdomAvailableScores}" 
-                                  SelectedItem="{Binding WisdomAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-                
-                <!-- Charisma -->
-                <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Margin="0,0,0,10" Padding="15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Charisma:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding CharismaAvailableScores}" 
-                                  SelectedItem="{Binding CharismaAssignment}" FontSize="16" Padding="10,5"/>
-                    </Grid>
-                </Border>
-            </StackPanel>
-        </Grid>
-        
-        <!-- Action Buttons -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-            <Button Content="Clear All" Command="{Binding ClearAssignmentsCommand}"
-                    Background="#dc3545" Foreground="White" FontWeight="Bold"
-                    Padding="15,8" Margin="0,0,10,0" BorderThickness="0"/>
-        </StackPanel>
-    </StackPanel>
+    </Border>
 </UserControl> 
