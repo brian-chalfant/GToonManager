@@ -1045,7 +1045,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task<PdfAnalysisResult> AnalyzePdfStructureAsync(string templatePath)
+    private Task<PdfAnalysisResult> AnalyzePdfStructureAsync(string templatePath)
     // This method analyzes the PDF structure and provides a report on the fields found, including text fields and checkboxes.
     // It uses the PdfSharpExportService to read the PDF and extract field information.
     // May no longer need this if we have a good mapping already.
@@ -1055,7 +1055,7 @@ public class MainViewModel : INotifyPropertyChanged
             var pdfService = new PdfSharpExportService();
             var fieldNames = pdfService.GetPdfFieldNames();
             
-            return new PdfAnalysisResult
+            return Task.FromResult(new PdfAnalysisResult
             {
                 IsValid = true,
                 TotalFields = fieldNames.Count,
@@ -1064,15 +1064,15 @@ public class MainViewModel : INotifyPropertyChanged
                 IsEncrypted = false,
                 FieldNames = fieldNames,
                 ErrorMessage = null
-            };
+            });
         }
         catch (Exception ex)
         {
-            return new PdfAnalysisResult
+            return Task.FromResult(new PdfAnalysisResult
             {
                 IsValid = false,
                 ErrorMessage = ex.Message
-            };
+            });
         }
     }
 

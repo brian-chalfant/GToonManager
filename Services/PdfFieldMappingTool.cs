@@ -8,7 +8,7 @@ namespace GToonManager.Services;
 
 public class PdfFieldMappingTool
 {
-    public static async Task<bool> CreateFieldMappingPdfAsync(string templatePath, string outputPath)
+    public static Task<bool> CreateFieldMappingPdfAsync(string templatePath, string outputPath)
     {
         try
         {
@@ -21,7 +21,7 @@ public class PdfFieldMappingTool
             if (!File.Exists(templatePath))
             {
                 System.Diagnostics.Debug.WriteLine($"Template PDF not found at: {templatePath}");
-                return false;
+                return Task.FromResult(false);
             }
 
             // Validate output path
@@ -41,7 +41,7 @@ public class PdfFieldMappingTool
             if (form == null)
             {
                 System.Diagnostics.Debug.WriteLine("No AcroForm found in PDF");
-                return false;
+                return Task.FromResult(false);
             }
 
             System.Diagnostics.Debug.WriteLine($"Found AcroForm with {form.Fields.Count} fields");
@@ -100,12 +100,12 @@ public class PdfFieldMappingTool
             document.Save(outputPath);
             System.Diagnostics.Debug.WriteLine($"Field mapping PDF saved to: {outputPath}");
 
-            return true;
+            return Task.FromResult(true);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error creating field mapping PDF: {ex.GetType().Name}: {ex.Message}");
-            return false;
+            return Task.FromResult(false);
         }
     }
 } 

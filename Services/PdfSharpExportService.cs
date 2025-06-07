@@ -22,14 +22,14 @@ public class PdfSharpExportService
         }
     }
 
-    public async Task<bool> ExportCharacterToPdfAsync(Character character, string outputPath)
+    public Task<bool> ExportCharacterToPdfAsync(Character character, string outputPath)
     {
         try
         {
             if (!File.Exists(_templatePath))
             {
                 System.Diagnostics.Debug.WriteLine($"Template PDF not found at: {_templatePath}");
-                return false;
+                return Task.FromResult(false);
             }
 
             // Validate output path
@@ -51,7 +51,7 @@ public class PdfSharpExportService
             if (form == null)
             {
                 System.Diagnostics.Debug.WriteLine("No AcroForm found in PDF");
-                return false;
+                return Task.FromResult(false);
             }
 
             System.Diagnostics.Debug.WriteLine($"Found AcroForm with {form.Fields.Count} fields");
@@ -91,13 +91,13 @@ public class PdfSharpExportService
             document.Save(outputPath);
             System.Diagnostics.Debug.WriteLine($"PDF saved successfully to: {outputPath}");
 
-            return true;
+            return Task.FromResult(true);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error exporting PDF with PdfSharp: {ex.GetType().Name}: {ex.Message}");
             System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-            return false;
+            return Task.FromResult(false);
         }
     }
 
