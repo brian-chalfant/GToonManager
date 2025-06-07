@@ -23,6 +23,13 @@
     <None Include="Data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Pictures\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Pictures\20250604_1917_Horizontally Oriented Wizard.png" />
   </ItemGroup>
 
 </Project>

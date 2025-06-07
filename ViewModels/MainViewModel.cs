@@ -1,10 +1,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using GToonManager.Models;
 using GToonManager.Services;
+using GToonManager.Views;
 using Microsoft.Win32;
 
 namespace GToonManager.ViewModels;
@@ -557,6 +559,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void ExportToPdf()
     {
+        LoadingWindow? loadingWindow = null;
         try
         {
             var saveFileDialog = new SaveFileDialog
@@ -568,10 +571,42 @@ public class MainViewModel : INotifyPropertyChanged
 
             if (saveFileDialog.ShowDialog() == true)
             {
+                // Show loading screen immediately with initial message
+                loadingWindow = LoadingWindow.ShowPdfExportProgress();
                 StatusMessage = "Exporting to PDF...";
                 
+                // Give the UI a moment to render the loading screen
+                await Task.Delay(50);
+                
+                // Update progress step by step with immediate feedback
+                loadingWindow.UpdateProgress(10, "📄 Initializing PDF export...");
+                await Task.Delay(100);
+                
+                loadingWindow.UpdateProgress(20, "🖋️ Gathering character data...");
+                await Task.Delay(100);
+                
                 var pdfService = new PdfSharpExportService();
+                
+                loadingWindow.UpdateProgress(40, "🎨 Applying character sheet formatting...");
+                await Task.Delay(100);
+                
+                loadingWindow.UpdateProgress(60, "📊 Processing ability scores and skills...");
+                await Task.Delay(100);
+                
+                loadingWindow.UpdateProgress(80, "⚔️ Adding equipment and features...");
+                
+                // Perform the actual PDF export
                 var success = await pdfService.ExportCharacterToPdfAsync(CurrentCharacter, saveFileDialog.FileName);
+                
+                loadingWindow.UpdateProgress(100, "✅ Export complete!");
+                await Task.Delay(500); // Brief pause to show completion
+                
+                // Close loading window
+                if (loadingWindow != null && loadingWindow.IsVisible)
+                {
+                    loadingWindow.Close();
+                    loadingWindow = null; // Prevent finally block from trying to close again
+                }
                 
                 if (success)
                 {
@@ -613,6 +648,14 @@ public class MainViewModel : INotifyPropertyChanged
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);
         }
+        finally
+        {
+            // Ensure loading window is closed
+            if (loadingWindow != null && loadingWindow.IsVisible)
+            {
+                loadingWindow.Close();
+            }
+        }
     }
 
     private void ShowSettings()
@@ -620,7 +663,12 @@ public class MainViewModel : INotifyPropertyChanged
         try
         {
             var settingsWindow = new Views.SettingsWindow(Settings);
-            settingsWindow.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != settingsWindow)
+            {
+                settingsWindow.Owner = Application.Current.MainWindow;
+            }
             
             var result = settingsWindow.ShowDialog();
             if (result == true)
@@ -949,7 +997,13 @@ public class MainViewModel : INotifyPropertyChanged
             );
 
             window.DataContext = viewModel;
-            window.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
+            
             window.ShowDialog();
         }
     }
@@ -1031,7 +1085,13 @@ public class MainViewModel : INotifyPropertyChanged
             
             var control = new Controls.StandardArrayControl();
             var window = new Views.AbilityScoreGenerationWindow();
-            window.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
+            
             window.SetContent("Standard Array Assignment", control, viewModel);
             
             var result = window.ShowDialog();
@@ -1059,7 +1119,13 @@ public class MainViewModel : INotifyPropertyChanged
             // Create a control for point buy - we'll need to make one
             var control = new Views.PointBuyControl();
             var window = new Views.AbilityScoreGenerationWindow();
-            window.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
+            
             window.SetContent("Point Buy Assignment", control, viewModel);
             
             var result = window.ShowDialog();
@@ -1086,7 +1152,13 @@ public class MainViewModel : INotifyPropertyChanged
             
             var control = new Controls.RollingControl();
             var window = new Views.AbilityScoreGenerationWindow();
-            window.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
+            
             window.SetContent("Dice Rolling", control, viewModel);
             
             var result = window.ShowDialog();
@@ -1113,7 +1185,13 @@ public class MainViewModel : INotifyPropertyChanged
             
             var control = new Controls.FreeEntryControl();
             var window = new Views.AbilityScoreGenerationWindow();
-            window.Owner = Application.Current.MainWindow;
+            
+            // Safely set the owner - avoid setting window as its own owner
+            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
+            
             window.SetContent("Manual Entry", control, viewModel);
             
             var result = window.ShowDialog();
