@@ -5,9 +5,9 @@
         "description": "A background lists three of your character's ability scores. Increase one by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.",
         "mechanics": {
             "ability_scores": [
-                "dexterity",
-                "constitution",
-                "intelligence"
+                "Dexterity",
+                "Constitution",
+                "Intelligence"
             ],
             "improvement_options": [
                 {

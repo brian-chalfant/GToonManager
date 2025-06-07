@@ -187,7 +187,8 @@
                         <Setter Property="FontFamily" Value="Garamond"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="Padding" Value="8,4"/>
+                        <Setter Property="Padding" Value="16,8"/>
+                        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
@@ -355,7 +356,7 @@
                                         <StackPanel Visibility="{Binding HasBackgroundImprovementOption, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <!-- Description -->
                                             <TextBlock Text="{Binding BackgroundImprovementOptionDescription}" 
-                                                      FontFamily="Garamond" FontStyle="Italic" FontSize="12"
+                                                      FontFamily="Garamond" FontStyle="Italic" FontSize="12" Typography.Capitals="AllSmallCaps"
                                                       Foreground="{StaticResource PrimaryRed}" TextAlignment="Center" Margin="0,0,0,20"/>
                                             
                                             <!-- Available Ability Scores with Selection Indicators -->
@@ -718,7 +719,10 @@
                         <Setter Property="FontFamily" Value="Garamond"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="Padding" Value="8,4"/>
+                        <Setter Property="Padding" Value="32,16"/>
+                        <Setter Property="Margin" Value="0,0,15,0"/>
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
@@ -760,12 +764,27 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             
+                                                        <!-- Buttons Section -->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,16">
+                                <Button Content="Roll 4d6 (Drop Lowest)" 
+                                        Command="{Binding OpenRollingCommand}"
+                                        Style="{StaticResource MedievalButtonStyle}"/>
+                                <Button Content="Standard Array" 
+                                        Command="{Binding OpenStandardArrayCommand}"
+                                        Style="{StaticResource MedievalButtonStyle}"/>
+                                <Button Content="Point Buy" 
+                                        Command="{Binding OpenPointBuyCommand}"
+                                        Style="{StaticResource MedievalButtonStyle}"/>
+                                <Button Content="Manual Entry" 
+                                        Command="{Binding OpenFreeEntryCommand}"
+                                        Style="{StaticResource MedievalButtonStyle}"/>
+                            </StackPanel>
                             <!-- Title Bar -->
-                            <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20,15">
+                            <Border Grid.Row="1" Background="{StaticResource PrimaryRed}" Padding="20,15">
                                 <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1">
                                     <TextBlock Text="Generate Ability Scores" 
                                                FontFamily="Garamond" FontSize="24" FontWeight="Bold"
@@ -780,7 +799,7 @@
                             </Border>
                             
                             <!-- Ability Score Panels -->
-                            <Grid Grid.Row="1" Margin="20">
+                            <Grid Grid.Row="2" Margin="20">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -888,24 +907,7 @@
                                 </Border>
                             </Grid>
                             
-                            <!-- Buttons Section -->
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,16">
-                                <Button Content="Roll 4d6 (Drop Lowest)" 
-                                        Command="{Binding OpenRollingCommand}"
-                                        Style="{StaticResource MedievalButtonStyle}" 
-                                        Margin="0,0,15,0"/>
-                                <Button Content="Standard Array" 
-                                        Command="{Binding OpenStandardArrayCommand}"
-                                        Style="{StaticResource MedievalButtonStyle}" 
-                                        Margin="0,0,15,0"/>
-                                <Button Content="Point Buy" 
-                                        Command="{Binding OpenPointBuyCommand}"
-                                        Style="{StaticResource MedievalButtonStyle}" 
-                                        Margin="0,0,15,0"/>
-                                <Button Content="Manual Entry" 
-                                        Command="{Binding OpenFreeEntryCommand}"
-                                        Style="{StaticResource MedievalButtonStyle}"/>
-                            </StackPanel>
+
                         </Grid>
                     </Border>
                 </Border>

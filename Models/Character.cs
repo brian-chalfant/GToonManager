@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace GToonManager.Models;
 
@@ -342,9 +343,16 @@ public class Character : INotifyPropertyChanged
 
     private int GetBackgroundBonus(string abilityName)
     {
-        if (BackgroundAbilityScoreChoice?.AbilityScoreImprovements.TryGetValue(abilityName, out var bonus) == true)
+        if (BackgroundAbilityScoreChoice?.AbilityScoreImprovements != null)
         {
-            return bonus;
+            // Use case-insensitive lookup to handle both lowercase and uppercase ability names
+            var kvp = BackgroundAbilityScoreChoice.AbilityScoreImprovements
+                .FirstOrDefault(x => string.Equals(x.Key, abilityName, StringComparison.OrdinalIgnoreCase));
+            
+            if (!kvp.Equals(default(KeyValuePair<string, int>)))
+            {
+                return kvp.Value;
+            }
         }
         return 0;
     }
