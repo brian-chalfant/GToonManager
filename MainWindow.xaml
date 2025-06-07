@@ -481,7 +481,184 @@
 
             <!-- Multiclassing Tab -->
             <TabItem Header="Classes &amp; Multiclassing" Padding="15,10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TabItem.Resources>
+                    <!-- Medieval Theme Resources -->
+                    <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+                    <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+                    <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+                    <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+                    
+                    <!-- Text Input Style -->
+                    <Style TargetType="TextBox" x:Key="MedievalTextBoxStyle">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border x:Name="border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="6">
+                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                                      HorizontalScrollBarVisibility="Hidden" 
+                                                      VerticalScrollBarVisibility="Hidden"
+                                                      Padding="{TemplateBinding Padding}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                            <Setter TargetName="border" Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#D4AF37" BlurRadius="8" ShadowDepth="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="#FFD700"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- ComboBox Style -->
+                    <Style TargetType="ComboBox" x:Key="MedievalComboBoxStyle">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                    
+                    <!-- TextBlock Style -->
+                    <Style TargetType="TextBlock" x:Key="MedievalLabelStyle">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                    
+                    <!-- Button Style -->
+                    <Style TargetType="Button" x:Key="MedievalButtonStyle">
+                        <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="16,8"/>
+                        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="6">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                            <Setter TargetName="border" Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#D4AF37" BlurRadius="5" ShadowDepth="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- Panel Style -->
+                    <Style TargetType="Border" x:Key="MedievalPanelStyle">
+                        <Setter Property="Background" Value="#F5E6C8"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Padding" Value="15"/>
+                    </Style>
+                    
+                    <!-- GroupBox Style -->
+                    <Style TargetType="GroupBox" x:Key="MedievalGroupBoxStyle">
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="FontFamily" Value="Garamond"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GroupBox">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" 
+                                               BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2,2,2,0" 
+                                               CornerRadius="8,8,0,0" Padding="15,8">
+                                            <ContentPresenter ContentSource="Header" 
+                                                             TextBlock.Foreground="{StaticResource PrimaryGold}"
+                                                             TextBlock.FontFamily="Garamond"
+                                                             TextBlock.FontWeight="Bold"
+                                                             TextBlock.FontSize="16"/>
+                                        </Border>
+                                        <Border Grid.Row="1" Background="{StaticResource MedievalBackground}" 
+                                               BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2,0,2,2" 
+                                               CornerRadius="0,0,8,8">
+                                            <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabItem.Resources>
+                
+                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="3">
+                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Title Bar -->
+                            <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20,15">
+                                <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1">
+                                    <TextBlock Text="⚔️ Character Classes &amp; Multiclassing ⚔️" 
+                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                               Foreground="{StaticResource PrimaryGold}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Padding="10,5">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="2"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Border>
+                            </Border>
+                            
+                            <!-- Content Area -->
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -489,20 +666,18 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Header -->
-                        <TextBlock Grid.Row="0" Text="Character Classes" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
-
                         <!-- Current Classes -->
-                        <GroupBox Grid.Row="1" Header="Current Classes" Padding="15" Margin="0,0,0,20">
+                        <GroupBox Grid.Row="0" Header="⚔️ Current Classes" Padding="15" Margin="0,0,0,20" Style="{StaticResource MedievalGroupBoxStyle}">
                             <StackPanel>
-                                <TextBlock Text="{Binding CurrentCharacter.ClassSummary}" FontSize="16" FontWeight="Bold" 
+                                <TextBlock Text="{Binding CurrentCharacter.ClassSummary}" Style="{StaticResource MedievalLabelStyle}"
                                           Margin="0,0,0,15" HorizontalAlignment="Center"/>
                                 
                                 <ItemsControl ItemsSource="{Binding CurrentCharacter.ClassLevels}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" 
-                                                   Margin="0,5" Padding="15">
+                                            <Border Style="{StaticResource MedievalPanelStyle}" Margin="0,5"
+                                                   Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2"
+                                                   CornerRadius="8" Padding="15">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
@@ -512,25 +687,28 @@
                                                     </Grid.ColumnDefinitions>
                                                     
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="{Binding ClassName}" FontSize="16" FontWeight="Bold"/>
+                                                        <TextBlock Text="{Binding ClassName}" Style="{StaticResource MedievalLabelStyle}"/>
                                                         <TextBlock Text="{Binding CharacterClass.Description}" 
-                                                                  FontStyle="Italic" Foreground="#6c757d"/>
+                                                                  FontFamily="Garamond" FontStyle="Italic" 
+                                                                  Foreground="{StaticResource PrimaryRed}" Opacity="0.7"/>
                                                     </StackPanel>
                                                     
                                                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
-                                                        <TextBlock Text="Level:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                                        <TextBox Text="{Binding Level}" Width="50" TextAlignment="Center" 
-                                                                Padding="5" FontSize="14" FontWeight="Bold"/>
+                                                        <TextBlock Text="Level:" Style="{StaticResource MedievalLabelStyle}" FontSize="14" 
+                                                                  VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                        <TextBox Text="{Binding Level}" Width="50" 
+                                                                Style="{StaticResource MedievalTextBoxStyle}" Padding="5"/>
                                                     </StackPanel>
                                                     
-                                                    <TextBlock Grid.Column="2" Text="{Binding CharacterClass.HitDie, StringFormat='Hit Die: d{0}'}" 
-                                                              VerticalAlignment="Center" Margin="20,0" FontWeight="Bold"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding CharacterClass.HitDie, StringFormat='⚀ Hit Die: d{0}'}" 
+                                                              Style="{StaticResource MedievalLabelStyle}" FontSize="14"
+                                                              VerticalAlignment="Center" Margin="20,0"/>
                                                     
-                                                    <Button Grid.Column="3" Content="Remove Class" 
+                                                    <Button Grid.Column="3" Content="🗡️ Remove Class" 
                                                             Command="{Binding DataContext.RemoveClassCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                             CommandParameter="{Binding}"
-                                                            Background="#dc3545" Foreground="White" 
-                                                            Padding="10,5" BorderThickness="0"/>
+                                                            Style="{StaticResource MedievalButtonStyle}"
+                                                            Background="#B22222" FontSize="12" Padding="12,6"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
@@ -538,8 +716,10 @@
                                 </ItemsControl>
                                 
                                 <!-- No classes message -->
-                                <TextBlock Text="No classes added yet. Add your first class below." 
-                                          FontStyle="Italic" HorizontalAlignment="Center" Margin="20">
+                                <TextBlock Text="🏰 No classes added yet. Add your first class below. ⚔️" 
+                                          FontFamily="Garamond" FontStyle="Italic" FontSize="16"
+                                          Foreground="{StaticResource PrimaryRed}" Opacity="0.8"
+                                          HorizontalAlignment="Center" Margin="20">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -555,7 +735,7 @@
                         </GroupBox>
 
                         <!-- Add New Class -->
-                        <GroupBox Grid.Row="2" Header="Add New Class" Padding="15">
+                        <GroupBox Grid.Row="1" Header="⚔️ Add New Class" Padding="15" Style="{StaticResource MedievalGroupBoxStyle}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
@@ -571,57 +751,64 @@
 
                                 <!-- Class Selection -->
                                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,15,15">
-                                    <Label Content="Select Class" FontWeight="Bold"/>
+                                    <TextBlock Text="🗡️ Select Class" Style="{StaticResource MedievalLabelStyle}" 
+                                              HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                     <ComboBox ItemsSource="{Binding Classes}" 
                                               SelectedItem="{Binding SelectedClassToAdd}"
-                                              DisplayMemberPath="Name" Padding="10" FontSize="14"/>
+                                              DisplayMemberPath="Name" Style="{StaticResource MedievalComboBoxStyle}"/>
                                 </StackPanel>
 
                                 <!-- Level Selection -->
                                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,15,15">
-                                    <Label Content="Starting Level" FontWeight="Bold"/>
+                                    <TextBlock Text="⭐ Starting Level" Style="{StaticResource MedievalLabelStyle}" 
+                                              HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                     <TextBox Text="{Binding SelectedLevelToAdd}" 
-                                            TextAlignment="Center" Padding="10" FontSize="14"/>
+                                            Style="{StaticResource MedievalTextBoxStyle}"/>
                                 </StackPanel>
 
                                 <!-- Add Button -->
-                                <Button Grid.Row="0" Grid.Column="2" Content="Add Class" 
+                                <Button Grid.Row="0" Grid.Column="2" Content="⚔️ Add Class" 
                                         Command="{Binding AddClassCommand}"
-                                        Background="#28a745" Foreground="White" 
-                                        Padding="20,10" BorderThickness="0"
-                                        FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,0,0,15"/>
+                                        Style="{StaticResource MedievalButtonStyle}"
+                                        Background="{StaticResource PrimaryRed}" Padding="20,12"
+                                        VerticalAlignment="Bottom" Margin="0,0,0,15"/>
 
                                 <!-- Class Description -->
-                                <Border Grid.Row="1" Grid.ColumnSpan="3" Background="#e9ecef" 
-                                       BorderBrush="#ced4da" BorderThickness="1" Padding="15">
+                                <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource MedievalPanelStyle}">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding SelectedClassToAdd.Name}" FontSize="16" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding SelectedClassToAdd.Name}" Style="{StaticResource MedievalLabelStyle}" 
+                                                  HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                         <TextBlock Text="{Binding SelectedClassToAdd.Description}" 
-                                                  TextWrapping="Wrap" Margin="0,5,0,0"/>
-                                        <Grid Margin="0,10,0,0">
+                                                  FontFamily="Garamond" FontStyle="Italic" 
+                                                  Foreground="{StaticResource PrimaryRed}" Opacity="0.9"
+                                                  TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Grid Margin="0,0,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding SelectedClassToAdd.HitDie, StringFormat='Hit Die: d{0}'}" 
-                                                      FontWeight="Bold"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding SelectedClassToAdd.PrimaryAbility, StringFormat='Primary Ability: {0}'}" 
-                                                      FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding SelectedClassToAdd.HitDie, StringFormat='⚀ Hit Die: d{0}'}" 
+                                                      Style="{StaticResource MedievalLabelStyle}" FontSize="14" 
+                                                      HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding SelectedClassToAdd.PrimaryAbility, StringFormat='💪 Primary Ability: {0}'}" 
+                                                      Style="{StaticResource MedievalLabelStyle}" FontSize="14"
+                                                      HorizontalAlignment="Center"/>
                                         </Grid>
                                     </StackPanel>
                                 </Border>
 
                                 <!-- Skill Selection Section -->
-                                <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#fff3cd" 
-                                       BorderBrush="#ffeaa7" BorderThickness="1" Padding="15" 
+                                <Border Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource MedievalPanelStyle}"
+                                       Background="#FFF8DC" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
                                        Margin="0,15,0,0"
                                        Visibility="{Binding HasSkillChoices, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding SkillChoicePrompt}" FontSize="14" FontWeight="Bold" 
-                                                  Margin="0,0,0,10"/>
+                                        <TextBlock Text="{Binding SkillChoicePrompt}" Style="{StaticResource MedievalLabelStyle}"
+                                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
                                         
                                         <!-- Available Skills -->
-                                        <TextBlock Text="Available Skills:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock Text="⚔️ Available Skills:" Style="{StaticResource MedievalLabelStyle}" 
+                                                  FontSize="14" Margin="0,0,0,10"/>
                                         <ItemsControl ItemsSource="{Binding AvailableSkillChoices}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -633,15 +820,16 @@
                                                     <Button Content="{Binding}" 
                                                            Command="{Binding DataContext.AddSkillCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                            CommandParameter="{Binding}"
-                                                           Background="#007bff" Foreground="White" 
-                                                           Padding="8,4" Margin="2" BorderThickness="0"
+                                                           Style="{StaticResource MedievalButtonStyle}"
+                                                           Background="{StaticResource PrimaryRed}" FontSize="12" Padding="10,6" Margin="3" Width="75"
                                                            IsEnabled="{Binding DataContext.CanAddMoreSkills, RelativeSource={RelativeSource AncestorType=Window}}"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                         
                                         <!-- Selected Skills -->
-                                        <TextBlock Text="Selected Skills:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                        <TextBlock Text="🛡️ Selected Skills:" Style="{StaticResource MedievalLabelStyle}" 
+                                                  FontSize="14" Margin="0,15,0,10"/>
                                         <ItemsControl ItemsSource="{Binding SelectedSkills}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -650,24 +838,27 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="#28a745" Margin="2" Padding="8,4" CornerRadius="3">
+                                                    <Border Background="{StaticResource PrimaryRed}" BorderBrush="{StaticResource PrimaryGold}" 
+                                                           BorderThickness="2" Margin="3" Padding="10,6" CornerRadius="6">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding SkillName}" Foreground="White" 
-                                                                      VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                                            <Button Content="×" 
+                                                            <TextBlock Text="{Binding SkillName}" Foreground="{StaticResource PrimaryGold}" 
+                                                                      FontFamily="Garamond" FontWeight="Bold"
+                                                                      VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                            <Button Content="✖" 
                                                                    Command="{Binding DataContext.RemoveSkillCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                    CommandParameter="{Binding}"
-                                                                   Background="Transparent" Foreground="White" 
+                                                                   Background="Transparent" Foreground="{StaticResource PrimaryGold}" 
                                                                    BorderThickness="0" Padding="2" 
-                                                                   FontWeight="Bold" FontSize="12"/>
+                                                                   FontWeight="Bold" FontSize="10"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                         
-                                        <TextBlock Text="No skills selected" FontStyle="Italic" Foreground="Gray" 
-                                                   Margin="0,5,0,0">
+                                        <TextBlock Text="📜 No skills selected" FontFamily="Garamond" FontStyle="Italic" 
+                                                  Foreground="{StaticResource PrimaryRed}" Opacity="0.7" FontSize="14"
+                                                   Margin="0,5,0,0" HorizontalAlignment="Center">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -683,22 +874,28 @@
                                 </Border>
 
                                 <!-- Total Level Summary -->
-                                <Border Grid.Row="3" Grid.ColumnSpan="3" Background="#d4edda" 
-                                       BorderBrush="#c3e6cb" BorderThickness="1" Padding="15" 
-                                       Margin="0,15,0,0">
+                                <Border Grid.Row="3" Grid.ColumnSpan="3" Background="{StaticResource PrimaryRed}" 
+                                       BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                                       CornerRadius="8" Padding="15" Margin="0,15,0,0">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="Total Character Level: " FontSize="16" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding CurrentCharacter.Level}" FontSize="20" FontWeight="Bold" 
-                                                  Foreground="#155724"/>
-                                        <TextBlock Text=" | Proficiency Bonus: " FontSize="16" FontWeight="Bold" Margin="20,0,0,0"/>
+                                        <TextBlock Text="👑 Total Character Level: " FontFamily="Garamond" FontSize="16" FontWeight="Bold"
+                                                  Foreground="{StaticResource PrimaryGold}"/>
+                                        <TextBlock Text="{Binding CurrentCharacter.Level}" FontFamily="Garamond" FontSize="20" FontWeight="Bold" 
+                                                  Foreground="#FFD700"/>
+                                        <TextBlock Text=" | ⚡ Proficiency Bonus: " FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
+                                                  Foreground="{StaticResource PrimaryGold}" Margin="20,0,0,0"/>
                                         <TextBlock Text="{Binding CurrentCharacter.ProficiencyBonus, StringFormat='+{0}'}" 
-                                                  FontSize="20" FontWeight="Bold" Foreground="#155724"/>
+                                                  FontFamily="Garamond" FontSize="20" FontWeight="Bold" 
+                                                  Foreground="#FFD700"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>
                         </GroupBox>
                     </Grid>
                 </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Border>
             </TabItem>
 
             <!-- Generate Ability Scores Tab -->
