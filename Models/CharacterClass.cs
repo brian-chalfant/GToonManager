@@ -18,6 +18,14 @@ public class CharacterClass
     
     // Standard array recommendation for 2024 PHB
     public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
+    
+    // Subclass information
+    public int SubclassLevel { get; set; } = 3; // Level at which subclass is chosen
+    public string SubclassType { get; set; } = string.Empty; // e.g., "archetype", "oath", "patron"
+    public List<Subclass> Subclasses { get; set; } = new();
+    
+    public bool HasSubclasses => Subclasses.Any();
+    public bool CanChooseSubclass(int characterLevel) => characterLevel >= SubclassLevel && HasSubclasses;
 
     public override string ToString() => Name;
 }

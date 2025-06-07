@@ -687,10 +687,15 @@
                                                     </Grid.ColumnDefinitions>
                                                     
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="{Binding ClassName}" Style="{StaticResource MedievalLabelStyle}"/>
+                                                        <TextBlock Text="{Binding ClassWithSubclass}" Style="{StaticResource MedievalLabelStyle}"/>
                                                         <TextBlock Text="{Binding CharacterClass.Description}" 
                                                                   FontFamily="Garamond" FontStyle="Italic" 
                                                                   Foreground="{StaticResource PrimaryRed}" Opacity="0.7"/>
+                                                        <TextBlock Text="{Binding ChosenSubclass.Description}" 
+                                                                  FontFamily="Garamond" FontStyle="Italic" 
+                                                                  Foreground="{StaticResource PrimaryRed}" Opacity="0.8"
+                                                                  Margin="0,5,0,0" TextWrapping="Wrap"
+                                                                  Visibility="{Binding HasSubclass, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                     </StackPanel>
                                                     
                                                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
@@ -704,11 +709,19 @@
                                                               Style="{StaticResource MedievalLabelStyle}" FontSize="14"
                                                               VerticalAlignment="Center" Margin="20,0"/>
                                                     
-                                                    <Button Grid.Column="3" Content="🗡️ Remove Class" 
-                                                            Command="{Binding DataContext.RemoveClassCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                            CommandParameter="{Binding}"
-                                                            Style="{StaticResource MedievalButtonStyle}"
-                                                            Background="#B22222" FontSize="12" Padding="12,6"/>
+                                                    <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
+                                                        <Button Content="⚔️ Choose Subclass" 
+                                                                Command="{Binding DataContext.ChooseSubclassCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding}"
+                                                                Style="{StaticResource MedievalButtonStyle}"
+                                                                Background="#4169E1" FontSize="10" Padding="10,4" Margin="0,0,0,5"
+                                                                Visibility="{Binding CanChooseSubclass, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                        <Button Content="🗡️ Remove Class" 
+                                                                Command="{Binding DataContext.RemoveClassCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding}"
+                                                                Style="{StaticResource MedievalButtonStyle}"
+                                                                Background="#B22222" FontSize="10" Padding="10,4"/>
+                                                    </StackPanel>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

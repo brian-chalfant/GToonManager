@@ -8,6 +8,7 @@ public class CharacterClassLevel : INotifyPropertyChanged
     private CharacterClass? _characterClass;
     private int _level = 1;
     private ObservableCollection<string> _chosenSkillProficiencies = new();
+    private Subclass? _chosenSubclass;
 
     public CharacterClass? CharacterClass
     {
@@ -42,7 +43,28 @@ public class CharacterClassLevel : INotifyPropertyChanged
         }
     }
 
-    public override string ToString() => $"{ClassName} {Level}";
+    public Subclass? ChosenSubclass
+    {
+        get => _chosenSubclass;
+        set
+        {
+            _chosenSubclass = value;
+            OnPropertyChanged(nameof(ChosenSubclass));
+            OnPropertyChanged(nameof(SubclassName));
+            OnPropertyChanged(nameof(HasSubclass));
+            OnPropertyChanged(nameof(CanChooseSubclass));
+            OnPropertyChanged(nameof(ClassWithSubclass));
+        }
+    }
+
+    public string SubclassName => ChosenSubclass?.Name ?? "No Subclass";
+    public bool HasSubclass => ChosenSubclass != null;
+    public bool CanChooseSubclass => CharacterClass?.CanChooseSubclass(Level) == true && !HasSubclass;
+    
+    // Property for display with subclass
+    public string ClassWithSubclass => HasSubclass ? $"{ClassName} - {SubclassName}" : ClassName;
+
+    public override string ToString() => HasSubclass ? $"{ClassName} - {SubclassName} {Level}" : $"{ClassName} {Level}";
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

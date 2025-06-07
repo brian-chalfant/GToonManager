@@ -144,6 +144,24 @@ public class ClassDataService
             characterClass.StandardArrayRecommendation = ParseStandardArrayRecommendation(standardArrayElement);
         }
 
+        // Parse subclass information
+        if (classData.TryGetProperty("subclass_level", out var subclassLevelElement))
+        {
+            characterClass.SubclassLevel = subclassLevelElement.GetInt32();
+        }
+
+        // Parse subclass type from the feature that introduces subclass choice
+        if (classData.TryGetProperty("features", out var featuresElement))
+        {
+            characterClass.SubclassType = ParseSubclassType(featuresElement, characterClass.SubclassLevel);
+        }
+
+        // Parse subclasses array
+        if (classData.TryGetProperty("subclasses", out var subclassesElement) && subclassesElement.ValueKind == JsonValueKind.Array)
+        {
+            characterClass.Subclasses = ParseSubclasses(subclassesElement);
+        }
+
         return characterClass;
     }
 
@@ -309,5 +327,91 @@ public class ClassDataService
             return name;
 
         return char.ToUpper(name[0]) + name.Substring(1).ToLower();
+    }
+
+    private string ParseSubclassType(JsonElement featuresElement, int subclassLevel)
+    {
+        if (featuresElement.ValueKind != JsonValueKind.Object)
+            return "archetype"; // Default
+
+        var levelKey = subclassLevel.ToString();
+        if (featuresElement.TryGetProperty(levelKey, out var levelFeatures) && levelFeatures.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var feature in levelFeatures.EnumerateArray())
+            {
+                if (feature.TryGetProperty("mechanics", out var mechanics) &&
+                    mechanics.TryGetProperty("type", out var mechType) &&
+                    mechType.GetString() == "subclass_choice" &&
+                    mechanics.TryGetProperty("subclass_type", out var subclassTypeElement))
+                {
+                    return subclassTypeElement.GetString() ?? "archetype";
+                }
+            }
+        }
+
+        return "archetype"; // Default
+    }
+
+    private List<Subclass> ParseSubclasses(JsonElement subclassesElement)
+    {
+        var subclasses = new List<Subclass>();
+
+        foreach (var subclassElement in subclassesElement.EnumerateArray())
+        {
+            var subclass = new Subclass();
+
+            if (subclassElement.TryGetProperty("name", out var nameElement))
+                subclass.Name = nameElement.GetString() ?? string.Empty;
+
+            if (subclassElement.TryGetProperty("description", out var descElement))
+                subclass.Description = descElement.GetString() ?? string.Empty;
+
+            if (subclassElement.TryGetProperty("source", out var sourceElement))
+                subclass.Source = sourceElement.GetString() ?? string.Empty;
+
+            if (subclassElement.TryGetProperty("features", out var featuresElement))
+                subclass.Features = ParseSubclassFeatures(featuresElement);
+
+            subclasses.Add(subclass);
+        }
+
+        return subclasses;
+    }
+
+    private Dictionary<int, List<SubclassFeature>> ParseSubclassFeatures(JsonElement featuresElement)
+    {
+        var features = new Dictionary<int, List<SubclassFeature>>();
+
+        if (featuresElement.ValueKind != JsonValueKind.Object)
+            return features;
+
+        foreach (var levelProperty in featuresElement.EnumerateObject())
+        {
+            if (int.TryParse(levelProperty.Name, out var level) && 
+                levelProperty.Value.ValueKind == JsonValueKind.Array)
+            {
+                var levelFeatures = new List<SubclassFeature>();
+
+                foreach (var featureElement in levelProperty.Value.EnumerateArray())
+                {
+                    var feature = new SubclassFeature();
+
+                    if (featureElement.TryGetProperty("name", out var nameElement))
+                        feature.Name = nameElement.GetString() ?? string.Empty;
+
+                    if (featureElement.TryGetProperty("description", out var descElement))
+                        feature.Description = descElement.GetString() ?? string.Empty;
+
+                    if (featureElement.TryGetProperty("mechanics", out var mechanicsElement))
+                        feature.Mechanics = mechanicsElement; // Store the raw JSON for future use
+
+                    levelFeatures.Add(feature);
+                }
+
+                features[level] = levelFeatures;
+            }
+        }
+
+        return features;
     }
 } 

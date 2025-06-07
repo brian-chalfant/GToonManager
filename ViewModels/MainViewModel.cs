@@ -299,6 +299,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand RemoveClassCommand { get; private set; } = null!;
     public ICommand AddSkillCommand { get; private set; } = null!;
     public ICommand RemoveSkillCommand { get; private set; } = null!;
+    public ICommand ChooseSubclassCommand { get; private set; } = null!;
     
     // Background commands
     public ICommand ApplyBackgroundCommand { get; private set; } = null!;
@@ -329,6 +330,7 @@ public class MainViewModel : INotifyPropertyChanged
         RemoveClassCommand = new RelayCommand(RemoveClass, CanRemoveClass);
         AddSkillCommand = new RelayCommand(AddSkill);
         RemoveSkillCommand = new RelayCommand(RemoveSkill);
+        ChooseSubclassCommand = new RelayCommand(ChooseSubclass);
         
         // Background commands
         ApplyBackgroundCommand = new RelayCommand(ApplyBackground);
@@ -928,6 +930,34 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(HasRequiredSkillSelections));
             StatusMessage = $"Removed {skillItem.SkillName} skill proficiency";
         }
+    }
+
+    private void ChooseSubclass(object? parameter)
+    {
+        if (parameter is CharacterClassLevel characterClassLevel && 
+            characterClassLevel.CharacterClass != null && 
+            characterClassLevel.CanChooseSubclass)
+        {
+            var window = new Views.SubclassSelectionWindow();
+            var viewModel = new SubclassSelectionViewModel(
+                characterClassLevel,
+                subclass => {
+                    ApplySubclass(characterClassLevel, subclass);
+                    window.Close(); // Close the window after successful application
+                },
+                () => window.Close() // Cancel action - close window
+            );
+
+            window.DataContext = viewModel;
+            window.Owner = Application.Current.MainWindow;
+            window.ShowDialog();
+        }
+    }
+
+    private void ApplySubclass(CharacterClassLevel characterClassLevel, Subclass selectedSubclass)
+    {
+        characterClassLevel.ChosenSubclass = selectedSubclass;
+        StatusMessage = $"Applied {selectedSubclass.Name} subclass to {characterClassLevel.ClassName}";
     }
 
     private async Task<bool> CreateTestPdfWithFieldNamesAsync(string templatePath, string outputPath)
