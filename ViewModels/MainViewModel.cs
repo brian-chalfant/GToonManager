@@ -248,6 +248,12 @@ public class MainViewModel : INotifyPropertyChanged
             
             // Clear selections when option changes
             BackgroundAbilityScoreSelections.Clear();
+            
+            // Auto-apply uniform distribution if selected
+            if (IsUniformDistribution)
+            {
+                AutoApplyUniformDistribution();
+            }
         }
     }
 
