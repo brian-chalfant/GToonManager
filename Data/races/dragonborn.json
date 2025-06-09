@@ -1,0 +1,116 @@
+{
+    "name": "Dragonborn",
+    "description": "Dragonborn are the children of dragons, born with a connection to the dragon god. They are known for their wisdom, strength, and compassion.",
+    "source": "PHB",
+    "source_page": 186,
+    "age": {
+        "lifespan": "160 years"
+    },
+    "size": {
+        "category": "Medium"
+    },
+    "speed": {
+        "walk": 30
+    },
+    "traits": [
+        {
+            "name": "Damage Resistance",
+            "description": "You have resistance to your Dragon Ancestor Damage Type.",
+            "grants": {
+                "damage_resistances": ["your Dragon Ancestor Damage Type"]
+            }
+        },
+        {
+            "name": "Darkvision",
+            "description": "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.",
+            "range": 60
+        },
+        {
+            "name": "Draconic Flight    ",
+            "description": "When you reach 5th level you can channel magic to give yourself temporary flight. You sprout spectral wings on your back that last for 10 minutes or until you retract your wings (no action required) or have incapacitated condition. During that time you have a Fly Speed equal to your Speed. You cannot use this again until you finish a long rest."
+        },
+        {
+            "name": "Breath Weapon  ",
+            "description": "When you take the Attack action on your turn, you can replace one attack with an exhalation of magical energy in a 15-foot cone or a 50-foot line (choose each time). Each creature in that area must make a Dexterity saving throw (DC 8 plus your Constitution modifier and Proficiency Bonus). On a failed save, a creature takes 1d10 damage of the type determined by your Draconic Ancestry. On a successful save, a creature takes half damage. This damage increases by 1d10 at character levels 5 (2d10), 11 (5d10), and 17 (4d10). You can use this Breath Weapon a number of times equal to your Proficiency Bonus and regain all expended uses after a Long Rest.",
+            "grants": {
+                "breath_weapon": {
+                    "damage_dice": "1d10",
+                    "damage_increase": "1d10 at character levels 5 (2d10), 11 (5d10), and 17 (4d10)"
+                }
+            }
+        }
+    ],
+    "subraces": [
+        {
+            "name": "Black Dragon",
+            "description": "Black Dragonborn are the children of the black dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "necrotic",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Blue Dragon",
+            "description": "Blue Dragonborn are the children of the blue dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "lightning",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Brass Dragon",
+            "description": "Brass Dragonborn are the children of the brass dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "fire",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Bronze Dragon",
+            "description": "Bronze Dragonborn are the children of the bronze dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "lightning",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Copper Dragon",
+            "description": "Copper Dragonborn are the children of the copper dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "acid",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Gold Dragon",
+            "description": "Gold Dragonborn are the children of the gold dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "fire",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Green Dragon",
+            "description": "Green Dragonborn are the children of the green dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "poison",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Red Dragon",
+            "description": "Red Dragonborn are the children of the red dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "fire",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "White Dragon",
+            "description": "White Dragonborn are the children of the white dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "cold",
+            "source": "PHB",
+            "source_page": 186
+        },
+        {
+            "name": "Silver Dragon",
+            "description": "Silver Dragonborn are the children of the silver dragon god. They are known for their wisdom, strength, and compassion.",
+            "damage_type": "cold",
+            "source": "PHB",
+            "source_page": 186
+        }
+    ],
+    "version": "5.5E"
+} 
