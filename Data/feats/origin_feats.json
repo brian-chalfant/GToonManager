@@ -1,0 +1,284 @@
+{
+    "version": "5E 2024",
+    "feats": {
+        "Alert": {
+            "description": "Always on the lookout for danger, you gain the following benefits:",
+            "benefits": [
+                "Initiative Proficiency: When you roll Initiative, you can add your Proficiency Bonus to the roll.",
+                "Initiative Swap: Immediately after you roll Initiative, you can swap your Initiative with the Initiative of one willing ally in the same combat. You can't make this swap if you or the ally is Incapacitated."
+            ],
+            "modifies": {
+                "initiative": {
+                    "proficiency_bonus": true,
+                    "can_swap": true
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Crafter": {
+            "description": "You are adept at crafting things and bargaining with merchants, granting you the following benefits:",
+            "benefits": [
+                "Tool Proficiency: You gain Tool Proficiency with three different Artisan's Tools of your choice.",
+                "Discount: Whenever you buy a nonmagical item, you receive a 20 percent discount on it.",
+                "Faster Crafting: When you craft an item using a tool with which you have Tool Proficiency, the required crafting time is reduced by 20 percent."
+            ],
+            "modifies": {
+                "proficiencies": {
+                    "tools": {
+                        "artisan_tools": 3,
+                        "choice": true
+                    }
+                },
+                "crafting": {
+                    "discount": 20,
+                    "speed_bonus": 20
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Healer": {
+            "description": "You have the training and intuition to administer first aid and other care effectively, granting you the following benefits:",
+            "benefits": [
+                "Battle Medic: If you have a Healer's Kit, you can expend one use of it and tend to a creature within 5 feet of you as an Action. That creature can expend one of its Hit Dice, and you then roll that die. The creature regains a number of Hit Points equal to the roll plus your Proficiency Bonus.",
+                "Healing Rerolls: Whenever you roll a die to determine the number of Hit Points you restore with a spell or with this feat's Battle Medic benefit, you can reroll the die if it rolls a 1, and you must use the new roll."
+            ],
+            "modifies": {
+                "healing": {
+                    "battle_medic": {
+                        "range": 5,
+                        "healing": "hit_die + proficiency",
+                        "requires": "healers_kit"
+                    },
+                    "reroll_ones": true
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Lucky": {
+            "description": "You have inexplicable luck that can kick in at just the right moment, granting you the following benefits:",
+            "benefits": [
+                "Luck Points: You have a number of Luck Points equal to your Proficiency Bonus. You can spend the points on the benefits below, and you regain your expended Luck Points when you finish a Long Rest.",
+                "Advantage: Immediately after you roll a d20 for a d20 Test, you can spend 1 Luck Point to give yourself Advantage on the roll.",
+                "Disadvantage: When a creature rolls a d20 for an attack roll against you, you can spend 1 Luck Point to impose Disadvantage on that roll."
+            ],
+            "modifies": {
+                "luck": {
+                    "points": "proficiency_bonus",
+                    "refresh": "long_rest",
+                    "uses": {
+                        "advantage_on_test": 1,
+                        "disadvantage_on_attack": 1
+                    }
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Magic Initiate (Arcane)": {
+            "description": "You have learned the basics of arcane magical tradition.",
+            "benefits": [
+                "Two Cantrips: You learn two cantrips of your choice from the Arcane Spell list.",
+                "1st-Level Spell: Choose one 1st-level Spell from the Arcane Spell list. You always have that Spell prepared. You can cast it once without a Spell Slot, and you regain the ability to cast it in that way when you finish a Long Rest. You can also cast the Spell using any Spell Slots you have.",
+                "Intelligence, Wisdom, or Charisma is your spellcasting ability for these Spells (choose when you select this Feat)."
+            ],
+            "modifies": {
+                "spellcasting": {
+                    "spell_list": "arcane",
+                    "cantrips": {
+                        "count": 2,
+                        "from": "arcane"
+                    },
+                    "spells": {
+                        "count": 1,
+                        "level": 1,
+                        "from": "arcane",
+                        "uses": 1,
+                        "refresh": "long_rest"
+                    },
+                    "ability_choice": ["intelligence", "wisdom", "charisma"]
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Magic Initiate (Divine)": {
+            "description": "You have learned the basics of divine magical tradition.",
+            "benefits": [
+                "Two Cantrips: You learn two cantrips of your choice from the Divine Spell list.",
+                "1st-Level Spell: Choose one 1st-level Spell from the Divine Spell list. You always have that Spell prepared. You can cast it once without a Spell Slot, and you regain the ability to cast it in that way when you finish a Long Rest. You can also cast the Spell using any Spell Slots you have.",
+                "Intelligence, Wisdom, or Charisma is your spellcasting ability for these Spells (choose when you select this Feat)."
+            ],
+            "modifies": {
+                "spellcasting": {
+                    "spell_list": "divine",
+                    "cantrips": {
+                        "count": 2,
+                        "from": "divine"
+                    },
+                    "spells": {
+                        "count": 1,
+                        "level": 1,
+                        "from": "divine",
+                        "uses": 1,
+                        "refresh": "long_rest"
+                    },
+                    "ability_choice": ["intelligence", "wisdom", "charisma"]
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Magic Initiate (Primal)": {
+            "description": "You have learned the basics of primal magical tradition.",
+            "benefits": [
+                "Two Cantrips: You learn two cantrips of your choice from the Primal Spell list.",
+                "1st-Level Spell: Choose one 1st-level Spell from the Primal Spell list. You always have that Spell prepared. You can cast it once without a Spell Slot, and you regain the ability to cast it in that way when you finish a Long Rest. You can also cast the Spell using any Spell Slots you have.",
+                "Intelligence, Wisdom, or Charisma is your spellcasting ability for these Spells (choose when you select this Feat)."
+            ],
+            "modifies": {
+                "spellcasting": {
+                    "spell_list": "primal",
+                    "cantrips": {
+                        "count": 2,
+                        "from": "primal"
+                    },
+                    "spells": {
+                        "count": 1,
+                        "level": 1,
+                        "from": "primal",
+                        "uses": 1,
+                        "refresh": "long_rest"
+                    },
+                    "ability_choice": ["intelligence", "wisdom", "charisma"]
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Musician": {
+            "description": "You are a practiced musician, granting you the following benefits:",
+            "benefits": [
+                "Instrument Training: You gain Tool Proficiency with three Musical Instruments of your choice.",
+                "Inspiring Song: As you finish a Short Rest or a Long Rest, you can play a song on a Musical Instrument with which you have Tool Proficiency and give Inspiration to allies who hear the song. The number of allies you can affect in this way equals your Proficiency Bonus."
+            ],
+            "modifies": {
+                "proficiencies": {
+                    "tools": {
+                        "musical_instruments": 3,
+                        "choice": true
+                    }
+                },
+                "inspiration": {
+                    "grant_after_rest": "proficiency_bonus",
+                    "requires": "musical_instrument"
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Savage Attacker": {
+            "description": "You have trained to deal particularly damaging strikes.",
+            "benefits": [
+                "When you take the Attack Action and hit a target with a Weapon as part of that Action, you can roll the Weapon's damage dice twice and use either roll against the target. You can use this benefit only once per turn."
+            ],
+            "modifies": {
+                "combat": {
+                    "damage_rerolls": {
+                        "frequency": "once_per_turn",
+                        "trigger": "weapon_attack_hit",
+                        "effect": "roll_twice_take_better"
+                    }
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Skilled": {
+            "description": "You have a talent for learning, granting you these benefits:",
+            "benefits": [
+                "You gain proficiency in any combination of three skills or tools of your choice."
+            ],
+            "modifies": {
+                "proficiencies": {
+                    "type": "choice",
+                    "count": 3,
+                    "options": ["skills", "tools"],
+                    "description": "Choose any combination of 3 skills or tools"
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Tavern Brawler": {
+            "description": "Accustomed to brawling, you gain the following benefits:",
+            "benefits": [
+                "Enhanced Unarmed Strike: When you hit with your Unarmed Strike and deal damage, you can deal Bludgeoning Damage equal to 1d4 + your Strength modifier, instead of the normal damage of an Unarmed Strike.",
+                "Damage Rerolls: Whenever you roll a damage die for your Unarmed Strike, you can reroll the die if it rolls a 1, and you must use the new roll.",
+                "Shove: When you hit a creature with an Unarmed Strike as part of the Attack Action on your turn, you can deal damage to the target and also push it 5 feet away. You can use this benefit only once per turn.",
+                "Furniture as Weapons: You can wield furniture as a Weapon, using the rules of the Greatclub for Small or Medium furniture and the rules of the Club for Tiny furniture."
+            ],
+            "modifies": {
+                "combat": {
+                    "unarmed_strike": {
+                        "damage": "1d4 + strength",
+                        "reroll_ones": true,
+                        "can_shove": {
+                            "distance": 5,
+                            "frequency": "once_per_turn"
+                        }
+                    },
+                    "improvised_weapons": {
+                        "furniture": true,
+                        "tiny": "club",
+                        "small_medium": "greatclub"
+                    }
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        },
+        "Tough": {
+            "description": "Your Hit Point Maximum increases by an amount equal to twice your character level when you gain this Feat. Whenever you gain a level thereafter, your Hit Point Maximum increases by an additional 2 Hit Points.",
+            "benefits": [
+                "Your Hit Point Maximum increases by 2 times your character level.",
+                "Every time you gain a level, your Hit Point Maximum increases by an additional 2."
+            ],
+            "modifies": {
+                "hit_points": {
+                    "initial_bonus": "2 * character_level",
+                    "per_level_bonus": 2
+                }
+            },
+            "source": "PHB 2024",
+            "source_page": 201,
+            "prerequisites": null,
+            "origin_feat": true
+        }
+    }
+}
+

@@ -39,35 +39,8 @@
         }
     },
     "feat": {
-        "Magic Initiate (Cleric)": {
-            "description": "You have learned the basics of cleric spellcasting.",
-            "benefits": [
-                "You learn two cantrips of your choice from the cleric spell list.",
-                "You learn one 1st-level spell from the cleric spell list.",
-                "You can cast this 1st-level spell at its lowest level, and you must finish a long rest before you can cast it in this way again."
-            ],
-            "modifies": {
-                "spellcasting": {
-                    "class_choice": [
-                        "cleric"
-                    ],
-                    "cantrips": {
-                        "count": 2,
-                        "from": "cleric"
-                    },
-                    "spells": {
-                        "count": 1,
-                        "level": 1,
-                        "from": "cleric",
-                        "uses": 1,
-                        "refresh": "long_rest"
-                    }
-                }
-            },
-            "source": "PHB 2024",
-            "source_page": 178,
-            "base_feat": "Magic Initiate"
-        }
+        "feat_reference": "Magic Initiate (Divine)",
+        "source_file": "origin_feats"
     },
     "proficiency_grants": {
         "skills": [

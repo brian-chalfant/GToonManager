@@ -39,22 +39,8 @@
         }
     },
     "feat": {
-        "Skilled": {
-            "description": "You have a talent for learning, granting you these benefits:",
-            "benefits": [
-                "You gain proficiency in any combination of three skills or tools of your choice."
-            ],
-            "modifies": {
-                "proficiencies": {
-                    "type": "choice",
-                    "count": 3,
-                    "options": ["skills", "tools"],
-                    "description": "Choose any combination of 3 skills or tools"
-                }
-            },
-            "source": "PHB 2024",
-            "source_page": 201
-        }
+        "feat_reference": "Skilled",
+        "source_file": "origin_feats"
     },
     "proficiency_grants": {
         "skills": [

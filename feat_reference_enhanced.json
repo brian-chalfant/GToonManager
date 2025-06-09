@@ -1,0 +1,51 @@
+{
+    "examples": {
+        "simple_reference": {
+            "feat": {
+                "feat_reference": "Skilled",
+                "source_file": "origin_feats"
+            }
+        },
+        "reference_with_customization": {
+            "feat": {
+                "feat_reference": "Magic Initiate (Divine)",
+                "source_file": "origin_feats",
+                "customizations": {
+                    "spell_list_override": "cleric",
+                    "description_suffix": " You focus specifically on cleric traditions."
+                }
+            }
+        },
+        "multiple_feat_options": {
+            "feat": {
+                "type": "choice",
+                "description": "Choose one of the following origin feats:",
+                "options": [
+                    {
+                        "feat_reference": "Alert",
+                        "source_file": "origin_feats"
+                    },
+                    {
+                        "feat_reference": "Lucky",
+                        "source_file": "origin_feats"
+                    },
+                    {
+                        "feat_reference": "Tough",
+                        "source_file": "origin_feats"
+                    }
+                ]
+            }
+        },
+        "legacy_inline": {
+            "feat": {
+                "Custom Feat": {
+                    "description": "A unique feat for this background",
+                    "benefits": ["Some benefit"],
+                    "modifies": {},
+                    "source": "Custom",
+                    "source_page": null
+                }
+            }
+        }
+    }
+} 
