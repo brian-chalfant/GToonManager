@@ -1,0 +1,98 @@
+{
+    "name": "Goliath",
+    "description": "Goliaths are descendants of giants, standing about 7-8 feet tall. They possess supernatural boons from their giant ancestry and are known for their powerful build and endurance.",
+    "source": "5.5E",
+    "source_page": 0,
+    "creature_type": "Humanoid",
+    "age": {
+        "lifespan": "90 years"
+    },
+    "size": {
+        "category": "Medium",
+        "description": "about 7-8 feet tall"
+    },
+    "speed": {
+        "walk": 35
+    },
+    "traits": [
+        {
+            "name": "Giant Ancestry",
+            "description": "You are descended from Giants. Choose one of the following benefits - a supernatural boon from your ancestry; you can use the chosen benefit a number of times equal to your Proficiency Bonus, and you regain all expended uses when you finish a Long Rest.",
+            "choice_required": true,
+            "options": [
+                {
+                    "name": "Cloud's Jaunt (Cloud Giant)",
+                    "description": "As a Bonus Action, you magically teleport up to 30 feet to an unoccupied space you can see.",
+                    "action_type": "bonus_action",
+                    "range": 30,
+                    "uses": "proficiency_bonus_per_long_rest"
+                },
+                {
+                    "name": "Fire's Burn (Fire Giant)",
+                    "description": "When you hit a target with an attack roll and deal damage to it, you can also deal 1d10 Fire damage to that target.",
+                    "damage": "1d10",
+                    "damage_type": "fire",
+                    "trigger": "on_hit",
+                    "uses": "proficiency_bonus_per_long_rest"
+                },
+                {
+                    "name": "Frost's Chill (Frost Giant)",
+                    "description": "When you hit a target with an attack roll and deal damage to it, you can also deal 1d6 Cold damage to that target and reduce its Speed by 10 feet until the start of your next turn.",
+                    "damage": "1d6",
+                    "damage_type": "cold",
+                    "additional_effect": "reduce target speed by 10 feet until start of your next turn",
+                    "trigger": "on_hit",
+                    "uses": "proficiency_bonus_per_long_rest"
+                },
+                {
+                    "name": "Hill's Tumble (Hill Giant)",
+                    "description": "When you hit a Large or smaller creature with an attack roll and deal damage to it, you can give that target the Prone condition.",
+                    "condition": "prone",
+                    "target_size": "Large or smaller",
+                    "trigger": "on_hit",
+                    "uses": "proficiency_bonus_per_long_rest"
+                },
+                {
+                    "name": "Stone's Endurance (Stone Giant)",
+                    "description": "When you take damage, you can use a Reaction to roll 1d12. Add your Constitution modifier to the number rolled and reduce the damage by that total.",
+                    "action_type": "reaction",
+                    "damage_reduction": "1d12 + Constitution modifier",
+                    "trigger": "when_taking_damage",
+                    "uses": "proficiency_bonus_per_long_rest"
+                },
+                {
+                    "name": "Storm's Thunder (Storm Giant)",
+                    "description": "When you take damage from a creature within 60 feet of you, you can use a Reaction to deal 1d8 Thunder damage to that creature.",
+                    "action_type": "reaction",
+                    "damage": "1d8",
+                    "damage_type": "thunder",
+                    "range": 60,
+                    "trigger": "when_taking_damage_from_creature_within_range",
+                    "uses": "proficiency_bonus_per_long_rest"
+                }
+            ]
+        },
+        {
+            "name": "Large Form",
+            "description": "Starting at character level 5, you can change your size to Large as a Bonus Action if you're in a space large enough. This transformation lasts for 10 minutes or until you end it (no action required). During this duration, you have Advantage on Strength checks, and your Speed increases by 10 feet. Once you use this trait, you cannot use it again until you finish a Long Rest.",
+            "action_type": "bonus_action",
+            "duration": "10 minutes",
+            "level_requirement": 5,
+            "grants": {
+                "size_change": "Large",
+                "advantage": ["Strength checks"],
+                "speed_bonus": 10
+            },
+            "uses": "1_per_long_rest"
+        },
+        {
+            "name": "Powerful Build",
+            "description": "You have Advantage on any saving throw you make to end the Grappled condition. You also count as one size larger when determining your carrying capacity.",
+            "grants": {
+                "saving_throw_advantages": ["to end Grappled condition"],
+                "carrying_capacity": "one size larger"
+            }
+        }
+    ],
+    "version": "5.5E"
+}

@@ -1,105 +1,43 @@
 {
     "name": "Human",
-    "description": "Humans are the most adaptable and ambitious people among the common races. Whatever drives them, humans are the innovators, the achievers, and the pioneers of the worlds.",
+    "description": "Found throughout the multiverse, humans are as varied as they are numerous, and they endeavor to achieve as much as they can in the years they are given. Their ambition and resourcefulness are commended, respected, and feared on many worlds.",
     "source": "PHB",
-    "source_page": 29,
-    "ability_scores": {
-        "strength": 1,
-        "dexterity": 1,
-        "constitution": 1,
-        "intelligence": 1,
-        "wisdom": 1,
-        "charisma": 1
-    },
+    "source_page": 0,
+    "creature_type": "Humanoid",
     "age": {
-        "maturity": 18,
         "lifespan": "less than 100 years"
     },
     "size": {
-        "category": "Medium",
-        "height": {
-            "base": "4'8\"",
-            "modifier": "2d10"
-        },
-        "weight": {
-            "base": 110,
-            "modifier": "2d4"
-        }
+        "category": "Medium (about 4-7 feet tall) or Small (about 2-4 feet tall)",
+        "choice_required": true,
+        "options": ["Medium", "Small"]
     },
     "speed": {
         "walk": 30
     },
-    "languages": {
-        "standard": ["Common"],
-        "bonus": {
-            "type": "choose",
-            "count": 1
-        }
-    },
-    "traits": [],
-    "subraces": [
+    "traits": [
         {
-            "name": "Standard",
-            "description": "The standard human is well-rounded, gaining a +1 bonus to all ability scores.",
-            "traits": []
+            "name": "Resourceful",
+            "description": "You gain Heroic Inspiration whenever you finish a Long Rest.",
+            "grants": {
+                "heroic_inspiration": "on Long Rest"
+            }
         },
         {
-            "name": "Variant",
-            "description": "If your campaign uses the optional feat rules from chapter 5, your Dungeon Master might allow these variant traits, all of which replace the human's ability score increases.",
-            "replaces": ["ability_scores"],
-            "ability_scores": {
-                "choose": {
-                    "count": 2,
-                    "bonus": 1,
-                    "from": ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
-                }
-            },
-            "traits": [
-                {
-                    "name": "Skills",
-                    "description": "You gain proficiency in one skill of your choice.",
-                    "grants": {
-                        "skill_proficiencies": {
-                            "choose": {
-                                "count": 1,
-                                "from": [
-                                    "acrobatics",
-                                    "animal handling",
-                                    "arcana",
-                                    "athletics",
-                                    "deception",
-                                    "history",
-                                    "insight",
-                                    "intimidation",
-                                    "investigation",
-                                    "medicine",
-                                    "nature",
-                                    "perception",
-                                    "performance",
-                                    "persuasion",
-                                    "religion",
-                                    "sleight of hand",
-                                    "stealth",
-                                    "survival"
-                                ]
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "Feat",
-                    "description": "You gain one feat of your choice.",
-                    "grants": {
-                        "feat": {
-                            "choose": {
-                                "count": 1,
-                                "from": "all"
-                            }
-                        }
-                    }
-                }
-            ]
+            "name": "Skillful",
+            "description": "You gain proficiency in one skill of your choice.",
+            "choice_required": true,
+            "grants": {
+                "skill_proficiencies": "one skill of choice"
+            }
+        },
+        {
+            "name": "Versatile",
+            "description": "You gain an Origin feat of your choice (see chapter 5). Skilled is recommended.",
+            "grants": {
+                "origin_feat": "one of choice (Skilled recommended)"
+            }
         }
     ],
-    "version": "5E"
+    "version": "5.5E"
 } 

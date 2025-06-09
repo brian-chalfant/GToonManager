@@ -1,0 +1,63 @@
+{
+    "name": "Tiefling",
+    "description": "Tieflings are either born in the Lower Planes or have fiendish ancestors who originated there. A tiefling is linked by blood to a devil, a demon, or some other Fiend. This connection to the Lower Planes is the tiefling's fiendish legacy, which comes with the promise of power yet has no effect on the tiefling's moral outlook.",
+    "source": "PHB",
+    "source_page": 0,
+    "creature_type": "Humanoid",
+    "age": {
+        "lifespan": "100 years"
+    },
+    "size": {
+        "category": "Medium (about 4-7 feet tall) or Small (about 3-4 feet tall)",
+        "choice_required": true,
+        "options": ["Medium", "Small"]
+    },
+    "speed": {
+        "walk": 30
+    },
+    "traits": [
+        {
+            "name": "Darkvision",
+            "description": "You have Darkvision with a range of 60 feet.",
+            "range": 60
+        },
+        {
+            "name": "Fiendish Legacy",
+            "description": "You are the recipient of a legacy that grants you supernatural abilities. Choose a legacy from the Fiendish Legacies table. You gain the level 1 benefit of the chosen legacy. When you reach character levels 3 and 5, you learn a higher-level spell, as shown on the table. You always have that spell prepared. You can cast it once without a spell slot, and you regain the ability to cast it in that way when you finish a Long Rest. You can also cast the spell using any spell slots you have of the appropriate level. Intelligence, Wisdom, or Charisma is your spellcasting ability for the spells you cast with this trait (choose the ability when you select the legacy).",
+            "choice_required": true,
+            "spellcasting_ability_choice": ["intelligence", "wisdom", "charisma"],
+            "legacies": {
+                "abyssal": {
+                    "level_1": "You have Resistance to Poison damage. You also know the Poison Spray cantrip.",
+                    "level_3": "Ray of Sickness",
+                    "level_5": "Hold Person",
+                    "cantrip": "poison_spray",
+                    "damage_resistance": "poison"
+                },
+                "chthonic": {
+                    "level_1": "You have Resistance to Necrotic damage. You also know the Chill Touch cantrip.",
+                    "level_3": "False Life",
+                    "level_5": "Ray of Enfeeblement",
+                    "cantrip": "chill_touch",
+                    "damage_resistance": "necrotic"
+                },
+                "infernal": {
+                    "level_1": "You have Resistance to Fire damage. You also know the Fire Bolt cantrip.",
+                    "level_3": "Hellish Rebuke",
+                    "level_5": "Darkness",
+                    "cantrip": "fire_bolt",
+                    "damage_resistance": "fire"
+                }
+            }
+        },
+        {
+            "name": "Otherworldly Presence",
+            "description": "You know the Thaumaturgy cantrip. When you cast it with this trait, the spell uses the same spellcasting ability you use for your Fiendish Legacy trait.",
+            "grants": {
+                "cantrips": ["thaumaturgy"],
+                "spellcasting_ability": "same as Fiendish Legacy"
+            }
+        }
+    ],
+    "version": "5.5E"
+} 

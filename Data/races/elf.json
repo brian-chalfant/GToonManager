@@ -1,16 +1,15 @@
 {
     "name": "Elf",
-    "description": "Elves are a magical people of otherworldly grace, living in places of ethereal beauty.",
+    "description": "Created by the god Corellon, the first elves could change their forms at will. They lost this ability when Corellon cursed them for plotting with the deity Lolth, who tried and failed to usurp Corellon's dominion.",
     "source": "PHB",
-    "source_page": 21,
-    "ability_scores": {
-        "dexterity": 2
-    },
+    "source_page": 0,
+    "creature_type": "Humanoid",
     "age": {
         "lifespan": "750 years"
     },
     "size": {
-        "category": "Medium"
+        "category": "Medium",
+        "description": "about 5-6 feet tall"
     },
     "speed": {
         "walk": 30
@@ -18,122 +17,61 @@
     "traits": [
         {
             "name": "Darkvision",
-            "description": "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+            "description": "You have Darkvision with a range of 60 feet.",
             "range": 60
+        },
+        {
+            "name": "Elven Lineage",
+            "description": "You are part of a lineage that grants you supernatural abilities. Choose a lineage from the Elven Lineages table. You gain the level 1 benefit of that lineage. When you reach character levels 3 and 5, you learn a higher-level spell, as shown on the table. You always have that spell prepared. You can cast it once without a spell slot, and you regain the ability to cast it in that way when you finish a Long Rest. You can also cast the spell using any spell slots you have of the appropriate level. Intelligence, Wisdom, or Charisma is your spellcasting ability for the spells you cast with this trait (choose the ability when you select the lineage).",
+            "choice_required": true,
+            "lineages": {
+                "drow": {
+                    "level_1": "The range of your Darkvision increases to 120 feet. You also know the Dancing Lights cantrip.",
+                    "level_3": "Faerie Fire",
+                    "level_5": "Darkness",
+                    "cantrip": "dancing_lights",
+                    "darkvision_range": 120
+                },
+                "high_elf": {
+                    "level_1": "You know the Prestidigitation cantrip. Whenever you finish a Long Rest, you can replace that cantrip with a different cantrip from the Wizard spell list.",
+                    "level_3": "Detect Magic",
+                    "level_5": "Misty Step",
+                    "cantrip": "prestidigitation",
+                    "cantrip_flexibility": "can replace with Wizard cantrip on Long Rest"
+                },
+                "wood_elf": {
+                    "level_1": "Your Speed increases to 35 feet. You also know the Druidcraft cantrip.",
+                    "level_3": "Longstrider",
+                    "level_5": "Pass without Trace",
+                    "cantrip": "druidcraft",
+                    "speed_increase": 5
+                }
+            },
+            "spellcasting_ability_choice": ["intelligence", "wisdom", "charisma"]
+        },
+        {
+            "name": "Fey Ancestry",
+            "description": "You have Advantage on saving throws you make to avoid or end the Charmed condition.",
+            "grants": {
+                "saving_throw_advantages": ["to avoid or end Charmed condition"]
+            }
         },
         {
             "name": "Keen Senses",
             "description": "You have proficiency in the Insight, Perception, or Survival skill.",
+            "choice_required": true,
             "grants": {
                 "skill_proficiencies": ["Insight", "Perception", "Survival"]
             }
         },
         {
-            "name": "Fey Ancestry",
-            "description": "You have advantage on saving throws against being charmed, and magic can't put you to sleep."
-        },
-        {
             "name": "Trance",
-            "description": "You don't need to sleep. Instead, you meditate deeply for 4 hours a day."
+            "description": "You don't need to sleep, and magic can't put you to sleep. You can finish a Long Rest in 4 hours if you spend those hours in a trancelike meditation, during which you retain consciousness.",
+            "grants": {
+                "immunity": ["magical sleep"],
+                "long_rest": "4 hours in trance"
+            }
         }
     ],
-    "subraces": [
-        {
-            "name": "High Elf",
-            "traits": [
-                {
-                    "name": "High Elf Magic",
-                    "description": "You know magic spells that grow in power as you gain levels. Intelligence is your spellcasting ability for these spells.",
-                    "spellcasting": {
-                        "ability": "intelligence",
-                        "innate": {
-                            "1": ["prestidigitation"],
-                            "2": {
-                                "spells": ["detect magic"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            },
-                            "3": {
-                                "spells": ["misty step"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Wood Elf",
-            "traits": [
-                {
-                    "name": "Wood Elf Magic",
-                    "description": "You know magic spells that grow in power as you gain levels. Wisdom is your spellcasting ability for these spells.",
-                    "spellcasting": {
-                        "ability": "wisdom",
-                        "innate": {
-                            "1": ["druidcraft"],
-                            "3": {
-                                "spells": ["longstrider"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            },
-                            "5": {
-                                "spells": ["pass without trace"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Dark Elf (Drow)",
-            "ability_scores": {
-                "charisma": 1
-            },
-            "traits": [
-                {
-                    "name": "Superior Darkvision",
-                    "description": "Your darkvision has a radius of 120 feet.",
-                    "modifies": {
-                        "traits.Darkvision.range": 120
-                    }
-                },
-                {
-                    "name": "Drow Magic",
-                    "description": "You know magic spells that grow in power as you gain levels. Charisma is your spellcasting ability for these spells.",
-                    "spellcasting": {
-                        "ability": "charisma",
-                        "innate": {
-                            "1": ["dancing lights"],
-                            "3": {
-                                "spells": ["faerie fire"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            },
-                            "5": {
-                                "spells": ["darkness"],
-                                "uses": {
-                                    "per": "long_rest",
-                                    "count": 1
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    ]
+    "version": "5.5E"
 }   

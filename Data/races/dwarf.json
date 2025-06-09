@@ -1,16 +1,15 @@
 {
     "name": "Dwarf",
-    "description": "Bold and hardy, dwarves are known as skilled warriors, miners, and workers of stone and metal.",
+    "description": "Dwarves were raised from the earth in the elder days by a deity of the forge. Called by various names on different worlds—Moradin, Reorx, and others—that god gave dwarves an affinity for stone and metal and for living underground.",
     "source": "PHB",
-    "source_page": 188,
-    "ability_scores": {
-        "constitution": 2
-    },
+    "source_page": 0,
+    "creature_type": "Humanoid",
     "age": {
         "lifespan": "350 years"
     },
     "size": {
-        "category": "Medium"
+        "category": "Medium",
+        "description": "about 4-5 feet tall"
     },
     "speed": {
         "walk": 30
@@ -18,20 +17,20 @@
     "traits": [
         {
             "name": "Darkvision",
-            "description": "Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.",
+            "description": "You have Darkvision with a range of 120 feet.",
             "range": 120
         },
         {
             "name": "Dwarven Resilience",
-            "description": "You have resistance to poison damage. you have advantage on saving throws to avoid or end the poisoned condition.",
+            "description": "You have Resistance to Poison damage. You also have Advantage on saving throws you make to avoid or end the Poisoned condition.",
             "grants": {
                 "damage_resistances": ["poison"],
-                "saving_throw_advantages": ["poisoned"]
+                "saving_throw_advantages": ["to avoid or end Poisoned condition"]
             }
         },
         {
-            "name": "Dwarvan Toughness",
-            "description": "Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.",
+            "name": "Dwarven Toughness",
+            "description": "Your Hit Point maximum increases by 1, and it increases by 1 again whenever you gain a level.",
             "grants": {
                 "hit_points": {
                     "bonus": 1,
@@ -41,15 +40,15 @@
         },
         {
             "name": "Stonecunning",
-            "description": "Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus.",
+            "description": "As a Bonus Action, you gain Tremorsense with a range of 60 feet for 10 minutes. You must be on a stone surface or touching a stone surface to use this Tremorsense. The stone can be natural or worked. You can use this Bonus Action a number of times equal to your Proficiency Bonus, and you regain all expended uses when you finish a Long Rest.",
+            "action_type": "bonus_action",
+            "duration": "10 minutes",
+            "range": 60,
+            "requirement": "on or touching stone surface",
             "grants": {
-                "skill_expertise": {
-                    "conditional": {
-                        "skill": "history",
-                        "condition": "when related to stonework origin"
-                    }
-                }
-            }
+                "tremorsense": "60 feet for 10 minutes"
+            },
+            "uses": "proficiency_bonus_per_long_rest"
         }
     ],
     "version": "5.5E"
