@@ -127,12 +127,12 @@ public class StandardArray : INotifyPropertyChanged
         // Try to assign values if they match standard array values
         var scores = new Dictionary<string, int>
         {
-            ["Strength"] = abilityScores.Strength,
-            ["Dexterity"] = abilityScores.Dexterity,
-            ["Constitution"] = abilityScores.Constitution,
-            ["Intelligence"] = abilityScores.Intelligence,
-            ["Wisdom"] = abilityScores.Wisdom,
-            ["Charisma"] = abilityScores.Charisma
+            ["Strength"] = abilityScores.Strength ?? 0,
+            ["Dexterity"] = abilityScores.Dexterity ?? 0,
+            ["Constitution"] = abilityScores.Constitution ?? 0,
+            ["Intelligence"] = abilityScores.Intelligence ?? 0,
+            ["Wisdom"] = abilityScores.Wisdom ?? 0,
+            ["Charisma"] = abilityScores.Charisma ?? 0
         };
 
         foreach (var kvp in scores)

@@ -18,7 +18,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int StrengthValue
     {
-        get => _character.AbilityScores.Strength;
+        get => _character.AbilityScores.Strength ?? 10;
         set
         {
             if (ValidateAbilityScore(value))
@@ -32,7 +32,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int DexterityValue
     {
-        get => _character.AbilityScores.Dexterity;
+        get => _character.AbilityScores.Dexterity ?? 10;
         set
         {
             if (ValidateAbilityScore(value))
@@ -46,7 +46,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int ConstitutionValue
     {
-        get => _character.AbilityScores.Constitution;
+        get => _character.AbilityScores.Constitution ?? 10;
         set
         {
             if (ValidateAbilityScore(value))
@@ -60,7 +60,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int IntelligenceValue
     {
-        get => _character.AbilityScores.Intelligence;
+        get => _character.AbilityScores.Intelligence ?? 10;
         set
         {
             if (ValidateAbilityScore(value))
@@ -74,7 +74,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int WisdomValue
     {
-        get => _character.AbilityScores.Wisdom;
+        get => _character.AbilityScores.Wisdom ?? 10;
         set
         {
             if (ValidateAbilityScore(value))
@@ -88,7 +88,7 @@ public class FreeEntryViewModel : INotifyPropertyChanged
 
     public int CharismaValue
     {
-        get => _character.AbilityScores.Charisma;
+        get => _character.AbilityScores.Charisma ?? 10;
         set
         {
             if (ValidateAbilityScore(value))

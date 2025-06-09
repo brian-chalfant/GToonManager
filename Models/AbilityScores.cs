@@ -4,14 +4,14 @@ namespace GToonManager.Models;
 
 public class AbilityScores : INotifyPropertyChanged
 {
-    private int _strength = 10;
-    private int _dexterity = 10;
-    private int _constitution = 10;
-    private int _intelligence = 10;
-    private int _wisdom = 10;
-    private int _charisma = 10;
+    private int? _strength = null;
+    private int? _dexterity = null;
+    private int? _constitution = null;
+    private int? _intelligence = null;
+    private int? _wisdom = null;
+    private int? _charisma = null;
 
-    public int Strength
+    public int? Strength
     {
         get => _strength;
         set
@@ -21,7 +21,7 @@ public class AbilityScores : INotifyPropertyChanged
         }
     }
 
-    public int Dexterity
+    public int? Dexterity
     {
         get => _dexterity;
         set
@@ -31,7 +31,7 @@ public class AbilityScores : INotifyPropertyChanged
         }
     }
 
-    public int Constitution
+    public int? Constitution
     {
         get => _constitution;
         set
@@ -41,7 +41,7 @@ public class AbilityScores : INotifyPropertyChanged
         }
     }
 
-    public int Intelligence
+    public int? Intelligence
     {
         get => _intelligence;
         set
@@ -51,7 +51,7 @@ public class AbilityScores : INotifyPropertyChanged
         }
     }
 
-    public int Wisdom
+    public int? Wisdom
     {
         get => _wisdom;
         set
@@ -61,7 +61,7 @@ public class AbilityScores : INotifyPropertyChanged
         }
     }
 
-    public int Charisma
+    public int? Charisma
     {
         get => _charisma;
         set

@@ -242,12 +242,12 @@ public class Character : INotifyPropertyChanged
     }
 
     // Calculated properties
-    public int StrengthModifier => CalculateModifier(AbilityScores.Strength);
-    public int DexterityModifier => CalculateModifier(AbilityScores.Dexterity);
-    public int ConstitutionModifier => CalculateModifier(AbilityScores.Constitution);
-    public int IntelligenceModifier => CalculateModifier(AbilityScores.Intelligence);
-    public int WisdomModifier => CalculateModifier(AbilityScores.Wisdom);
-    public int CharismaModifier => CalculateModifier(AbilityScores.Charisma);
+    public int? StrengthModifier => AbilityScores.Strength.HasValue ? CalculateModifier(AbilityScores.Strength.Value) : (int?)null;
+    public int? DexterityModifier => AbilityScores.Dexterity.HasValue ? CalculateModifier(AbilityScores.Dexterity.Value) : (int?)null;
+    public int? ConstitutionModifier => AbilityScores.Constitution.HasValue ? CalculateModifier(AbilityScores.Constitution.Value) : (int?)null;
+    public int? IntelligenceModifier => AbilityScores.Intelligence.HasValue ? CalculateModifier(AbilityScores.Intelligence.Value) : (int?)null;
+    public int? WisdomModifier => AbilityScores.Wisdom.HasValue ? CalculateModifier(AbilityScores.Wisdom.Value) : (int?)null;
+    public int? CharismaModifier => AbilityScores.Charisma.HasValue ? CalculateModifier(AbilityScores.Charisma.Value) : (int?)null;
 
     public int ProficiencyBonus => (Level - 1) / 4 + 2;
 
@@ -268,12 +268,12 @@ public class Character : INotifyPropertyChanged
     public int CharismaBackgroundBonus => GetBackgroundBonus("charisma");
 
     // Total ability scores including racial and background bonuses
-    public int StrengthTotal => AbilityScores.Strength + StrengthRacialBonus + StrengthBackgroundBonus;
-    public int DexterityTotal => AbilityScores.Dexterity + DexterityRacialBonus + DexterityBackgroundBonus;
-    public int ConstitutionTotal => AbilityScores.Constitution + ConstitutionRacialBonus + ConstitutionBackgroundBonus;
-    public int IntelligenceTotal => AbilityScores.Intelligence + IntelligenceRacialBonus + IntelligenceBackgroundBonus;
-    public int WisdomTotal => AbilityScores.Wisdom + WisdomRacialBonus + WisdomBackgroundBonus;
-    public int CharismaTotal => AbilityScores.Charisma + CharismaRacialBonus + CharismaBackgroundBonus;
+    public int? StrengthTotal => AbilityScores.Strength.HasValue ? AbilityScores.Strength.Value + StrengthRacialBonus + StrengthBackgroundBonus : (int?)null;
+    public int? DexterityTotal => AbilityScores.Dexterity.HasValue ? AbilityScores.Dexterity.Value + DexterityRacialBonus + DexterityBackgroundBonus : (int?)null;
+    public int? ConstitutionTotal => AbilityScores.Constitution.HasValue ? AbilityScores.Constitution.Value + ConstitutionRacialBonus + ConstitutionBackgroundBonus : (int?)null;
+    public int? IntelligenceTotal => AbilityScores.Intelligence.HasValue ? AbilityScores.Intelligence.Value + IntelligenceRacialBonus + IntelligenceBackgroundBonus : (int?)null;
+    public int? WisdomTotal => AbilityScores.Wisdom.HasValue ? AbilityScores.Wisdom.Value + WisdomRacialBonus + WisdomBackgroundBonus : (int?)null;
+    public int? CharismaTotal => AbilityScores.Charisma.HasValue ? AbilityScores.Charisma.Value + CharismaRacialBonus + CharismaBackgroundBonus : (int?)null;
 
     // Skill proficiencies from race
     public List<string> RacialSkillProficiencies => GetRacialSkillProficiencies();
@@ -316,6 +316,12 @@ public class Character : INotifyPropertyChanged
     
     // Calculated armor class based on D&D 2024 rules
     public int CalculatedArmorClass => CalculateArmorClass();
+
+    // Property to check if ability scores have been generated (any score is not null)
+    public bool HasGeneratedAbilityScores => 
+        AbilityScores.Strength.HasValue || AbilityScores.Dexterity.HasValue || 
+        AbilityScores.Constitution.HasValue || AbilityScores.Intelligence.HasValue || 
+        AbilityScores.Wisdom.HasValue || AbilityScores.Charisma.HasValue;
 
     private static int CalculateModifier(int score)
     {
@@ -437,7 +443,7 @@ public class Character : INotifyPropertyChanged
                 if (isFirstLevel)
                 {
                     // First level: always max hit die + Constitution modifier
-                    totalHp += hitDie + ConstitutionModifier;
+                    totalHp += hitDie + (ConstitutionModifier ?? 0);
                     isFirstLevel = false;
                 }
                 else
@@ -450,7 +456,7 @@ public class Character : INotifyPropertyChanged
                         HitPointCalculationMethod.Maximum => hitDie, // Maximum possible
                         _ => (hitDie + 1) / 2 // Default to average
                     };
-                    totalHp += levelHp + ConstitutionModifier;
+                    totalHp += levelHp + (ConstitutionModifier ?? 0);
                 }
             }
         }
@@ -478,7 +484,7 @@ public class Character : INotifyPropertyChanged
         // Base AC = 10 + Dex modifier (when not wearing armor)
         // TODO: When armor system is implemented, this will need to check for equipped armor
         
-        return 10 + DexterityModifier;
+        return 10 + (DexterityModifier ?? 0);
     }
 
     private void RefreshAbilityScoreModifiers()
@@ -575,6 +581,9 @@ public class Character : INotifyPropertyChanged
                 OnPropertyChanged(nameof(CharismaTotal));
                 break;
         }
+        
+        // Always notify that the generated status may have changed
+        OnPropertyChanged(nameof(HasGeneratedAbilityScores));
     }
 
     private void ClassLevel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

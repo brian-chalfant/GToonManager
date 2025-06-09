@@ -36,7 +36,10 @@ public class MainViewModel : INotifyPropertyChanged
         _raceDataService = new RaceDataService();
         _classDataService = new ClassDataService();
         _backgroundDataService = new BackgroundDataService();
-        _settings = new Settings();
+        
+        // Load settings from file or create defaults
+        _settings = SettingsService.LoadSettings();
+        
         _currentCharacter = new Character
         {
             Name = "New Character",
@@ -45,6 +48,9 @@ public class MainViewModel : INotifyPropertyChanged
         
         // Set settings reference for calculations
         _currentCharacter.SetSettings(_settings);
+        
+        // Apply initial theme from loaded settings
+        ThemeService.ApplyTheme(_settings.Theme);
         
         // Subscribe to character property changes
         _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
@@ -277,6 +283,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     public bool IsUniformDistribution => SelectedBackgroundImprovementOption?.Distributions?.Count == 1 && 
                                         SelectedBackgroundImprovementOption.Distributions[0].Count > 1;
+
+    // Property to check if background abilities have been applied
+    public bool HasAppliedBackgroundAbilities => CurrentCharacter.BackgroundAbilityScoreChoice != null;
 
     // Commands
     public ICommand NewCharacterCommand { get; private set; } = null!;
@@ -664,17 +673,30 @@ public class MainViewModel : INotifyPropertyChanged
         {
             var settingsWindow = new Views.SettingsWindow(Settings);
             
-            // Safely set the owner - avoid setting window as its own owner
-            if (Application.Current.MainWindow != null && Application.Current.MainWindow != settingsWindow)
+            // Safely set the owner - ensure main window is shown and not the same instance
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != settingsWindow && mainWindow.IsVisible)
             {
-                settingsWindow.Owner = Application.Current.MainWindow;
+                settingsWindow.Owner = mainWindow;
             }
             
             var result = settingsWindow.ShowDialog();
             if (result == true)
             {
                 // Settings were applied - they're already updated in the Settings object
-                StatusMessage = "Settings have been updated";
+                // Save the updated settings to file
+                var saveSuccess = SettingsService.SaveSettings(Settings);
+                if (saveSuccess)
+                {
+                    StatusMessage = "Settings have been updated and saved";
+                }
+                else
+                {
+                    StatusMessage = "Settings have been updated (but failed to save to file)";
+                }
+                
+                // Apply the current theme (this ensures consistency even if theme wasn't changed)
+                ThemeService.ApplyTheme(Settings.Theme);
                 
                 // Update current character with new settings to refresh calculations
                 if (CurrentCharacter != null)
@@ -707,6 +729,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ExitApplication()
     {
+        // Save settings on exit
+        SettingsService.SaveSettings(Settings);
+        
         System.Windows.Application.Current.Shutdown();
     }
 
@@ -897,8 +922,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void ShowAbout()
     {
-        //TODO: Implement about dialog functionality
-        StatusMessage = "About dialog functionality not yet implemented";
+        var settingsPath = SettingsService.GetSettingsFilePath();
+        var aboutMessage = $"GToon Manager v1.0\nD&D 5E Character Creator\n\nCreated with ❤️ for adventurers everywhere!\n\n" +
+                          $"Settings are automatically saved to:\n{settingsPath}";
+        
+        MessageBox.Show(aboutMessage, "About GToon Manager", MessageBoxButton.OK, MessageBoxImage.Information);
+        StatusMessage = "About dialog shown";
     }
 
     private void AddClass()
@@ -1086,10 +1115,11 @@ public class MainViewModel : INotifyPropertyChanged
             var control = new Controls.StandardArrayControl();
             var window = new Views.AbilityScoreGenerationWindow();
             
-            // Safely set the owner - avoid setting window as its own owner
-            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            // Safely set the owner - ensure main window is shown and not the same instance
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != window && mainWindow.IsVisible)
             {
-                window.Owner = Application.Current.MainWindow;
+                window.Owner = mainWindow;
             }
             
             window.SetContent("Standard Array Assignment", control, viewModel);
@@ -1120,10 +1150,11 @@ public class MainViewModel : INotifyPropertyChanged
             var control = new Views.PointBuyControl();
             var window = new Views.AbilityScoreGenerationWindow();
             
-            // Safely set the owner - avoid setting window as its own owner
-            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            // Safely set the owner - ensure main window is shown and not the same instance
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != window && mainWindow.IsVisible)
             {
-                window.Owner = Application.Current.MainWindow;
+                window.Owner = mainWindow;
             }
             
             window.SetContent("Point Buy Assignment", control, viewModel);
@@ -1153,10 +1184,11 @@ public class MainViewModel : INotifyPropertyChanged
             var control = new Controls.RollingControl();
             var window = new Views.AbilityScoreGenerationWindow();
             
-            // Safely set the owner - avoid setting window as its own owner
-            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            // Safely set the owner - ensure main window is shown and not the same instance
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != window && mainWindow.IsVisible)
             {
-                window.Owner = Application.Current.MainWindow;
+                window.Owner = mainWindow;
             }
             
             window.SetContent("Dice Rolling", control, viewModel);
@@ -1186,10 +1218,11 @@ public class MainViewModel : INotifyPropertyChanged
             var control = new Controls.FreeEntryControl();
             var window = new Views.AbilityScoreGenerationWindow();
             
-            // Safely set the owner - avoid setting window as its own owner
-            if (Application.Current.MainWindow != null && Application.Current.MainWindow != window)
+            // Safely set the owner - ensure main window is shown and not the same instance
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != window && mainWindow.IsVisible)
             {
-                window.Owner = Application.Current.MainWindow;
+                window.Owner = mainWindow;
             }
             
             window.SetContent("Manual Entry", control, viewModel);
@@ -1477,6 +1510,11 @@ public class MainViewModel : INotifyPropertyChanged
                     CurrentCharacter.Background = null;
                 }
             }
+        }
+        else if (e.PropertyName == nameof(Character.BackgroundAbilityScoreChoice))
+        {
+            // When background ability score choice changes, update the applied status
+            OnPropertyChanged(nameof(HasAppliedBackgroundAbilities));
         }
     }
 

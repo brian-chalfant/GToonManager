@@ -6,9 +6,48 @@
              xmlns:controls="clr-namespace:GToonManager.Controls"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- DataTemplate for AbilityScoreAssignmentViewModel -->
-        <DataTemplate DataType="{x:Type viewModels:AbilityScoreAssignmentViewModel}">
-            <controls:AbilityScoreAssignmentControl/>
-        </DataTemplate>
+        <ResourceDictionary>
+            <!-- Theme Resource Dictionaries for switching -->
+            <ResourceDictionary x:Key="LightTheme">
+                <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+                <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+                <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+                <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+                <SolidColorBrush x:Key="DarkRed" Color="#4A0601"/>
+                <SolidColorBrush x:Key="WindowBackground" Color="#F5E6C8"/>
+                <SolidColorBrush x:Key="PanelBackground" Color="#F5E6C8"/>
+                <SolidColorBrush x:Key="ControlBackground" Color="White"/>
+                <SolidColorBrush x:Key="TextForeground" Color="#7B0A02"/>
+            </ResourceDictionary>
+
+            <ResourceDictionary x:Key="DarkTheme">
+                <SolidColorBrush x:Key="MedievalBackground" Color="#2B2B2B"/>
+                <SolidColorBrush x:Key="PrimaryGold" Color="#FFD700"/>
+                <SolidColorBrush x:Key="PrimaryRed" Color="#FF6B6B"/>
+                <SolidColorBrush x:Key="PanelBlue" Color="#3A3A4A"/>
+                <SolidColorBrush x:Key="DarkRed" Color="#5A3A3A"/>
+                <SolidColorBrush x:Key="WindowBackground" Color="#2B2B2B"/>
+                <SolidColorBrush x:Key="PanelBackground" Color="#3A3A3A"/>
+                <SolidColorBrush x:Key="ControlBackground" Color="#4A4A4A"/>
+                <SolidColorBrush x:Key="TextForeground" Color="#E0E0E0"/>
+            </ResourceDictionary>
+
+            <!-- Default active theme resources (Light by default) -->
+            <!-- These will be dynamically updated by ThemeService -->
+            <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
+            <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
+            <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
+            <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+            <SolidColorBrush x:Key="DarkRed" Color="#4A0601"/>
+            <SolidColorBrush x:Key="WindowBackground" Color="#F5E6C8"/>
+            <SolidColorBrush x:Key="PanelBackground" Color="#F5E6C8"/>
+            <SolidColorBrush x:Key="ControlBackground" Color="White"/>
+            <SolidColorBrush x:Key="TextForeground" Color="#7B0A02"/>
+
+            <!-- DataTemplate for AbilityScoreAssignmentViewModel -->
+            <DataTemplate DataType="{x:Type viewModels:AbilityScoreAssignmentViewModel}">
+                <controls:AbilityScoreAssignmentControl/>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

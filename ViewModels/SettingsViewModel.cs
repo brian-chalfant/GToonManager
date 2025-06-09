@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows;
 using GToonManager.Models;
+using GToonManager.Services;
 using Microsoft.Win32;
 
 namespace GToonManager.ViewModels;
@@ -151,8 +152,12 @@ public class SettingsViewModel : INotifyPropertyChanged
             case nameof(Settings.RerollLimit):
                 _originalSettings.RerollLimit = _currentSettings.RerollLimit;
                 break;
+            case nameof(Settings.Theme):
+                // Apply theme changes immediately for real-time preview
+                _originalSettings.Theme = _currentSettings.Theme;
+                ThemeService.ApplyTheme(_currentSettings.Theme);
+                break;
             // Add other critical settings that need immediate feedback here
-            // Theme changes might be too disruptive for immediate application
         }
     }
 

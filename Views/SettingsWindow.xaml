@@ -10,23 +10,20 @@
         Height="650" Width="800"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="#F5E6C8">
+        Background="{DynamicResource WindowBackground}">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
-        <!-- Medieval Theme Resources -->
-        <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
-        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
-        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
-        <SolidColorBrush x:Key="PanelBlue" Color="#1B2A41"/>
+        <!-- Medieval Theme Resources - Use DynamicResource for theme switching -->
+        <!-- These will be dynamically updated by the ThemeService -->
         
         <!-- Style for section headers -->
         <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="Garamond"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
             <Setter Property="Margin" Value="0,0,0,15"/>
         </Style>
         
@@ -35,7 +32,7 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,10,0"/>
         </Style>
@@ -47,9 +44,9 @@
         
         <!-- Medieval TextBox Style -->
         <Style x:Key="MedievalTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
@@ -89,9 +86,9 @@
         
         <!-- Medieval ComboBox Style -->
         <Style x:Key="MedievalComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
@@ -102,7 +99,7 @@
         
         <!-- Medieval CheckBox Style -->
         <Style x:Key="MedievalCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -111,9 +108,9 @@
         
         <!-- Medieval Button Style -->
         <Style x:Key="MedievalButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
@@ -132,8 +129,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryGold}"/>
-                                <Setter Property="Foreground" Value="{StaticResource PrimaryRed}"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#FFD700"/>
@@ -153,26 +150,26 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="0,0,0,3">
-            <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" CornerRadius="6" Padding="15">
+        <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20" BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="0,0,0,3">
+            <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2" CornerRadius="6" Padding="15">
                 <StackPanel>
                     <TextBlock Text="⚙️ Settings ⚙️" FontSize="28" FontWeight="Bold" 
-                               Foreground="{StaticResource PrimaryGold}" FontFamily="Garamond" HorizontalAlignment="Center"/>
+                               Foreground="{DynamicResource PrimaryGold}" FontFamily="Garamond" HorizontalAlignment="Center"/>
                     <TextBlock Text="🏰 Configure GToon Manager Preferences 🏰" FontSize="14" 
-                               Foreground="{StaticResource PrimaryGold}" FontFamily="Garamond" 
+                               Foreground="{DynamicResource PrimaryGold}" FontFamily="Garamond" 
                                HorizontalAlignment="Center" Opacity="0.9" Margin="0,5,0,0"/>
                 </StackPanel>
             </Border>
         </Border>
 
         <!-- Settings Content -->
-        <TabControl Grid.Row="1" Margin="20" Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2">
+        <TabControl Grid.Row="1" Margin="20" Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2">
             
             <!-- Character Creation Tab -->
             <TabItem Header="⚔️ Character Creation" Padding="15,10" FontFamily="Garamond" FontWeight="Bold" 
-                     Foreground="{StaticResource PrimaryRed}" FontSize="14">
-                <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryRed}" BorderThickness="2">
-                    <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+                     Foreground="{DynamicResource PrimaryRed}" FontSize="14">
+                <Border Background="{DynamicResource MedievalBackground}" BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="2">
+                    <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel Margin="25">
                                 
@@ -491,9 +488,9 @@
         </TabControl>
 
         <!-- Button Panel -->
-        <Border Grid.Row="2" Background="{StaticResource PrimaryRed}" Padding="20" 
-                BorderBrush="{StaticResource PrimaryGold}" BorderThickness="0,3,0,0">
-            <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" CornerRadius="6" Padding="15">
+        <Border Grid.Row="2" Background="{DynamicResource PrimaryRed}" Padding="20" 
+                BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="0,3,0,0">
+            <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" CornerRadius="6" Padding="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="🔄 Reset to Defaults" 
                             Command="{Binding ResetToDefaultsCommand}"

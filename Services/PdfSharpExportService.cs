@@ -282,24 +282,24 @@ public class PdfSharpExportService
             "ExperiencePoints" => character.ExperiencePoints.ToString(),
             
             // Ability Scores
-            "Strength" => character.StrengthTotal.ToString(),
-            "Dexterity" => character.DexterityTotal.ToString(),
-            "Constitution" => character.ConstitutionTotal.ToString(),
-            "Intelligence" => character.IntelligenceTotal.ToString(),
-            "Wisdom" => character.WisdomTotal.ToString(),
-            "Charisma" => character.CharismaTotal.ToString(),
+            "Strength" => character.StrengthTotal?.ToString() ?? "",
+            "Dexterity" => character.DexterityTotal?.ToString() ?? "",
+            "Constitution" => character.ConstitutionTotal?.ToString() ?? "",
+            "Intelligence" => character.IntelligenceTotal?.ToString() ?? "",
+            "Wisdom" => character.WisdomTotal?.ToString() ?? "",
+            "Charisma" => character.CharismaTotal?.ToString() ?? "",
             
             // Ability Modifiers (calculated from total scores)
-            "StrengthModifier" => FormatModifier(CalculateModifier(character.StrengthTotal)),
-            "DexterityModifier" => FormatModifier(CalculateModifier(character.DexterityTotal)),
-            "ConstitutionModifier" => FormatModifier(CalculateModifier(character.ConstitutionTotal)),
-            "IntelligenceModifier" => FormatModifier(CalculateModifier(character.IntelligenceTotal)),
-            "WisdomModifier" => FormatModifier(CalculateModifier(character.WisdomTotal)),
-            "CharismaModifier" => FormatModifier(CalculateModifier(character.CharismaTotal)),
+            "StrengthModifier" => character.StrengthModifier.HasValue ? FormatModifier(character.StrengthModifier.Value) : "",
+            "DexterityModifier" => character.DexterityModifier.HasValue ? FormatModifier(character.DexterityModifier.Value) : "",
+            "ConstitutionModifier" => character.ConstitutionModifier.HasValue ? FormatModifier(character.ConstitutionModifier.Value) : "",
+            "IntelligenceModifier" => character.IntelligenceModifier.HasValue ? FormatModifier(character.IntelligenceModifier.Value) : "",
+            "WisdomModifier" => character.WisdomModifier.HasValue ? FormatModifier(character.WisdomModifier.Value) : "",
+            "CharismaModifier" => character.CharismaModifier.HasValue ? FormatModifier(character.CharismaModifier.Value) : "",
             
             // Combat Stats
             "ArmorClass" => character.ArmorClass.ToString(),
-            "Initiative" => FormatModifier(CalculateModifier(character.DexterityTotal)),
+            "Initiative" => character.DexterityModifier.HasValue ? FormatModifier(character.DexterityModifier.Value) : "",
             "Speed" => character.Speed.ToString(),
             "HitPointMaximum" => character.MaxHitPoints.ToString(),
             "CurrentHitPoints" => character.HitPoints.ToString(),
@@ -525,12 +525,12 @@ public class PdfSharpExportService
     {
         var baseModifier = ability.ToLower() switch
         {
-            "strength" => CalculateModifier(character.StrengthTotal),
-            "dexterity" => CalculateModifier(character.DexterityTotal),
-            "constitution" => CalculateModifier(character.ConstitutionTotal),
-            "intelligence" => CalculateModifier(character.IntelligenceTotal),
-            "wisdom" => CalculateModifier(character.WisdomTotal),
-            "charisma" => CalculateModifier(character.CharismaTotal),
+            "strength" => character.StrengthModifier ?? 0,
+            "dexterity" => character.DexterityModifier ?? 0,
+            "constitution" => character.ConstitutionModifier ?? 0,
+            "intelligence" => character.IntelligenceModifier ?? 0,
+            "wisdom" => character.WisdomModifier ?? 0,
+            "charisma" => character.CharismaModifier ?? 0,
             _ => 0
         };
 
@@ -543,24 +543,24 @@ public class PdfSharpExportService
         // Map skills to their associated abilities
         var baseModifier = skill.ToLower() switch
         {
-            "acrobatics" => CalculateModifier(character.DexterityTotal),
-            "animal handling" => CalculateModifier(character.WisdomTotal),
-            "arcana" => CalculateModifier(character.IntelligenceTotal),
-            "athletics" => CalculateModifier(character.StrengthTotal),
-            "deception" => CalculateModifier(character.CharismaTotal),
-            "history" => CalculateModifier(character.IntelligenceTotal),
-            "insight" => CalculateModifier(character.WisdomTotal),
-            "intimidation" => CalculateModifier(character.CharismaTotal),
-            "investigation" => CalculateModifier(character.IntelligenceTotal),
-            "medicine" => CalculateModifier(character.WisdomTotal),
-            "nature" => CalculateModifier(character.IntelligenceTotal),
-            "perception" => CalculateModifier(character.WisdomTotal),
-            "performance" => CalculateModifier(character.CharismaTotal),
-            "persuasion" => CalculateModifier(character.CharismaTotal),
-            "religion" => CalculateModifier(character.IntelligenceTotal),
-            "sleight of hand" => CalculateModifier(character.DexterityTotal),
-            "stealth" => CalculateModifier(character.DexterityTotal),
-            "survival" => CalculateModifier(character.WisdomTotal),
+            "acrobatics" => character.DexterityModifier ?? 0,
+            "animal handling" => character.WisdomModifier ?? 0,
+            "arcana" => character.IntelligenceModifier ?? 0,
+            "athletics" => character.StrengthModifier ?? 0,
+            "deception" => character.CharismaModifier ?? 0,
+            "history" => character.IntelligenceModifier ?? 0,
+            "insight" => character.WisdomModifier ?? 0,
+            "intimidation" => character.CharismaModifier ?? 0,
+            "investigation" => character.IntelligenceModifier ?? 0,
+            "medicine" => character.WisdomModifier ?? 0,
+            "nature" => character.IntelligenceModifier ?? 0,
+            "perception" => character.WisdomModifier ?? 0,
+            "performance" => character.CharismaModifier ?? 0,
+            "persuasion" => character.CharismaModifier ?? 0,
+            "religion" => character.IntelligenceModifier ?? 0,
+            "sleight of hand" => character.DexterityModifier ?? 0,
+            "stealth" => character.DexterityModifier ?? 0,
+            "survival" => character.WisdomModifier ?? 0,
             _ => 0
         };
 

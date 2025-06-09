@@ -21,12 +21,12 @@ public class PointBuyViewModel : INotifyPropertyChanged
         TotalPoints = totalPoints;
         
         // Initialize costs from current character ability scores (clamped to valid range)
-        _strengthCost = Math.Max(8, Math.Min(15, character.AbilityScores.Strength));
-        _dexterityCost = Math.Max(8, Math.Min(15, character.AbilityScores.Dexterity));
-        _constitutionCost = Math.Max(8, Math.Min(15, character.AbilityScores.Constitution));
-        _intelligenceCost = Math.Max(8, Math.Min(15, character.AbilityScores.Intelligence));
-        _wisdomCost = Math.Max(8, Math.Min(15, character.AbilityScores.Wisdom));
-        _charismaCost = Math.Max(8, Math.Min(15, character.AbilityScores.Charisma));
+        _strengthCost = Math.Max(8, Math.Min(15, character.AbilityScores.Strength ?? 8));
+        _dexterityCost = Math.Max(8, Math.Min(15, character.AbilityScores.Dexterity ?? 8));
+        _constitutionCost = Math.Max(8, Math.Min(15, character.AbilityScores.Constitution ?? 8));
+        _intelligenceCost = Math.Max(8, Math.Min(15, character.AbilityScores.Intelligence ?? 8));
+        _wisdomCost = Math.Max(8, Math.Min(15, character.AbilityScores.Wisdom ?? 8));
+        _charismaCost = Math.Max(8, Math.Min(15, character.AbilityScores.Charisma ?? 8));
         
         InitializeCommands();
         CalculateAvailablePoints();
