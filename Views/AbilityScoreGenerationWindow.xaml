@@ -6,20 +6,16 @@
         Title="Ability Score Generation" 
         Height="600" Width="800"
         WindowStartupLocation="CenterOwner"
-        Background="#F5E6C8">
+        Background="{DynamicResource WindowBackground}">
     
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
-        <!-- Medieval Theme Resources -->
-        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
-        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
-        
         <!-- Medieval Button Style -->
         <Style TargetType="Button" x:Key="MedievalButtonStyle">
-            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="14"/>
@@ -40,7 +36,7 @@
                                 <Setter TargetName="border" Property="BorderThickness" Value="3"/>
                                 <Setter TargetName="border" Property="Effect">
                                     <Setter.Value>
-                                        <DropShadowEffect Color="#D4AF37" BlurRadius="5" ShadowDepth="0"/>
+                                        <DropShadowEffect Color="{Binding Source={x:Static Application.Current}, Path=Resources[PrimaryGold].Color}" BlurRadius="5" ShadowDepth="0"/>
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -51,8 +47,8 @@
         </Style>
     </Window.Resources>
     
-    <Border BorderBrush="{StaticResource PrimaryRed}" BorderThickness="3">
-        <Border BorderBrush="{StaticResource PrimaryGold}" BorderThickness="1" Margin="2">
+    <Border BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="3">
+        <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -61,10 +57,10 @@
                 </Grid.RowDefinitions>
                 
                 <!-- Title Bar -->
-                <Border Grid.Row="0" Background="{StaticResource PrimaryRed}" Padding="20,15">
+                <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20,15">
                     <TextBlock x:Name="TitleText" Text="Ability Score Generation" 
                                FontFamily="Garamond" FontSize="20" FontWeight="Bold"
-                               Foreground="{StaticResource PrimaryGold}"
+                               Foreground="{DynamicResource PrimaryGold}"
                                HorizontalAlignment="Center">
                         <TextBlock.Effect>
                             <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="1"/>
@@ -74,13 +70,13 @@
                 
                 <!-- Content Area -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
-                    <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Padding="20">
+                    <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Padding="20">
                         <ContentPresenter x:Name="ContentArea"/>
                     </Border>
                 </ScrollViewer>
                 
                 <!-- Button Area -->
-                <Border Grid.Row="2" Background="{StaticResource PrimaryGold}" Padding="15">
+                <Border Grid.Row="2" Background="{DynamicResource PrimaryGold}" Padding="15">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="Close" Click="CloseButton_Click"
                                 Style="{StaticResource MedievalButtonStyle}" 

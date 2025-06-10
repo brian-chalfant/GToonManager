@@ -370,7 +370,7 @@ public class PdfSharpExportService
             "ShieldProficiency" => HasArmorProficiency(character, "shields") ? "true" : "false",
             
             // Additional Stats
-            "Size" => "Medium", // Default size
+            "Size" => GetCharacterSize(character), // Character's size (first letter only)
             "PassivePerception" => (10 + GetSkillModifier(character, "perception")).ToString(),
             "Alignment" => "",
             
@@ -566,6 +566,13 @@ public class PdfSharpExportService
 
         var proficiencyBonus = HasSkillProficiency(character, skill) ? character.ProficiencyBonus : 0;
         return baseModifier + proficiencyBonus;
+    }
+
+    private static string GetCharacterSize(Character character)
+    {
+        // Get the character's size from their race, return first letter only
+        var size = character.Race?.Size?.Category ?? "Medium";
+        return string.IsNullOrEmpty(size) ? "M" : size.Substring(0, 1).ToUpper();
     }
 
     private static int CalculateModifier(int score)

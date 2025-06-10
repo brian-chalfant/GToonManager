@@ -12,42 +12,152 @@
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
+        <!-- Medieval Theme Styles -->
         <Style x:Key="AbilityHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
         </Style>
         
         <Style x:Key="AbilityValueStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Foreground" Value="#2c3e50"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>
         </Style>
         
         <Style x:Key="AssignButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="2"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Background" Value="#3498db"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="MinWidth" Value="45"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Gold" BlurRadius="5" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         
         <Style x:Key="ClearButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#e74c3c"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="{DynamicResource DarkRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Content" Value="Clear"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Gold" BlurRadius="5" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Medieval Panel Style -->
+        <Style x:Key="MedievalPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource PanelBackground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+        </Style>
+        
+        <!-- Main Action Button Style -->
+        <Style x:Key="MedievalActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="25,12"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Gold" BlurRadius="10" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFD700"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
     
-    <Grid Margin="20">
+    <Grid Margin="10" Background="{DynamicResource MedievalBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -56,20 +166,22 @@
         </Grid.RowDefinitions>
         
         <!-- Collapsed View (when applied) -->
-        <Border Grid.RowSpan="4" Background="#d4edda" BorderBrush="#c3e6cb" BorderThickness="2" 
-                Padding="15" Visibility="{Binding IsApplied, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Grid.RowSpan="4" Background="{DynamicResource PanelBackground}" 
+                BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="3" 
+                CornerRadius="8" Padding="20" 
+                Visibility="{Binding IsApplied, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                    <TextBlock Text="✓ Standard Array Applied" FontSize="16" FontWeight="Bold" 
-                               Foreground="#155724" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                    <Button Content="Edit Assignment" 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                    <TextBlock Text="⚔️ Standard Array Applied ⚔️" FontFamily="Garamond" FontSize="18" FontWeight="Bold" 
+                               Foreground="{DynamicResource PrimaryRed}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                    <Button Content="🔄 Edit Assignment" 
                             Command="{Binding ResetStandardArrayCommand}"
-                            Background="#6c757d" Foreground="White" 
-                            Padding="10,5" BorderThickness="0" FontWeight="Bold"/>
+                            Style="{StaticResource ClearButtonStyle}"/>
                 </StackPanel>
                 
-                <TextBlock Text="Your ability scores have been set using the standard array values." 
-                           HorizontalAlignment="Center" FontStyle="Italic" Foreground="#155724"/>
+                <TextBlock Text="Your ability scores have been set using the standard array values (15, 14, 13, 12, 10, 8)." 
+                           HorizontalAlignment="Center" FontFamily="Garamond" FontStyle="Italic" 
+                           FontSize="14" Foreground="{DynamicResource PrimaryRed}" Opacity="0.8"/>
             </StackPanel>
         </Border>
         
@@ -83,56 +195,87 @@
             </Grid.RowDefinitions>
             
             <!-- Header -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,20">
-                <TextBlock Text="Standard Array Assignment" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <TextBlock Text="Assign the standard array values (15, 14, 13, 12, 10, 8) to your ability scores" 
-                           FontSize="14" HorizontalAlignment="Center" Foreground="Gray" Margin="0,5,0,0"/>
-                           
-                <!-- Class Recommendation Section -->
-                <Border Background="#e8f4fd" BorderBrush="#3498db" BorderThickness="1" Padding="15" Margin="0,15,0,0">
+            <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20,15" Margin="0,0,0,20">
+                <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2" CornerRadius="8" Padding="15">
                     <StackPanel>
-                        <TextBlock Text="Class Recommendation (Optional)" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <ComboBox Grid.Column="0" 
-                                      ItemsSource="{Binding Classes}"
-                                      SelectedItem="{Binding SelectedClass}"
-                                      DisplayMemberPath="Name" 
-                                      Padding="8" Margin="0,0,10,0"/>
-                            <Button Grid.Column="1" Content="Auto-Assign" 
-                                    Command="{Binding ApplyClassRecommendationCommand}"
-                                    Background="#28a745" Foreground="White" 
-                                    Padding="15,8" BorderThickness="0" FontWeight="Bold"/>
-                        </Grid>
-                        <TextBlock Text="{Binding ClassRecommendationText}" 
-                                   FontStyle="Italic" Foreground="#6c757d" Margin="0,5,0,0"
-                                   Visibility="{Binding HasClassRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <TextBlock Text="⚔️ Standard Array Assignment ⚔️" FontFamily="Garamond" FontSize="24" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryGold}">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="2"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Text="Assign the standard array values (15, 14, 13, 12, 10, 8) to your ability scores" 
+                                   FontFamily="Garamond" FontSize="16" HorizontalAlignment="Center" 
+                                   Foreground="{DynamicResource PrimaryGold}" Opacity="0.9" Margin="0,5,0,0"/>
+                                   
+                        <!-- Class Recommendation Section -->
+                        <Border Background="{DynamicResource PanelBackground}" 
+                                BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2" 
+                                CornerRadius="6" Padding="15" Margin="0,15,0,0">
+                            <StackPanel>
+                                <TextBlock Text="🏰 Class Recommendation (Optional)" FontFamily="Garamond" 
+                                           FontWeight="Bold" FontSize="16" Foreground="{DynamicResource PrimaryRed}" 
+                                           HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox Grid.Column="0" 
+                                              ItemsSource="{Binding Classes}"
+                                              SelectedItem="{Binding SelectedClass}"
+                                              DisplayMemberPath="Name" 
+                                              Background="{DynamicResource ControlBackground}"
+                                              Foreground="{DynamicResource PrimaryRed}"
+                                              BorderBrush="{DynamicResource PrimaryGold}"
+                                              BorderThickness="2"
+                                              FontFamily="Garamond"
+                                              FontWeight="SemiBold"
+                                              Padding="10" Margin="0,0,10,0"/>
+                                    <Button Grid.Column="1" Content="⚡ Auto-Assign" 
+                                            Command="{Binding ApplyClassRecommendationCommand}"
+                                            Style="{StaticResource MedievalActionButtonStyle}"/>
+                                </Grid>
+                                <TextBlock Text="{Binding ClassRecommendationText}" 
+                                           FontFamily="Garamond" FontStyle="Italic" 
+                                           Foreground="{DynamicResource PrimaryRed}" Opacity="0.7" 
+                                           HorizontalAlignment="Center" Margin="0,10,0,0"
+                                           Visibility="{Binding HasClassRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Border>
-            </StackPanel>
+            </Border>
             
             <!-- Available Values -->
-            <Border Grid.Row="1" Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="1" Padding="15" Margin="0,0,0,20">
+            <Border Grid.Row="1" Background="{DynamicResource PanelBackground}" 
+                    BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2" 
+                    CornerRadius="8" Padding="20" Margin="0,0,0,20">
                 <StackPanel>
-                    <TextBlock Text="Available Values:" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="🎲 Available Values:" FontFamily="Garamond" FontWeight="Bold" 
+                               FontSize="18" Foreground="{DynamicResource PrimaryRed}" 
+                               HorizontalAlignment="Center" Margin="0,0,0,15"/>
                     <ItemsControl ItemsSource="{Binding StandardArray.AvailableValues}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal"/>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#28a745" Margin="3" Padding="10,5">
-                                    <TextBlock Text="{Binding}" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                                <Border Background="{DynamicResource PrimaryRed}" 
+                                        BorderBrush="{DynamicResource PrimaryGold}" 
+                                        BorderThickness="2" CornerRadius="6"
+                                        Margin="5" Padding="12,8">
+                                    <TextBlock Text="{Binding}" Foreground="{DynamicResource PrimaryGold}" 
+                                               FontFamily="Garamond" FontWeight="Bold" FontSize="18"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="No values available" FontStyle="Italic" Foreground="Gray" 
+                    <TextBlock Text="📜 All values have been assigned" FontFamily="Garamond" 
+                               FontStyle="Italic" Foreground="{DynamicResource PrimaryRed}" 
+                               Opacity="0.7" HorizontalAlignment="Center" Margin="0,10,0,0"
                                Visibility="{Binding StandardArray.AvailableValues.Count, Converter={StaticResource CountToVisibilityConverter}}"/>
                 </StackPanel>
             </Border>
@@ -141,16 +284,17 @@
             <UniformGrid Grid.Row="2" Columns="3" Rows="2" Margin="0,0,0,20">
                 
                 <!-- Strength -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Strength" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="💪 Strength" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.StrengthValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.StrengthValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -182,16 +326,17 @@
                 </Border>
                 
                 <!-- Dexterity -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Dexterity" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="🏹 Dexterity" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.DexterityValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.DexterityValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -223,16 +368,17 @@
                 </Border>
                 
                 <!-- Constitution -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Constitution" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="❤️ Constitution" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.ConstitutionValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.ConstitutionValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -264,16 +410,17 @@
                 </Border>
                 
                 <!-- Intelligence -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Intelligence" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="📚 Intelligence" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.IntelligenceValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.IntelligenceValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -305,16 +452,17 @@
                 </Border>
                 
                 <!-- Wisdom -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Wisdom" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="🦉 Wisdom" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.WisdomValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.WisdomValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -346,16 +494,17 @@
                 </Border>
                 
                 <!-- Charisma -->
-                <Border Margin="5" Padding="15" Background="White" BorderBrush="#ddd" BorderThickness="2">
+                <Border Style="{StaticResource MedievalPanelStyle}">
                     <StackPanel>
-                        <TextBlock Text="Charisma" Style="{StaticResource AbilityHeaderStyle}"/>
+                        <TextBlock Text="✨ Charisma" Style="{StaticResource AbilityHeaderStyle}"/>
                         <TextBlock Text="{Binding StandardArray.CharismaValue}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource AbilityValueStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StandardArray.CharismaValue}" Value="0">
                                             <Setter Property="Text" Value="—"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -389,18 +538,15 @@
             
             <!-- Action Buttons -->
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Apply to Character" 
+                <Button Content="⚔️ Apply to Character" 
                         Command="{Binding ApplyStandardArrayCommand}"
-                        Background="#28a745" Foreground="White" 
-                        Padding="20,10" Margin="10" BorderThickness="0"
-                        FontWeight="Bold" FontSize="14"
+                        Style="{StaticResource MedievalActionButtonStyle}"
                         IsEnabled="{Binding StandardArray.IsComplete}"/>
                 
-                <Button Content="Reset All" 
+                <Button Content="🔄 Reset All" 
                         Command="{Binding ResetStandardArrayCommand}"
-                        Background="#6c757d" Foreground="White" 
-                        Padding="20,10" Margin="10" BorderThickness="0"
-                        FontWeight="Bold" FontSize="14"/>
+                        Style="{StaticResource ClearButtonStyle}"
+                        FontSize="16" Padding="25,12" Margin="10"/>
             </StackPanel>
         </Grid>
     </Grid>

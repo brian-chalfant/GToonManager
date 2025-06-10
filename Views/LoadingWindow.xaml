@@ -11,10 +11,6 @@
         ShowInTaskbar="False">
     
     <Window.Resources>
-        <!-- Medieval Colors -->
-        <SolidColorBrush x:Key="PrimaryGold" Color="#D4AF37"/>
-        <SolidColorBrush x:Key="PrimaryRed" Color="#7B0A02"/>
-        <SolidColorBrush x:Key="MedievalBackground" Color="#F5E6C8"/>
         
         <!-- Loading Animation -->
         <Storyboard x:Key="PulseAnimation" RepeatBehavior="Forever">
@@ -26,9 +22,9 @@
         
         <!-- Medieval Button Style for loading screen -->
         <Style x:Key="LoadingButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryGold}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryGold}"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontFamily" Value="Garamond"/>
             <Setter Property="FontSize" Value="12"/>
@@ -39,8 +35,8 @@
     </Window.Resources>
 
     <Border Background="#AA000000" CornerRadius="15">
-        <Border Background="{StaticResource MedievalBackground}" 
-                BorderBrush="{StaticResource PrimaryGold}" 
+        <Border Background="{DynamicResource MedievalBackground}" 
+                BorderBrush="{DynamicResource PrimaryGold}" 
                 BorderThickness="4" 
                 CornerRadius="12" 
                 Margin="3">
@@ -67,13 +63,13 @@
 
                 <!-- Subtle overlay for better text readability -->
                 <Border Grid.RowSpan="5" 
-                        Background="{StaticResource MedievalBackground}" 
+                        Background="{DynamicResource MedievalBackground}" 
                         Opacity="0.05" 
                         CornerRadius="12"/>
 
                 <!-- Glow Effect for Animation -->
                 <Border x:Name="GlowEffect" Grid.RowSpan="5" 
-                        Background="{StaticResource PrimaryGold}" 
+                        Background="{DynamicResource PrimaryGold}" 
                         Opacity="0.03" 
                         CornerRadius="12"/>
 
@@ -87,7 +83,7 @@
                            FontSize="18" 
                            FontFamily="Garamond"
                            FontWeight="Bold"
-                           Foreground="{StaticResource PrimaryRed}" 
+                           Foreground="{DynamicResource PrimaryRed}" 
                            HorizontalAlignment="Center"
                            Margin="20,10">
                     <TextBlock.Effect>
@@ -97,14 +93,14 @@
 
                 <!-- Progress Bar Section -->
                 <Border Grid.Row="3" 
-                        Background="White" 
-                        BorderBrush="{StaticResource PrimaryGold}" 
+                        Background="{DynamicResource ControlBackground}" 
+                        BorderBrush="{DynamicResource PrimaryGold}" 
                         BorderThickness="3" 
                         CornerRadius="15" 
                         Margin="60,10,60,20"
                         Padding="5">
                     <Grid>
-                        <Border Background="{StaticResource MedievalBackground}" 
+                        <Border Background="{DynamicResource MedievalBackground}" 
                                 CornerRadius="12"/>
                         
                         <!-- Progress Bar -->
@@ -117,18 +113,18 @@
                                      BorderThickness="0">
                             <ProgressBar.Template>
                                 <ControlTemplate TargetType="ProgressBar">
-                                    <Border BorderBrush="{StaticResource PrimaryGold}" 
+                                    <Border BorderBrush="{DynamicResource PrimaryGold}" 
                                             BorderThickness="2" 
                                             CornerRadius="12"
-                                            Background="{StaticResource MedievalBackground}">
+                                            Background="{DynamicResource MedievalBackground}">
                                         <Grid>
                                             <!-- Progress Fill -->
                                             <Border x:Name="PART_Track" 
                                                     CornerRadius="10" 
-                                                    Background="{StaticResource MedievalBackground}"/>
+                                                    Background="{DynamicResource MedievalBackground}"/>
                                             <Border x:Name="PART_Indicator" 
                                                     CornerRadius="10" 
-                                                    Background="{StaticResource PrimaryGold}"
+                                                    Background="{DynamicResource PrimaryGold}"
                                                     HorizontalAlignment="Left">
                                                 <Border.Effect>
                                                     <DropShadowEffect Color="DarkGoldenrod" BlurRadius="5" ShadowDepth="2"/>
@@ -141,7 +137,7 @@
                                                        FontFamily="Garamond" 
                                                        FontWeight="Bold" 
                                                        FontSize="14"
-                                                       Foreground="{StaticResource PrimaryRed}" 
+                                                       Foreground="{DynamicResource PrimaryRed}" 
                                                        HorizontalAlignment="Center" 
                                                        VerticalAlignment="Center">
                                                 <TextBlock.Effect>
