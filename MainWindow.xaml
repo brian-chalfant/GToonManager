@@ -499,31 +499,31 @@
                                     </StackPanel>
                                 </Border>
 
-                                <!-- Race & Subrace (Middle Left) -->
+                                <!-- Species & Subspecies (Middle Left) -->
                                 <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource MedievalPanelStyle}" Padding="15">
                                     <StackPanel>
-                                        <TextBlock Text="🧝 Race &amp; Subrace" Style="{StaticResource MedievalLabelStyle}" 
+                                        <TextBlock Text="🧝 Species &amp; Subspecies" Style="{StaticResource MedievalLabelStyle}" 
                                                    FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,15"/>
                                         
-                                        <!-- Race Selection -->
+                                        <!-- Species Selection -->
                                         <StackPanel Margin="0,0,0,10">
-                                            <TextBlock Text="Race:" FontFamily="Garamond" FontWeight="Bold" 
+                                            <TextBlock Text="Species:" FontFamily="Garamond" FontWeight="Bold" 
                                                       Foreground="{DynamicResource PrimaryRed}" FontSize="12" 
                                                       HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                            <ComboBox ItemsSource="{Binding Races}" 
-                                                      SelectedItem="{Binding CurrentCharacter.Race}"
+                                            <ComboBox ItemsSource="{Binding Species}" 
+                                                      SelectedItem="{Binding CurrentCharacter.Species}"
                                                       DisplayMemberPath="Name" Style="{DynamicResource MedievalComboBoxStyle}"/>
                                         </StackPanel>
                                         
-                                        <!-- Subrace Selection -->
+                                        <!-- Subspecies Selection -->
                                         <StackPanel>
-                                            <TextBlock Text="Subrace:" FontFamily="Garamond" FontWeight="Bold" 
+                                            <TextBlock Text="Subspecies:" FontFamily="Garamond" FontWeight="Bold" 
                                                       Foreground="{DynamicResource PrimaryRed}" FontSize="12" 
                                                       HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                            <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubraces}" 
-                                                      SelectedItem="{Binding CurrentCharacter.Subrace}"
+                                            <ComboBox ItemsSource="{Binding CurrentCharacter.AvailableSubspecies}" 
+                                                      SelectedItem="{Binding CurrentCharacter.Subspecies}"
                                                       DisplayMemberPath="Name" Style="{DynamicResource MedievalComboBoxStyle}"
-                                                      IsEnabled="{Binding CurrentCharacter.HasSubraces}"/>
+                                                      IsEnabled="{Binding CurrentCharacter.HasSubspecies}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
@@ -989,7 +989,7 @@
                                 <!-- Total Level Summary -->
                                 <Border Grid.Row="3" Grid.ColumnSpan="3" Background="{DynamicResource PrimaryRed}" 
                                        BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2" 
-                                       CornerRadius="8" Padding="15" Margin="0,15,0,0">
+                                       CornerRadius="8" Padding="15,15,0,0">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <TextBlock Text="👑 Total Character Level: " FontFamily="Garamond" FontSize="16" FontWeight="Bold"
                                                   Foreground="{DynamicResource PrimaryGold}"/>
@@ -1060,7 +1060,7 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 
-                                                                <!-- Strength -->
+                                <!-- Strength -->
                                 <Border Grid.Row="0" Grid.Column="0">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1071,21 +1071,63 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="⚔️" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="STRENGTH" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Strength, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2239_Goliath Barbarian Strength_remix_01jxbv72fcexdtra1k4fxyzs15.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Strength, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.StrengthBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.StrengthBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.StrengthBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.StrengthTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                                 
-                                                                <!-- Dexterity -->
+                                <!-- Dexterity -->
                                 <Border Grid.Row="0" Grid.Column="1">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1096,21 +1138,63 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="🏹" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="DEXTERITY" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Dexterity, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2256_Archer Dexterity_remix_01jxbw6vheffqvs00fvagyk8es.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Dexterity, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.DexterityBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.DexterityBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.DexterityBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.DexterityTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                                 
-                                                                <!-- Constitution -->
+                                <!-- Constitution -->
                                 <Border Grid.Row="1" Grid.Column="0">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1121,21 +1205,63 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="🛡️" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="CONSTITUTION" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Constitution, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2257_Constitution Knight_remix_01jxbw7kftf3t83m5xn62vzc8e.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Constitution, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.ConstitutionBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.ConstitutionBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.ConstitutionTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                                 
-                                                                <!-- Intelligence -->
+                                <!-- Intelligence -->
                                 <Border Grid.Row="1" Grid.Column="1">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1146,21 +1272,63 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="🔮" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="INTELLIGENCE" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Intelligence, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2245_Wizard of Intelligence_remix_01jxbvjv10evs946etkr9f1ww3.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Intelligence, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.IntelligenceBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.IntelligenceBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.IntelligenceTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                                 
-                                                                <!-- Wisdom -->
+                                <!-- Wisdom -->
                                 <Border Grid.Row="2" Grid.Column="0">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1171,21 +1339,63 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="📖" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="WISDOM" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Wisdom, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2248_Druid of Wisdom_remix_01jxbvq7fqes28e3mcwwzftdsz.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Wisdom, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.WisdomBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.WisdomBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.WisdomBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.WisdomTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                                 
-                                                                <!-- Charisma -->
+                                <!-- Charisma -->
                                 <Border Grid.Row="2" Grid.Column="1">
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource AbilityPanelStyle}">
@@ -1196,22 +1406,62 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="👑" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <TextBlock Text="CHARISMA" FontFamily="Garamond" FontSize="16" FontWeight="Bold" 
-                                                   Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
-                                                BorderThickness="2" Width="48" Height="48" CornerRadius="24">
-                                            <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Charisma, FallbackValue='—'}" 
-                                                       FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                       Foreground="{DynamicResource PrimaryGold}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Image on Left -->
+                                        <Image Grid.Column="0" Source="pack://application:,,,/Pictures/20250609_2252_Charismatic Bard Illustration_remix_01jxbvytbxfbqtw1xqjhaez6t6.png" 
+                                               Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        
+                                        <!-- Scores on Right -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                            <!-- Base Score Display -->
+                                            <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                    BorderThickness="2" Width="100" Height="70" CornerRadius="6" Margin="0,0,0,10">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Base" FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.AbilityScores.Charisma, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Background Enhancement Display -->
+                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
+                                                   Visibility="{Binding CurrentCharacter.CharismaBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E8F5E8"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CurrentCharacter.CharismaBackgroundBonus}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding CurrentCharacter.CharismaBackgroundBonus, StringFormat='+{0}'}" 
+                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
+                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <!-- Final Score Display -->
+                                            <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Final" FontFamily="Garamond" FontSize="12" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                    <TextBlock Text="{Binding CurrentCharacter.CharismaTotal, FallbackValue='—'}" 
+                                                               FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                                               Foreground="#8B4513" HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                             </Grid>
-                            
-
                 </Grid>
             </TabItem>
 

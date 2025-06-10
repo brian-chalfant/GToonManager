@@ -20,7 +20,7 @@ public class MainViewModel : INotifyPropertyChanged
     private Background? _selectedBackground;
     private ImprovementOption? _selectedBackgroundImprovementOption;
     private readonly CharacterFileService _characterFileService;
-    private readonly RaceDataService _raceDataService;
+    private readonly SpeciesDataService _speciesDataService;
     private readonly ClassDataService _classDataService;
     private readonly BackgroundDataService _backgroundDataService;
     private string? _currentFilePath;
@@ -33,7 +33,7 @@ public class MainViewModel : INotifyPropertyChanged
     public MainViewModel()
     {
         _characterFileService = new CharacterFileService();
-        _raceDataService = new RaceDataService();
+        _speciesDataService = new SpeciesDataService();
         _classDataService = new ClassDataService();
         _backgroundDataService = new BackgroundDataService();
         
@@ -103,7 +103,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Race> Races { get; } = new();
+    public ObservableCollection<Species> Species { get; } = new();
     public ObservableCollection<CharacterClass> Classes { get; } = new();
     public ObservableCollection<Background> Backgrounds { get; } = new();
 
@@ -351,33 +351,33 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void InitializeData()
     {
-        await LoadRacesAsync();
+                    await LoadSpeciesAsync();
         await LoadClassesAsync();
         await LoadBackgroundsAsync();
     }
 
-    private async Task LoadRacesAsync()
+    private async Task LoadSpeciesAsync()
     {
         try
         {
-            var races = await _raceDataService.LoadAllRacesAsync();
-            Races.Clear();
-            foreach (var race in races)
+            var species = await _speciesDataService.LoadAllSpeciesAsync();
+            Species.Clear();
+            foreach (var speciesEntry in species)
             {
-                Races.Add(race);
+                Species.Add(speciesEntry);
             }
-            StatusMessage = $"Loaded {races.Count} races from data files";
+            StatusMessage = $"Loaded {species.Count} species from data files";
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error loading races: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"Error loading races: {ex}");
+            StatusMessage = $"Error loading species: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"Error loading species: {ex}");
             
-            // Fallback to basic races if loading fails
-            Races.Add(new Race { Name = "Human", Description = "Versatile and ambitious" });
-            Races.Add(new Race { Name = "Elf", Description = "Graceful and long-lived" });
-            Races.Add(new Race { Name = "Dwarf", Description = "Hardy and traditional" });
-            Races.Add(new Race { Name = "Halfling", Description = "Small and brave" });
+            // Fallback to basic species if loading fails
+            Species.Add(new Species { Name = "Human", Description = "Versatile and ambitious" });
+            Species.Add(new Species { Name = "Elf", Description = "Graceful and long-lived" });
+            Species.Add(new Species { Name = "Dwarf", Description = "Hardy and traditional" });
+            Species.Add(new Species { Name = "Halfling", Description = "Small and brave" });
         }
     }
 

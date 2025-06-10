@@ -2,19 +2,19 @@ using System.ComponentModel;
 
 namespace GToonManager.Models;
 
-public class Race : INotifyPropertyChanged
+public class Species : INotifyPropertyChanged
 {
     private string _name = string.Empty;
     private string _description = string.Empty;
     private string _source = string.Empty;
     private int _sourcePage = 0;
     private Dictionary<string, int> _abilityScores = new();
-    private List<RaceTrait> _traits = new();
-    private List<Subrace> _subraces = new();
-    private RaceSize _size = new();
-    private RaceSpeed _speed = new();
-    private RaceLanguages _languages = new();
-    private RaceAge _age = new();
+    private List<SpeciesTrait> _traits = new();
+    private List<Subspecies> _subraces = new();
+    private SpeciesSize _size = new();
+    private SpeciesSpeed _speed = new();
+    private SpeciesLanguages _languages = new();
+    private SpeciesAge _age = new();
 
     public string Name
     {
@@ -66,7 +66,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public List<RaceTrait> Traits
+    public List<SpeciesTrait> Traits
     {
         get => _traits;
         set
@@ -76,7 +76,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public List<Subrace> Subraces
+    public List<Subspecies> Subraces
     {
         get => _subraces;
         set
@@ -86,7 +86,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public RaceSize Size
+    public SpeciesSize Size
     {
         get => _size;
         set
@@ -96,7 +96,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public RaceSpeed Speed
+    public SpeciesSpeed Speed
     {
         get => _speed;
         set
@@ -106,7 +106,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public RaceLanguages Languages
+    public SpeciesLanguages Languages
     {
         get => _languages;
         set
@@ -116,7 +116,7 @@ public class Race : INotifyPropertyChanged
         }
     }
 
-    public RaceAge Age
+    public SpeciesAge Age
     {
         get => _age;
         set
@@ -138,14 +138,14 @@ public class Race : INotifyPropertyChanged
     }
 }
 
-public class Subrace : INotifyPropertyChanged
+public class Subspecies : INotifyPropertyChanged
 {
     private string _name = string.Empty;
     private string _description = string.Empty;
     private string _source = string.Empty;
     private Dictionary<string, int> _abilityScores = new();
-    private List<RaceTrait> _traits = new();
-    private RaceLanguages? _languages;
+    private List<SpeciesTrait> _traits = new();
+    private SpeciesLanguages? _languages;
 
     public string Name
     {
@@ -187,7 +187,7 @@ public class Subrace : INotifyPropertyChanged
         }
     }
 
-    public List<RaceTrait> Traits
+    public List<SpeciesTrait> Traits
     {
         get => _traits;
         set
@@ -197,7 +197,7 @@ public class Subrace : INotifyPropertyChanged
         }
     }
 
-    public RaceLanguages? Languages
+    public SpeciesLanguages? Languages
     {
         get => _languages;
         set
@@ -217,7 +217,7 @@ public class Subrace : INotifyPropertyChanged
     }
 }
 
-public class RaceTrait
+public class SpeciesTrait
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -257,14 +257,14 @@ public class TraitUses
     public int Count { get; set; } = 1;
 }
 
-public class RaceSize
+public class SpeciesSize
 {
     public string Category { get; set; } = "Medium";
     public string Height { get; set; } = string.Empty;
     public string Weight { get; set; } = string.Empty;
 }
 
-public class RaceSpeed
+public class SpeciesSpeed
 {
     public int Walk { get; set; } = 30;
     public int Swim { get; set; } = 0;
@@ -273,7 +273,7 @@ public class RaceSpeed
     public Dictionary<string, string> Modifiers { get; set; } = new();
 }
 
-public class RaceLanguages
+public class SpeciesLanguages
 {
     public List<string> Standard { get; set; } = new();
     public LanguageBonus? Bonus { get; set; }
@@ -286,7 +286,7 @@ public class LanguageBonus
     public List<string> From { get; set; } = new();
 }
 
-public class RaceAge
+public class SpeciesAge
 {
     public int Maturity { get; set; } = 18;
     public string Lifespan { get; set; } = string.Empty;

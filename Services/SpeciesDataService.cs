@@ -4,47 +4,47 @@ using GToonManager.Models;
 
 namespace GToonManager.Services;
 
-public class RaceDataService
+public class SpeciesDataService
 {
-    private readonly string _raceDataPath;
+    private readonly string _speciesDataPath;
 
-    public RaceDataService()
+    public SpeciesDataService()
     {
-        _raceDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "races");
+        _speciesDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "species");
     }
 
-    public async Task<List<Race>> LoadAllRacesAsync()
+    public async Task<List<Species>> LoadAllSpeciesAsync()
     {
-        var races = new List<Race>();
+        var species = new List<Species>();
 
-        if (!Directory.Exists(_raceDataPath))
+        if (!Directory.Exists(_speciesDataPath))
         {
-            System.Diagnostics.Debug.WriteLine($"Race data directory not found: {_raceDataPath}");
-            return races;
+            System.Diagnostics.Debug.WriteLine($"Species data directory not found: {_speciesDataPath}");
+            return species;
         }
 
-        var jsonFiles = Directory.GetFiles(_raceDataPath, "*.json");
+        var jsonFiles = Directory.GetFiles(_speciesDataPath, "*.json");
         
         foreach (var file in jsonFiles)
         {
             try
             {
-                var race = await LoadRaceFromFileAsync(file);
-                if (race != null)
+                var speciesEntry = await LoadSpeciesFromFileAsync(file);
+                if (speciesEntry != null)
                 {
-                    races.Add(race);
+                    species.Add(speciesEntry);
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error loading race from {file}: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error loading species from {file}: {ex.Message}");
             }
         }
 
-        return races.OrderBy(r => r.Name).ToList();
+        return species.OrderBy(s => s.Name).ToList();
     }
 
-    public async Task<Race?> LoadRaceFromFileAsync(string filePath)
+    public async Task<Species?> LoadSpeciesFromFileAsync(string filePath)
     {
         try
         {
@@ -55,75 +55,75 @@ public class RaceDataService
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             };
 
-            var raceData = JsonSerializer.Deserialize<JsonElement>(jsonContent, jsonOptions);
-            return ParseRaceFromJson(raceData);
+            var speciesData = JsonSerializer.Deserialize<JsonElement>(jsonContent, jsonOptions);
+            return ParseSpeciesFromJson(speciesData);
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error loading race from file {filePath}: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error loading species from file {filePath}: {ex.Message}");
             return null;
         }
     }
 
-    private Race ParseRaceFromJson(JsonElement raceData)
+    private Species ParseSpeciesFromJson(JsonElement speciesData)
     {
-        var race = new Race();
+        var species = new Species();
 
-        if (raceData.TryGetProperty("name", out var nameElement))
-            race.Name = nameElement.GetString() ?? string.Empty;
+        if (speciesData.TryGetProperty("name", out var nameElement))
+            species.Name = nameElement.GetString() ?? string.Empty;
 
-        if (raceData.TryGetProperty("description", out var descElement))
-            race.Description = descElement.GetString() ?? string.Empty;
+        if (speciesData.TryGetProperty("description", out var descElement))
+            species.Description = descElement.GetString() ?? string.Empty;
 
-        if (raceData.TryGetProperty("source", out var sourceElement))
-            race.Source = sourceElement.GetString() ?? string.Empty;
+        if (speciesData.TryGetProperty("source", out var sourceElement))
+            species.Source = sourceElement.GetString() ?? string.Empty;
 
-        if (raceData.TryGetProperty("source_page", out var pageElement))
-            race.SourcePage = pageElement.GetInt32();
+        if (speciesData.TryGetProperty("source_page", out var pageElement))
+            species.SourcePage = pageElement.GetInt32();
 
         // Parse ability scores
-        if (raceData.TryGetProperty("ability_scores", out var abilityElement))
+        if (speciesData.TryGetProperty("ability_scores", out var abilityElement))
         {
-            race.AbilityScores = ParseAbilityScores(abilityElement);
+            species.AbilityScores = ParseAbilityScores(abilityElement);
         }
 
         // Parse traits
-        if (raceData.TryGetProperty("traits", out var traitsElement) && traitsElement.ValueKind == JsonValueKind.Array)
+        if (speciesData.TryGetProperty("traits", out var traitsElement) && traitsElement.ValueKind == JsonValueKind.Array)
         {
-            race.Traits = ParseTraits(traitsElement);
+            species.Traits = ParseTraits(traitsElement);
         }
 
         // Parse subraces
-        if (raceData.TryGetProperty("subraces", out var subracesElement) && subracesElement.ValueKind == JsonValueKind.Array)
+        if (speciesData.TryGetProperty("subraces", out var subracesElement) && subracesElement.ValueKind == JsonValueKind.Array)
         {
-            race.Subraces = ParseSubraces(subracesElement);
+            species.Subraces = ParseSubspecies(subracesElement);
         }
 
         // Parse size
-        if (raceData.TryGetProperty("size", out var sizeElement))
+        if (speciesData.TryGetProperty("size", out var sizeElement))
         {
-            race.Size = ParseSize(sizeElement);
+            species.Size = ParseSize(sizeElement);
         }
 
         // Parse speed
-        if (raceData.TryGetProperty("speed", out var speedElement))
+        if (speciesData.TryGetProperty("speed", out var speedElement))
         {
-            race.Speed = ParseSpeed(speedElement);
+            species.Speed = ParseSpeed(speedElement);
         }
 
         // Parse languages
-        if (raceData.TryGetProperty("languages", out var languagesElement))
+        if (speciesData.TryGetProperty("languages", out var languagesElement))
         {
-            race.Languages = ParseLanguages(languagesElement);
+            species.Languages = ParseLanguages(languagesElement);
         }
 
         // Parse age
-        if (raceData.TryGetProperty("age", out var ageElement))
+        if (speciesData.TryGetProperty("age", out var ageElement))
         {
-            race.Age = ParseAge(ageElement);
+            species.Age = ParseAge(ageElement);
         }
 
-        return race;
+        return species;
     }
 
     private Dictionary<string, int> ParseAbilityScores(JsonElement abilityElement)
@@ -150,13 +150,13 @@ public class RaceDataService
         return abilities;
     }
 
-    private List<RaceTrait> ParseTraits(JsonElement traitsElement)
+    private List<SpeciesTrait> ParseTraits(JsonElement traitsElement)
     {
-        var traits = new List<RaceTrait>();
+        var traits = new List<SpeciesTrait>();
 
         foreach (var traitElement in traitsElement.EnumerateArray())
         {
-            var trait = new RaceTrait();
+            var trait = new SpeciesTrait();
 
             if (traitElement.TryGetProperty("name", out var nameElement))
                 trait.Name = nameElement.GetString() ?? string.Empty;
@@ -201,10 +201,7 @@ public class RaceDataService
             }
         }
 
-        // Check for weapon_proficiencies OR weaponProficiencies
-        if ((grantsElement.TryGetProperty("weapon_proficiencies", out var weaponsElement) ||
-             grantsElement.TryGetProperty("weaponProficiencies", out weaponsElement)) && 
-            weaponsElement.ValueKind == JsonValueKind.Array)
+        if (grantsElement.TryGetProperty("weapon_proficiencies", out var weaponsElement) && weaponsElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var weapon in weaponsElement.EnumerateArray())
             {
@@ -212,10 +209,7 @@ public class RaceDataService
             }
         }
 
-        // Check for armor_proficiencies OR armorProficiencies
-        if ((grantsElement.TryGetProperty("armor_proficiencies", out var armorElement) ||
-             grantsElement.TryGetProperty("armorProficiencies", out armorElement)) && 
-            armorElement.ValueKind == JsonValueKind.Array)
+        if (grantsElement.TryGetProperty("armor_proficiencies", out var armorElement) && armorElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var armor in armorElement.EnumerateArray())
             {
@@ -223,21 +217,15 @@ public class RaceDataService
             }
         }
 
-        // Check for tool_proficiencies OR toolProficiencies  
-        if ((grantsElement.TryGetProperty("tool_proficiencies", out var toolElement) ||
-             grantsElement.TryGetProperty("toolProficiencies", out toolElement)) && 
-            toolElement.ValueKind == JsonValueKind.Array)
+        if (grantsElement.TryGetProperty("tool_proficiencies", out var toolsElement) && toolsElement.ValueKind == JsonValueKind.Array)
         {
-            foreach (var tool in toolElement.EnumerateArray())
+            foreach (var tool in toolsElement.EnumerateArray())
             {
                 grants.ToolProficiencies.Add(tool.GetString() ?? string.Empty);
             }
         }
 
-        // Check for damage_resistances OR damageResistances
-        if ((grantsElement.TryGetProperty("damage_resistances", out var resistancesElement) ||
-             grantsElement.TryGetProperty("damageResistances", out resistancesElement)) && 
-            resistancesElement.ValueKind == JsonValueKind.Array)
+        if (grantsElement.TryGetProperty("damage_resistances", out var resistancesElement) && resistancesElement.ValueKind == JsonValueKind.Array)
         {
             foreach (var resistance in resistancesElement.EnumerateArray())
             {
@@ -245,82 +233,69 @@ public class RaceDataService
             }
         }
 
-        // Check for saving_throw_advantages OR savingThrowAdvantages
-        if ((grantsElement.TryGetProperty("saving_throw_advantages", out var savingThrowElement) ||
-             grantsElement.TryGetProperty("savingThrowAdvantages", out savingThrowElement)) && 
-            savingThrowElement.ValueKind == JsonValueKind.Array)
+        if (grantsElement.TryGetProperty("saving_throw_advantages", out var savingThrowsElement) && savingThrowsElement.ValueKind == JsonValueKind.Array)
         {
-            foreach (var savingThrow in savingThrowElement.EnumerateArray())
+            foreach (var savingThrow in savingThrowsElement.EnumerateArray())
             {
                 grants.SavingThrowAdvantages.Add(savingThrow.GetString() ?? string.Empty);
             }
         }
 
-        // Handle speed grants
-        if (grantsElement.TryGetProperty("speed", out var speedElement) && speedElement.ValueKind == JsonValueKind.Object)
-        {
-            foreach (var speedProperty in speedElement.EnumerateObject())
-            {
-                if (speedProperty.Value.ValueKind == JsonValueKind.Number)
-                {
-                    grants.Speed[speedProperty.Name] = speedProperty.Value.GetInt32();
-                }
-            }
-        }
-
-        // Handle feat grants (like variant human)
-        if (grantsElement.TryGetProperty("feat", out var featElement))
-        {
-            // For now, we'll just acknowledge that this race grants a feat
-            // The actual feat selection would be handled by character creation UI
-            // We could add this to a separate property later if needed
-        }
-
         return grants;
     }
 
-    private List<Subrace> ParseSubraces(JsonElement subracesElement)
+    private List<Subspecies> ParseSubspecies(JsonElement subracesElement)
     {
-        var subraces = new List<Subrace>();
+        var subspecies = new List<Subspecies>();
 
         foreach (var subraceElement in subracesElement.EnumerateArray())
         {
-            var subrace = new Subrace();
+            var subSpecies = new Subspecies();
 
             if (subraceElement.TryGetProperty("name", out var nameElement))
-                subrace.Name = nameElement.GetString() ?? string.Empty;
+                subSpecies.Name = nameElement.GetString() ?? string.Empty;
 
             if (subraceElement.TryGetProperty("description", out var descElement))
-                subrace.Description = descElement.GetString() ?? string.Empty;
+                subSpecies.Description = descElement.GetString() ?? string.Empty;
 
             if (subraceElement.TryGetProperty("source", out var sourceElement))
-                subrace.Source = sourceElement.GetString() ?? string.Empty;
+                subSpecies.Source = sourceElement.GetString() ?? string.Empty;
 
             if (subraceElement.TryGetProperty("ability_scores", out var abilityElement))
-                subrace.AbilityScores = ParseAbilityScores(abilityElement);
+            {
+                subSpecies.AbilityScores = ParseAbilityScores(abilityElement);
+            }
 
             if (subraceElement.TryGetProperty("traits", out var traitsElement) && traitsElement.ValueKind == JsonValueKind.Array)
-                subrace.Traits = ParseTraits(traitsElement);
+            {
+                subSpecies.Traits = ParseTraits(traitsElement);
+            }
 
-            subraces.Add(subrace);
+            subspecies.Add(subSpecies);
         }
 
-        return subraces;
+        return subspecies;
     }
 
-    private RaceSize ParseSize(JsonElement sizeElement)
+    private SpeciesSize ParseSize(JsonElement sizeElement)
     {
-        var size = new RaceSize();
+        var size = new SpeciesSize();
 
         if (sizeElement.TryGetProperty("category", out var categoryElement))
             size.Category = categoryElement.GetString() ?? "Medium";
 
+        if (sizeElement.TryGetProperty("height", out var heightElement))
+            size.Height = heightElement.GetString() ?? string.Empty;
+
+        if (sizeElement.TryGetProperty("weight", out var weightElement))
+            size.Weight = weightElement.GetString() ?? string.Empty;
+
         return size;
     }
 
-    private RaceSpeed ParseSpeed(JsonElement speedElement)
+    private SpeciesSpeed ParseSpeed(JsonElement speedElement)
     {
-        var speed = new RaceSpeed();
+        var speed = new SpeciesSpeed();
 
         if (speedElement.TryGetProperty("walk", out var walkElement))
             speed.Walk = walkElement.GetInt32();
@@ -337,9 +312,9 @@ public class RaceDataService
         return speed;
     }
 
-    private RaceLanguages ParseLanguages(JsonElement languagesElement)
+    private SpeciesLanguages ParseLanguages(JsonElement languagesElement)
     {
-        var languages = new RaceLanguages();
+        var languages = new SpeciesLanguages();
 
         if (languagesElement.TryGetProperty("standard", out var standardElement) && standardElement.ValueKind == JsonValueKind.Array)
         {
@@ -352,9 +327,9 @@ public class RaceDataService
         return languages;
     }
 
-    private RaceAge ParseAge(JsonElement ageElement)
+    private SpeciesAge ParseAge(JsonElement ageElement)
     {
-        var age = new RaceAge();
+        var age = new SpeciesAge();
 
         if (ageElement.TryGetProperty("maturity", out var maturityElement))
             age.Maturity = maturityElement.GetInt32();

@@ -273,7 +273,7 @@ public class PdfSharpExportService
             "PlayerName" => character.PlayerName,
             
             // NEW: Separate fields for the new PDF format
-            "Race" => character.Race?.Name ?? "",
+                            "Race" => character.Species?.Name ?? "", // Note: PDF field still called "Race" for compatibility
             "Subclass" => GetSubclassText(character),
             "Background" => character.Background?.Name ?? "",
             "Class" => GetClassText(character),
@@ -420,13 +420,13 @@ public class PdfSharpExportService
 
     private static string GetRaceTraits(Character character)
     {
-        if (character.Race == null)
+        if (character.Species == null)
             return "";
         
-        var traits = new List<string> { character.Race.Name };
-        if (!string.IsNullOrEmpty(character.Race.Description))
+        var traits = new List<string> { character.Species.Name };
+        if (!string.IsNullOrEmpty(character.Species.Description))
         {
-            traits.Add($"- {character.Race.Description}");
+            traits.Add($"- {character.Species.Description}");
         }
         return string.Join("\n", traits);
     }
@@ -455,16 +455,16 @@ public class PdfSharpExportService
     {
         var parts = new List<string>();
         
-        // Add race if available
-        if (character.Race != null && !string.IsNullOrEmpty(character.Race.Name))
+        // Add species if available
+        if (character.Species != null && !string.IsNullOrEmpty(character.Species.Name))
         {
-            parts.Add(character.Race.Name);
+            parts.Add(character.Species.Name);
         }
         
-        // Add subrace if available
-        if (character.Subrace != null && !string.IsNullOrEmpty(character.Subrace.Name))
+        // Add subspecies if available
+        if (character.Subspecies != null && !string.IsNullOrEmpty(character.Subspecies.Name))
         {
-            parts.Add(character.Subrace.Name);
+            parts.Add(character.Subspecies.Name);
         }
         
         return string.Join(", ", parts);
@@ -481,9 +481,9 @@ public class PdfSharpExportService
 
     private static string GetSubclassText(Character character)
     {
-        if (character.Subrace != null && !string.IsNullOrEmpty(character.Subrace.Name))
+        if (character.Subspecies != null && !string.IsNullOrEmpty(character.Subspecies.Name))
         {
-            return character.Subrace.Name;
+            return character.Subspecies.Name;
         }
         
         return "";
@@ -502,8 +502,8 @@ public class PdfSharpExportService
         var hasBackgroundProficiency = backgroundSkills.Any(s => 
             string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
         
-        // Check racial skill proficiencies
-        var hasRacialProficiency = character.RacialSkillProficiencies
+        // Check species skill proficiencies
+        var hasSpeciesProficiency = character.SpeciesSkillProficiencies
             .Any(s => string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
         
         // Check chosen class skill proficiencies
@@ -511,7 +511,7 @@ public class PdfSharpExportService
             .SelectMany(cl => cl.ChosenSkillProficiencies)
             .Any(s => string.Equals(s, skill, StringComparison.OrdinalIgnoreCase));
         
-        return hasBackgroundProficiency || hasRacialProficiency || hasClassProficiency;
+        return hasBackgroundProficiency || hasSpeciesProficiency || hasClassProficiency;
     }
 
     private static bool HasArmorProficiency(Character character, string armorType)
@@ -570,8 +570,8 @@ public class PdfSharpExportService
 
     private static string GetCharacterSize(Character character)
     {
-        // Get the character's size from their race, return first letter only
-        var size = character.Race?.Size?.Category ?? "Medium";
+        // Get the character's size from their species, return first letter only
+        var size = character.Species?.Size?.Category ?? "Medium";
         return string.IsNullOrEmpty(size) ? "M" : size.Substring(0, 1).ToUpper();
     }
 

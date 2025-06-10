@@ -30,6 +30,12 @@
 
   <ItemGroup>
     <Resource Include="Pictures\20250604_1917_Horizontally Oriented Wizard.png" />
+    <Resource Include="Pictures\20250609_2239_Goliath Barbarian Strength_remix_01jxbv72fcexdtra1k4fxyzs15.png" />
+    <Resource Include="Pictures\20250609_2245_Wizard of Intelligence_remix_01jxbvjv10evs946etkr9f1ww3.png" />
+    <Resource Include="Pictures\20250609_2248_Druid of Wisdom_remix_01jxbvq7fqes28e3mcwwzftdsz.png" />
+    <Resource Include="Pictures\20250609_2252_Charismatic Bard Illustration_remix_01jxbvytbxfbqtw1xqjhaez6t6.png" />
+    <Resource Include="Pictures\20250609_2256_Archer Dexterity_remix_01jxbw6vheffqvs00fvagyk8es.png" />
+    <Resource Include="Pictures\20250609_2257_Constitution Knight_remix_01jxbw7kftf3t83m5xn62vzc8e.png" />
   </ItemGroup>
 
 </Project>

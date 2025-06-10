@@ -8,8 +8,8 @@ public class Character : INotifyPropertyChanged
 {
     private string _name = string.Empty;
     private string _playerName = string.Empty;
-    private Race? _race;
-    private Subrace? _subrace;
+    private Species? _species;
+    private Subspecies? _subspecies;
     private CharacterClass? _class; // Kept for backward compatibility
     private Background? _background;
     private BackgroundAbilityScoreChoice? _backgroundAbilityScoreChoice;
@@ -79,37 +79,37 @@ public class Character : INotifyPropertyChanged
 
     public int Level => ClassLevels.Sum(cl => cl.Level);
 
-    public Race? Race
+    public Species? Species
     {
-        get => _race;
+        get => _species;
         set
         {
-            _race = value;
-            // Clear subrace when race changes
-            if (_subrace != null && (_race == null || !_race.Subraces.Contains(_subrace)))
+            _species = value;
+            // Clear subspecies when species changes
+            if (_subspecies != null && (_species == null || !_species.Subraces.Contains(_subspecies)))
             {
-                Subrace = null;
+                Subspecies = null;
             }
-            OnPropertyChanged(nameof(Race));
-            OnPropertyChanged(nameof(AvailableSubraces));
-            OnPropertyChanged(nameof(HasSubraces));
+            OnPropertyChanged(nameof(Species));
+            OnPropertyChanged(nameof(AvailableSubspecies));
+            OnPropertyChanged(nameof(HasSubspecies));
             RefreshAbilityScoreModifiers();
         }
     }
 
-    public Subrace? Subrace
+    public Subspecies? Subspecies
     {
-        get => _subrace;
+        get => _subspecies;
         set
         {
-            _subrace = value;
-            OnPropertyChanged(nameof(Subrace));
+            _subspecies = value;
+            OnPropertyChanged(nameof(Subspecies));
             RefreshAbilityScoreModifiers();
         }
     }
 
-    public List<Subrace> AvailableSubraces => Race?.Subraces ?? new List<Subrace>();
-    public bool HasSubraces => Race?.HasSubraces ?? false;
+    public List<Subspecies> AvailableSubspecies => Species?.Subraces ?? new List<Subspecies>();
+    public bool HasSubspecies => Species?.HasSubraces ?? false;
 
     public CharacterClass? Class
     {
@@ -251,13 +251,13 @@ public class Character : INotifyPropertyChanged
 
     public int ProficiencyBonus => (Level - 1) / 4 + 2;
 
-    // Racial bonuses
-    public int StrengthRacialBonus => GetRacialBonus("strength");
-    public int DexterityRacialBonus => GetRacialBonus("dexterity");
-    public int ConstitutionRacialBonus => GetRacialBonus("constitution");
-    public int IntelligenceRacialBonus => GetRacialBonus("intelligence");
-    public int WisdomRacialBonus => GetRacialBonus("wisdom");
-    public int CharismaRacialBonus => GetRacialBonus("charisma");
+    // Species bonuses (deprecated in D&D 2024 - abilities come from backgrounds)
+    public int StrengthSpeciesBonus => GetSpeciesBonus("strength");
+    public int DexteritySpeciesBonus => GetSpeciesBonus("dexterity");
+    public int ConstitutionSpeciesBonus => GetSpeciesBonus("constitution");
+    public int IntelligenceSpeciesBonus => GetSpeciesBonus("intelligence");
+    public int WisdomSpeciesBonus => GetSpeciesBonus("wisdom");
+    public int CharismaSpeciesBonus => GetSpeciesBonus("charisma");
 
     // Background bonuses
     public int StrengthBackgroundBonus => GetBackgroundBonus("strength");
@@ -267,16 +267,16 @@ public class Character : INotifyPropertyChanged
     public int WisdomBackgroundBonus => GetBackgroundBonus("wisdom");
     public int CharismaBackgroundBonus => GetBackgroundBonus("charisma");
 
-    // Total ability scores including racial and background bonuses
-    public int? StrengthTotal => AbilityScores.Strength.HasValue ? AbilityScores.Strength.Value + StrengthRacialBonus + StrengthBackgroundBonus : (int?)null;
-    public int? DexterityTotal => AbilityScores.Dexterity.HasValue ? AbilityScores.Dexterity.Value + DexterityRacialBonus + DexterityBackgroundBonus : (int?)null;
-    public int? ConstitutionTotal => AbilityScores.Constitution.HasValue ? AbilityScores.Constitution.Value + ConstitutionRacialBonus + ConstitutionBackgroundBonus : (int?)null;
-    public int? IntelligenceTotal => AbilityScores.Intelligence.HasValue ? AbilityScores.Intelligence.Value + IntelligenceRacialBonus + IntelligenceBackgroundBonus : (int?)null;
-    public int? WisdomTotal => AbilityScores.Wisdom.HasValue ? AbilityScores.Wisdom.Value + WisdomRacialBonus + WisdomBackgroundBonus : (int?)null;
-    public int? CharismaTotal => AbilityScores.Charisma.HasValue ? AbilityScores.Charisma.Value + CharismaRacialBonus + CharismaBackgroundBonus : (int?)null;
+    // Total ability scores including species and background bonuses
+    public int? StrengthTotal => AbilityScores.Strength.HasValue ? AbilityScores.Strength.Value + StrengthSpeciesBonus + StrengthBackgroundBonus : (int?)null;
+    public int? DexterityTotal => AbilityScores.Dexterity.HasValue ? AbilityScores.Dexterity.Value + DexteritySpeciesBonus + DexterityBackgroundBonus : (int?)null;
+    public int? ConstitutionTotal => AbilityScores.Constitution.HasValue ? AbilityScores.Constitution.Value + ConstitutionSpeciesBonus + ConstitutionBackgroundBonus : (int?)null;
+    public int? IntelligenceTotal => AbilityScores.Intelligence.HasValue ? AbilityScores.Intelligence.Value + IntelligenceSpeciesBonus + IntelligenceBackgroundBonus : (int?)null;
+    public int? WisdomTotal => AbilityScores.Wisdom.HasValue ? AbilityScores.Wisdom.Value + WisdomSpeciesBonus + WisdomBackgroundBonus : (int?)null;
+    public int? CharismaTotal => AbilityScores.Charisma.HasValue ? AbilityScores.Charisma.Value + CharismaSpeciesBonus + CharismaBackgroundBonus : (int?)null;
 
-    // Skill proficiencies from race
-    public List<string> RacialSkillProficiencies => GetRacialSkillProficiencies();
+    // Skill proficiencies from species
+    public List<string> SpeciesSkillProficiencies => GetSpeciesSkillProficiencies();
     
     // Skill proficiencies from background
     public List<string> BackgroundSkillProficiencies => GetBackgroundSkillProficiencies();
@@ -328,20 +328,20 @@ public class Character : INotifyPropertyChanged
         return (score - 10) / 2;
     }
 
-    private int GetRacialBonus(string abilityName)
+    private int GetSpeciesBonus(string abilityName)
     {
         int bonus = 0;
 
-        // Base race bonuses
-        if (Race?.AbilityScores?.TryGetValue(abilityName, out var raceBonus) == true)
+        // Base species bonuses (deprecated in D&D 2024)
+        if (Species?.AbilityScores?.TryGetValue(abilityName, out var speciesBonus) == true)
         {
-            bonus += raceBonus;
+            bonus += speciesBonus;
         }
 
-        // Subrace bonuses
-        if (Subrace?.AbilityScores?.TryGetValue(abilityName, out var subraceBonus) == true)
+        // Subspecies bonuses (deprecated in D&D 2024)
+        if (Subspecies?.AbilityScores?.TryGetValue(abilityName, out var subspeciesBonus) == true)
         {
-            bonus += subraceBonus;
+            bonus += subspeciesBonus;
         }
 
         return bonus;
@@ -363,14 +363,14 @@ public class Character : INotifyPropertyChanged
         return 0;
     }
 
-    private List<string> GetRacialSkillProficiencies()
+    private List<string> GetSpeciesSkillProficiencies()
     {
         var skills = new List<string>();
 
-        // Add skills from race traits
-        if (Race?.Traits != null)
+        // Add skills from species traits
+        if (Species?.Traits != null)
         {
-            foreach (var trait in Race.Traits)
+            foreach (var trait in Species.Traits)
             {
                 if (trait.Grants?.SkillProficiencies != null)
                 {
@@ -379,10 +379,10 @@ public class Character : INotifyPropertyChanged
             }
         }
 
-        // Add skills from subrace traits
-        if (Subrace?.Traits != null)
+        // Add skills from subspecies traits
+        if (Subspecies?.Traits != null)
         {
-            foreach (var trait in Subrace.Traits)
+            foreach (var trait in Subspecies.Traits)
             {
                 if (trait.Grants?.SkillProficiencies != null)
                 {
@@ -489,12 +489,12 @@ public class Character : INotifyPropertyChanged
 
     private void RefreshAbilityScoreModifiers()
     {
-        OnPropertyChanged(nameof(StrengthRacialBonus));
-        OnPropertyChanged(nameof(DexterityRacialBonus));
-        OnPropertyChanged(nameof(ConstitutionRacialBonus));
-        OnPropertyChanged(nameof(IntelligenceRacialBonus));
-        OnPropertyChanged(nameof(WisdomRacialBonus));
-        OnPropertyChanged(nameof(CharismaRacialBonus));
+        OnPropertyChanged(nameof(StrengthSpeciesBonus));
+        OnPropertyChanged(nameof(DexteritySpeciesBonus));
+        OnPropertyChanged(nameof(ConstitutionSpeciesBonus));
+        OnPropertyChanged(nameof(IntelligenceSpeciesBonus));
+        OnPropertyChanged(nameof(WisdomSpeciesBonus));
+        OnPropertyChanged(nameof(CharismaSpeciesBonus));
         OnPropertyChanged(nameof(StrengthBackgroundBonus));
         OnPropertyChanged(nameof(DexterityBackgroundBonus));
         OnPropertyChanged(nameof(ConstitutionBackgroundBonus));
@@ -507,7 +507,7 @@ public class Character : INotifyPropertyChanged
         OnPropertyChanged(nameof(IntelligenceTotal));
         OnPropertyChanged(nameof(WisdomTotal));
         OnPropertyChanged(nameof(CharismaTotal));
-        OnPropertyChanged(nameof(RacialSkillProficiencies));
+        OnPropertyChanged(nameof(SpeciesSkillProficiencies));
         OnPropertyChanged(nameof(BackgroundSkillProficiencies));
         OnPropertyChanged(nameof(ClassSkillProficiencies));
         OnPropertyChanged(nameof(CalculatedMaxHitPoints));
