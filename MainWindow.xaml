@@ -30,6 +30,107 @@
         <!-- Medieval Theme Resources for Application - Use DynamicResource for theme switching -->
         <!-- These will be dynamically updated by the ThemeService -->
         
+        <!-- Medieval Tab Control Styles -->
+        <Style TargetType="TabControl" x:Key="MedievalTabControlStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="TabStripPlacement" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Tab Header Area -->
+                            <Border Grid.Row="0" Background="{DynamicResource DarkRed}" 
+                                   BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="3,3,3,0"
+                                   CornerRadius="8,8,0,0" Margin="0,0,0,0">
+                                <TabPanel x:Name="HeaderPanel" IsItemsHost="True" Margin="5,5,5,0"/>
+                            </Border>
+                            
+                            <!-- Tab Content Area - No border, just background -->
+                            <Grid Grid.Row="1">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                                ContentSource="SelectedContent" 
+                                                Margin="0"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="TabItem" x:Key="MedievalTabItemStyle">
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}"
+                               BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="2,2,2,0"
+                               CornerRadius="8,8,0,0" Margin="{TemplateBinding Margin}">
+                            <ContentPresenter x:Name="ContentSite" ContentSource="Header"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Normal State -->
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PanelBlue}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2,2,2,0"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                            
+                            <!-- Selected State -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryRed}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="3,3,3,0"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+                                <Setter TargetName="Border" Property="Opacity" Value="1"/>
+                                <Setter TargetName="Border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="{Binding Source={x:Static Application.Current}, Path=Resources[PrimaryGold].Color}" 
+                                                        BlurRadius="8" ShadowDepth="0" Opacity="0.6"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            
+                            <!-- Hover State -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsSelected" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DarkRed}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2,2,2,0"/>
+                                <Setter TargetName="Border" Property="Opacity" Value="0.9"/>
+                                <Setter TargetName="Border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="{Binding Source={x:Static Application.Current}, Path=Resources[PrimaryGold].Color}" 
+                                                        BlurRadius="4" ShadowDepth="0" Opacity="0.4"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <!-- Global Medieval Styles for all tabs -->
         <Style TargetType="TextBox" x:Key="MedievalTextBoxStyle">
             <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
@@ -342,17 +443,15 @@
         </Border>
 
         <!-- Main Content -->
-        <TabControl Grid.Row="2" Margin="20" Background="{DynamicResource ControlBackground}">
+        <TabControl Grid.Row="2" Margin="0" Background="{DynamicResource ControlBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <!-- Basic Info Tab -->
-            <TabItem Header="Basic Info" Padding="15,10">
+            <TabItem Header="⚔️ Basic Info" Style="{StaticResource MedievalTabItemStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 
-                <Border Background="{DynamicResource MedievalBackground}" BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="3">
-                    <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+                <Grid Background="{DynamicResource MedievalBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                             
                             <!-- Title Bar -->
                             <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20,15">
@@ -370,7 +469,7 @@
                             </Border>
                             
                             <!-- Content Area -->
-                            <Grid Grid.Row="1" Margin="20">
+                            <Grid Grid.Row="1" Margin="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -632,16 +731,12 @@
                                     </StackPanel>
                                 </Border>
                             </Grid>
-                        </Grid>
-                    </Border>
-                </Border>
+                </Grid>
             </TabItem>
 
             <!-- Multiclassing Tab -->
-            <TabItem Header="Classes &amp; Multiclassing" Padding="15,10">
-                <Border Background="{DynamicResource MedievalBackground}" BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="3">
-                    <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
-                        <Grid>
+            <TabItem Header="🛡️ Classes &amp; Multiclassing" Style="{StaticResource MedievalTabItemStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Grid Background="{DynamicResource MedievalBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
@@ -663,8 +758,8 @@
                             </Border>
                             
                             <!-- Content Area -->
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
-                    <Grid Margin="20">
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0">
+                    <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -911,16 +1006,12 @@
                         </GroupBox>
                     </Grid>
                 </ScrollViewer>
-                            </Grid>
-                        </Border>
-                    </Border>
+                </Grid>
             </TabItem>
 
             <!-- Generate Ability Scores Tab -->
-            <TabItem Header="Generate Ability Scores" Padding="15,10">
-                <Border Background="{DynamicResource MedievalBackground}" BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="3">
-                    <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
-                        <Grid>
+            <TabItem Header="🎲 Generate Ability Scores" Style="{StaticResource MedievalTabItemStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Grid Background="{DynamicResource MedievalBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -1121,18 +1212,13 @@
                             </Grid>
                             
 
-                        </Grid>
-                    </Border>
-                </Border>
+                </Grid>
             </TabItem>
 
             <!-- Character Stats Tab -->
-            <TabItem Header="Character Stats" Padding="15,10">
+            <TabItem Header="📊 Character Stats" Style="{StaticResource MedievalTabItemStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <!-- Medieval Background -->
-                <Border Background="{DynamicResource MedievalBackground}" BorderBrush="{DynamicResource PrimaryRed}" BorderThickness="3">
-                    <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1" Margin="2">
-                        <!-- Title Bar -->
-                        <Grid>
+                <Grid Background="{DynamicResource MedievalBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
@@ -1145,7 +1231,7 @@
                                 </Border>
                             </Border>
                             
-                            <Grid Grid.Row="1" Margin="20">
+                            <Grid Grid.Row="1" Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -1290,9 +1376,7 @@
                                     </Border>
                                 </StackPanel>
                             </Grid>
-                        </Grid>
-                    </Border>
-                </Border>
+                </Grid>
             </TabItem>
         </TabControl>
 

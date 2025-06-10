@@ -21,15 +21,15 @@
             </ResourceDictionary>
 
             <ResourceDictionary x:Key="DarkTheme">
-                <SolidColorBrush x:Key="MedievalBackground" Color="#2B2B2B"/>
-                <SolidColorBrush x:Key="PrimaryGold" Color="#FFD700"/>
-                <SolidColorBrush x:Key="PrimaryRed" Color="#FF6B6B"/>
-                <SolidColorBrush x:Key="PanelBlue" Color="#3A3A4A"/>
-                <SolidColorBrush x:Key="DarkRed" Color="#5A3A3A"/>
-                <SolidColorBrush x:Key="WindowBackground" Color="#2B2B2B"/>
-                <SolidColorBrush x:Key="PanelBackground" Color="#3A3A3A"/>
-                <SolidColorBrush x:Key="ControlBackground" Color="#4A4A4A"/>
-                <SolidColorBrush x:Key="TextForeground" Color="#E0E0E0"/>
+                <SolidColorBrush x:Key="MedievalBackground" Color="#1E1E1E"/>
+                <SolidColorBrush x:Key="PrimaryGold" Color="#F5C842"/>
+                <SolidColorBrush x:Key="PrimaryRed" Color="#C678DD"/>
+                <SolidColorBrush x:Key="PanelBlue" Color="#333344"/>
+                <SolidColorBrush x:Key="DarkRed" Color="#4A3A4A"/>
+                <SolidColorBrush x:Key="WindowBackground" Color="#1E1E1E"/>
+                <SolidColorBrush x:Key="PanelBackground" Color="#2D2D30"/>
+                <SolidColorBrush x:Key="ControlBackground" Color="#3C3C3C"/>
+                <SolidColorBrush x:Key="TextForeground" Color="#E5E5E5"/>
             </ResourceDictionary>
 
             <!-- Default active theme resources (Light by default) -->
