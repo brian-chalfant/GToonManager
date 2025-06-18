@@ -1,0 +1,648 @@
+{
+  "battle_master_maneuvers": {
+    "description": "Battle Master maneuvers are tactical combat techniques that use superiority dice.",
+    "options": [
+      {
+        "name": "Ambush",
+        "description": "When you make a Dexterity (Stealth) check or an initiative roll, you can expend one superiority die and add the die to the roll, provided you aren't incapacitated.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Bait and Switch",
+        "description": "When you're within 5 feet of a creature on your turn, you can expend one superiority die and switch places with that creature, provided you spend at least 5 feet of movement and the creature is willing and isn't incapacitated. This movement doesn't provoke opportunity attacks. Roll the superiority die. Until the start of your next turn, you or the other creature (your choice) gains a bonus to AC equal to the number rolled.",
+        "prerequisites": "",
+        "source": "TCE"
+      },
+      {
+        "name": "Commander's Strike",
+        "description": "When you take the Attack action on your turn, you can forgo one of your attacks and use a bonus action to direct one of your companions to strike. When you do so, choose a friendly creature who can see or hear you and expend one superiority die. That creature can immediately use its reaction to make one weapon attack, adding the superiority die to the attack's damage roll.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Commanding Presence",
+        "description": "When you make a Charisma (Intimidation), a Charisma (Performance), or a Charisma (Persuasion) check, you can expend one superiority die and add the superiority die to the ability check.",
+        "prerequisites": "",
+        "source": "TCE"
+      },
+      {
+        "name": "Disarming Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to disarm the target, forcing it to drop one item of your choice that it's holding. You add the superiority die to the attack's damage roll, and the target must make a Strength saving throw. On a failed save, it drops the object you choose. The object lands at its feet.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Distracting Strike",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to distract the creature, giving your allies an opening. You add the superiority die to the attack's damage roll. The next attack roll against the target by an attacker other than you has advantage if the attack is made before the start of your next turn.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Evasive Footwork",
+        "description": "When you move, you can expend one superiority die, rolling the die and adding the number rolled to your AC until you stop moving.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Feinting Attack",
+        "description": "You can expend one superiority die and use a bonus action on your turn to feint, choosing one creature within 5 feet of you as your target. You have advantage on your next attack roll against that creature this turn. If that attack hits, add the superiority die to the attack's damage roll.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Goading Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to goad the target into attacking you. You add the superiority die to the attack's damage roll, and the target must make a Wisdom saving throw. On a failed save, the target has disadvantage on all attack rolls against targets other than you until the end of your next turn.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Grappling Strike",
+        "description": "Immediately after you hit a creature with a melee attack on your turn, you can expend one superiority die and then try to grapple the target as a bonus action. Add the superiority die to your Strength (Athletics) check.",
+        "prerequisites": "",
+        "source": "TCE"
+      },
+      {
+        "name": "Lunging Attack",
+        "description": "When you make a melee weapon attack on your turn, you can expend one superiority die to increase your reach for that attack by 5 feet. If you hit, you add the superiority die to the attack's damage roll.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Maneuvering Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to maneuver one of your comrades into a more advantageous position. You add the superiority die to the attack's damage roll, and you choose a friendly creature who can see or hear you. That creature can use its reaction to move up to half its speed without provoking opportunity attacks from the target of your attack.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Menacing Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to frighten the target. You add the superiority die to the attack's damage roll, and the target must make a Wisdom saving throw. On a failed save, it is frightened of you until the end of your next turn.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Parry",
+        "description": "When another creature damages you with a melee attack, you can use your reaction and expend one superiority die to reduce the damage by the number you roll on your superiority die + your Dexterity modifier.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Precision Attack",
+        "description": "When you make a weapon attack roll against a creature, you can expend one superiority die to add it to the roll. You can use this maneuver before or after making the attack roll, but before any effects of the attack are applied.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Pushing Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to drive the target back. You add the superiority die to the attack's damage roll, and if the target is Large or smaller, it must make a Strength saving throw. On a failed save, you push the target up to 15 feet away from you.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Quick Toss",
+        "description": "As a bonus action, you can expend one superiority die and make a ranged attack with a thrown weapon. You can draw the weapon as part of making this attack. If you hit, add the superiority die to the weapon's damage roll.",
+        "prerequisites": "",
+        "source": "TCE"
+      },
+      {
+        "name": "Rally",
+        "description": "On your turn, you can use a bonus action and expend one superiority die to bolster the resolve of one of your companions. When you do so, choose a friendly creature who can see or hear you. That creature gains temporary hit points equal to the superiority die roll + your Charisma modifier.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Riposte",
+        "description": "When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Sweeping Attack",
+        "description": "When you hit a creature with a melee weapon attack, you can expend one superiority die to attempt to damage another creature with the same attack. Choose another creature within 5 feet of the original target and within your reach. If the original attack roll would hit the second creature, it takes damage equal to the number you roll on your superiority die. The damage is of the same type dealt by the original attack.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Tactical Assessment",
+        "description": "When you make an Intelligence (Investigation), an Intelligence (History), or a Wisdom (Insight) check, you can expend one superiority die and add the superiority die to the ability check.",
+        "prerequisites": "",
+        "source": "TCE"
+      },
+      {
+        "name": "Trip Attack",
+        "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to knock the target down. You add the superiority die to the attack's damage roll, and if the target is Large or smaller, it must make a Strength saving throw. On a failed save, you knock the target prone.",
+        "prerequisites": "",
+        "source": "PHB"
+      }
+    ]
+  },
+  "artisan_tools": {
+    "description": "Tools used by skilled artisans to create various goods and services.",
+    "options": [
+      {
+        "name": "Alchemist's Supplies",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "50 gp",
+        "weight": "8 lb"
+      },
+      {
+        "name": "Brewer's Supplies",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "20 gp",
+        "weight": "9 lb"
+      },
+      {
+        "name": "Calligrapher's Supplies",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "10 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Carpenter's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "8 gp",
+        "weight": "6 lb"
+      },
+      {
+        "name": "Cartographer's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "15 gp",
+        "weight": "6 lb"
+      },
+      {
+        "name": "Cobbler's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "5 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Cook's Utensils",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "1 gp",
+        "weight": "8 lb"
+      },
+      {
+        "name": "Glassblower's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "30 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Jeweler's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "25 gp",
+        "weight": "2 lb"
+      },
+      {
+        "name": "Leatherworker's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "5 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Mason's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "10 gp",
+        "weight": "8 lb"
+      },
+      {
+        "name": "Painter's Supplies",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "10 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Potter's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "10 gp",
+        "weight": "3 lb"
+      },
+      {
+        "name": "Smith's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "20 gp",
+        "weight": "8 lb"
+      },
+      {
+        "name": "Tinker's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "50 gp",
+        "weight": "10 lb"
+      },
+      {
+        "name": "Weaver's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "1 gp",
+        "weight": "5 lb"
+      },
+      {
+        "name": "Woodcarver's Tools",
+        "description": "These special tools include the items needed to pursue a craft or trade.",
+        "cost": "1 gp",
+        "weight": "5 lb"
+      }
+    ]
+  },
+  "metamagic": {
+    "description": "Metamagic options available to Sorcerers to alter their spells.",
+    "options": [
+      {
+        "name": "Careful Spell",
+        "description": "When you cast a spell that forces other creatures to make a saving throw, you can protect some of those creatures from the spell's full force. To do so, you spend 1 sorcery point and choose a number of those creatures up to your Charisma modifier (minimum of one creature). A chosen creature automatically succeeds on its saving throw against the spell.",
+        "cost": "1 sorcery point",
+        "source": "PHB"
+      },
+      {
+        "name": "Distant Spell",
+        "description": "When you cast a spell that has a range of 5 feet or greater, you can spend 1 sorcery point to double the range of the spell. When you cast a spell that has a range of touch, you can spend 1 sorcery point to make the range of the spell 30 feet.",
+        "cost": "1 sorcery point",
+        "source": "PHB"
+      },
+      {
+        "name": "Empowered Spell",
+        "description": "When you roll damage for a spell, you can spend 1 sorcery point to reroll a number of the damage dice up to your Charisma modifier (minimum of one). You must use the new rolls.",
+        "cost": "1 sorcery point",
+        "source": "PHB"
+      },
+      {
+        "name": "Extended Spell",
+        "description": "When you cast a spell that has a duration of 1 minute or longer, you can spend 1 sorcery point to double its duration, to a maximum duration of 24 hours.",
+        "cost": "1 sorcery point",
+        "source": "PHB"
+      },
+      {
+        "name": "Heightened Spell",
+        "description": "When you cast a spell that forces a creature to make a saving throw to resist its effects, you can spend 3 sorcery points to give one target of the spell disadvantage on its first saving throw made against the spell.",
+        "cost": "3 sorcery points",
+        "source": "PHB"
+      },
+      {
+        "name": "Quickened Spell",
+        "description": "When you cast a spell that has a casting time of 1 action, you can spend 2 sorcery points to change the casting time to 1 bonus action for this casting.",
+        "cost": "2 sorcery points",
+        "source": "PHB"
+      },
+      {
+        "name": "Seeking Spell",
+        "description": "When you cast a spell that requires you to make a spell attack roll or that forces a target to make a Dexterity saving throw, you can spend 2 sorcery points to ignore the effects of half and three-quarters cover against targets of the spell.",
+        "cost": "2 sorcery points",
+        "source": "TCE"
+      },
+      {
+        "name": "Subtle Spell",
+        "description": "When you cast a spell, you can spend 1 sorcery point to cast it without any somatic or verbal components.",
+        "cost": "1 sorcery point",
+        "source": "PHB"
+      },
+      {
+        "name": "Transmuted Spell",
+        "description": "When you cast a spell that deals a type of damage from the following list, you can spend 1 sorcery point to change that damage type to one of the other listed types: acid, cold, fire, lightning, poison, thunder.",
+        "cost": "1 sorcery point",
+        "source": "TCE"
+      },
+      {
+        "name": "Twinned Spell",
+        "description": "When you cast a spell that targets only one creature and doesn't have a range of self, you can spend a number of sorcery points equal to the spell's level to target a second creature in range with the same spell (1 sorcery point if the spell is a cantrip).",
+        "cost": "spell level in sorcery points",
+        "source": "PHB"
+      }
+    ]
+  },
+  "eldritch_invocations": {
+    "description": "Eldritch Invocations available to Warlocks to enhance their abilities.",
+    "options": [
+      {
+        "name": "Agonizing Blast",
+        "description": "You can add your Charisma modifier to the damage roll of your eldritch blast cantrip.",
+        "prerequisites": "Eldritch blast cantrip",
+        "source": "PHB"
+      },
+      {
+        "name": "Armor of Shadows",
+        "description": "You can cast mage armor on yourself at will, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Ascendant Step",
+        "description": "You can cast levitate on yourself at will, without expending a spell slot.",
+        "prerequisites": "9th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Beast Speech",
+        "description": "You can cast speak with animals at will, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Beguiling Influence",
+        "description": "You gain proficiency in the Deception and Persuasion skills.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Bewitching Whispers",
+        "description": "You can cast compulsion once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "7th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Book of Ancient Secrets",
+        "description": "You can now inscribe magical rituals in a Book of Shadows. Choose two 1st-level spells that have the ritual tag from any class's spell list. The spells appear in the book and don't count against the number of spells you know. With your Book of Shadows in hand, you can cast the chosen spells as rituals. You can't cast the spells except as rituals, unless you've learned them by some other means. You can also cast a warlock spell you know as a ritual if it has the ritual tag.",
+        "prerequisites": "Pact of the Tome feature",
+        "source": "PHB"
+      },
+      {
+        "name": "Chains of Carceri",
+        "description": "You can cast hold monster at will—targeting a celestial, fiend, or elemental—without expending a spell slot. You must finish a long rest before you can use this invocation on the same creature again.",
+        "prerequisites": "15th level, Pact of the Chain feature",
+        "source": "PHB"
+      },
+      {
+        "name": "Devil's Sight",
+        "description": "You can see normally in darkness, both magical and nonmagical, to a distance of 120 feet.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Dreadful Word",
+        "description": "You can cast confusion once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "7th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Eldritch Sight",
+        "description": "You can cast detect magic at will, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Eldritch Spear",
+        "description": "When you cast eldritch blast, its range is 300 feet.",
+        "prerequisites": "Eldritch blast cantrip",
+        "source": "PHB"
+      },
+      {
+        "name": "Eyes of the Rune Keeper",
+        "description": "You can read all writing.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Fiendish Vigor",
+        "description": "You can cast false life on yourself at will as a 1st-level spell, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Gaze of Two Minds",
+        "description": "You can use your action to touch a willing humanoid and perceive through its senses until the end of your next turn. As long as the creature is on the same plane of existence as you, you can use your action on subsequent turns to maintain this connection, extending the duration until the end of your next turn. While perceiving through the other creature's senses, you benefit from any special senses possessed by that creature, and you are blinded and deafened to your own surroundings.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Lifedrinker",
+        "description": "When you hit a creature with your pact weapon, the creature takes extra necrotic damage equal to your Charisma modifier (minimum 1).",
+        "prerequisites": "12th level, Pact of the Blade feature",
+        "source": "PHB"
+      },
+      {
+        "name": "Mask of Many Faces",
+        "description": "You can cast disguise self at will, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Master of Myriad Forms",
+        "description": "You can cast alter self at will, without expending a spell slot.",
+        "prerequisites": "15th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Minions of Chaos",
+        "description": "You can cast conjure elemental once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "9th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Mire the Mind",
+        "description": "You can cast slow once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "5th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Misty Visions",
+        "description": "You can cast silent image at will, without expending a spell slot.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "One with Shadows",
+        "description": "When you are in an area of dim light or darkness, you can use your action to become invisible until you move or take an action or a reaction.",
+        "prerequisites": "5th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Otherworldly Leap",
+        "description": "You can cast jump on yourself at will, without expending a spell slot.",
+        "prerequisites": "9th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Repelling Blast",
+        "description": "When you hit a creature with eldritch blast, you can push the creature up to 10 feet away from you in a straight line.",
+        "prerequisites": "Eldritch blast cantrip",
+        "source": "PHB"
+      },
+      {
+        "name": "Sculptor of Flesh",
+        "description": "You can cast polymorph once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "7th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Sign of Ill Omen",
+        "description": "You can cast bestow curse once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "5th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Thief of Five Fates",
+        "description": "You can cast bane once using a warlock spell slot. You can't do so again until you finish a long rest.",
+        "prerequisites": "",
+        "source": "PHB"
+      },
+      {
+        "name": "Thirsting Blade",
+        "description": "You can attack with your pact weapon twice, instead of once, whenever you take the Attack action on your turn.",
+        "prerequisites": "5th level, Pact of the Blade feature",
+        "source": "PHB"
+      },
+      {
+        "name": "Visions of Distant Realms",
+        "description": "You can cast arcane eye at will, without expending a spell slot.",
+        "prerequisites": "15th level",
+        "source": "PHB"
+      },
+      {
+        "name": "Voice of the Chain Master",
+        "description": "You can communicate telepathically with your familiar and perceive through your familiar's senses as long as you are on the same plane of existence. Additionally, while perceiving through your familiar's senses, you can also speak through your familiar in your own voice, even if your familiar is normally incapable of speech.",
+        "prerequisites": "Pact of the Chain feature",
+        "source": "PHB"
+      },
+      {
+        "name": "Whispers of the Grave",
+        "description": "You can cast speak with dead at will, without expending a spell slot.",
+        "prerequisites": "9th level",
+        "source": "PHB"
+      }
+    ]
+  },
+  "creature_types": {
+    "description": "Standard creature types for favored enemy and similar features.",
+    "options": [
+      {
+        "name": "Aberrations",
+        "description": "Utterly alien beings from distant realms of existence.",
+        "examples": "beholder, mind flayer, aboleth"
+      },
+      {
+        "name": "Beasts",
+        "description": "Nonhumanoid creatures that are a natural part of the fantasy ecology.",
+        "examples": "wolf, bear, giant spider"
+      },
+      {
+        "name": "Celestials",
+        "description": "Creatures native to the Upper Planes.",
+        "examples": "angel, deva, solar"
+      },
+      {
+        "name": "Constructs",
+        "description": "Created beings given sentience and mobility by magic.",
+        "examples": "golem, animated armor, shield guardian"
+      },
+      {
+        "name": "Dragons",
+        "description": "Large reptilian creatures of ancient origin and tremendous power.",
+        "examples": "red dragon, gold dragon, wyvern"
+      },
+      {
+        "name": "Elementals",
+        "description": "Creatures native to the elemental planes.",
+        "examples": "air elemental, fire elemental, salamander"
+      },
+      {
+        "name": "Fey",
+        "description": "Magical creatures closely tied to the forces of nature.",
+        "examples": "dryad, satyr, blink dog"
+      },
+      {
+        "name": "Fiends",
+        "description": "Creatures of wickedness that are native to the Lower Planes.",
+        "examples": "demon, devil, yugoloth"
+      },
+      {
+        "name": "Giants",
+        "description": "Towering creatures and their kind.",
+        "examples": "hill giant, stone giant, cloud giant"
+      },
+      {
+        "name": "Humanoids",
+        "description": "The main peoples of a fantasy gaming world, both civilized and savage.",
+        "examples": "human, elf, goblin",
+        "special": "When you select this type, you must also choose two races of humanoid (such as gnolls and orcs)."
+      },
+      {
+        "name": "Monstrosities",
+        "description": "Monsters in the strictest sense—frightening creatures that are not ordinary, not truly natural, and almost never benign.",
+        "examples": "owlbear, bulette, rust monster"
+      },
+      {
+        "name": "Oozes",
+        "description": "Gelatinous creatures that rarely have a fixed shape.",
+        "examples": "black pudding, gelatinous cube, gray ooze"
+      },
+      {
+        "name": "Plants",
+        "description": "Vegetable creatures, not ordinary flora.",
+        "examples": "treant, shambling mound, awakened shrub"
+      },
+      {
+        "name": "Undead",
+        "description": "Once-living creatures brought to a horrifying state of undeath.",
+        "examples": "skeleton, zombie, vampire"
+      }
+    ]
+  },
+  "terrain_types": {
+    "description": "Natural terrain types for natural explorer and similar features.",
+    "options": [
+      {
+        "name": "Arctic",
+        "description": "Frozen tundra, glacial valleys, and icy mountain peaks.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Coast",
+        "description": "Beaches, cliffs, coves, and coastal waters.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Desert",
+        "description": "Sand dunes, rocky badlands, and dry plateaus.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Forest",
+        "description": "Dense woodlands, pine forests, and jungle canopies.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Grassland",
+        "description": "Plains, meadows, fields, and farmland.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Mountain",
+        "description": "Tall peaks, rocky crags, and high altitude terrain.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Swamp",
+        "description": "Marshes, bogs, fens, and wetlands.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      },
+      {
+        "name": "Underdark",
+        "description": "Underground caves, tunnels, and subterranean realms.",
+        "benefits": "Difficult terrain doesn't slow your group's travel. You remain alert to danger while tracking, foraging, or navigating."
+      }
+    ]
+  },
+  "pact_boons": {
+    "description": "Otherworldly patrons bestow these boons upon their warlock servants.",
+    "options": [
+      {
+        "name": "Pact of the Blade",
+        "description": "You can use your action to create a pact weapon in your empty hand. You can choose the form that this melee weapon takes each time you create it. You are proficient with it while you wield it. This weapon counts as magical for the purpose of overcoming resistance and immunity to nonmagical attacks and damage.",
+        "source": "PHB"
+      },
+      {
+        "name": "Pact of the Chain",
+        "description": "You learn the find familiar spell and can cast it as a ritual. The spell doesn't count against your number of spells known. When you cast the spell, you can choose one of the normal forms for your familiar or one of the following special forms: imp, pseudodragon, quasit, or sprite.",
+        "source": "PHB"
+      },
+      {
+        "name": "Pact of the Tome",
+        "description": "Your patron gives you a grimoire called a Book of Shadows. When you gain this feature, choose three cantrips from any class's spell list (the three needn't be from the same list). While the book is on your person, you can cast those cantrips at will.",
+        "source": "PHB"
+      },
+      {
+        "name": "Pact of the Talisman",
+        "description": "Your patron gives you an amulet, a talisman that can aid the wearer when the need is great. When the wearer fails an ability check, they can add a d4 to the roll, potentially turning the roll into a success. This benefit can be used a number of times equal to your proficiency bonus, and all expended uses are restored when you finish a long rest.",
+        "source": "TCE"
+      }
+    ]
+  }
+} 

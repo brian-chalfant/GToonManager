@@ -18,6 +18,8 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:ValueToVisibilityConverter x:Key="ValueToVisibilityConverter"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <converters:AbilityScoreBorderConverter x:Key="AbilityScoreBorderConverter"/>
         <converters:AbilityScoreBorderThicknessConverter x:Key="AbilityScoreBorderThicknessConverter"/>
         <converters:AbilityScoreBonusTextConverter x:Key="AbilityScoreBonusTextConverter"/>
@@ -1959,42 +1961,288 @@
                 </Grid>
             </TabItem>
 
-            <!-- Features & Traits Tab -->
-            <TabItem Header="🧬 Features &amp; Traits" Style="{StaticResource MedievalTabItemStyle}"
+            <!-- Features Tab (Character Choices) -->
+            <TabItem Header="⚔️ Features" Style="{StaticResource MedievalTabItemStyle}"
                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                     IsEnabled="{Binding FeaturesAndTraitsTabEnabled}">
+                     IsEnabled="{Binding FeaturesTabEnabled}">
                 <Grid Background="{DynamicResource MedievalBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                    
+                    <!-- Header -->
                     <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20,15" Margin="0,0,0,20">
                         <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1">
-                            <TextBlock Text="🧬 Features &amp; Traits from Species, Background, and Class" FontFamily="Garamond" FontSize="24" FontWeight="Bold"
-                                       Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                            <StackPanel>
+                                <TextBlock Text="⚔️ Character Feature Choices" FontFamily="Garamond" FontSize="24" FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Make character-defining choices based on your class levels and abilities" 
+                                           FontFamily="Garamond" FontSize="14" FontStyle="Italic"
+                                           Foreground="{DynamicResource PrimaryGold}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            </StackPanel>
                         </Border>
                     </Border>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0">
-                        <ItemsControl ItemsSource="{Binding FeaturesAndTraits}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{DynamicResource MedievalPanelStyle}" Margin="0,0,0,15" Background="White">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Top" Margin="0,0,15,0"/>
-                                            <StackPanel Grid.Column="1">
-                                                <TextBlock Text="{Binding Name}" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
-                                                <TextBlock Text="{Binding Source}" FontFamily="Garamond" FontStyle="Italic" Foreground="{DynamicResource PrimaryRed}" FontSize="14" Margin="0,2,0,6"/>
-                                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+
+                    <!-- Progress Summary -->
+                    <Border Grid.Row="1" Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="10,0,10,20">
+                        <StackPanel>
+                            <TextBlock Text="📊 Progress Summary" Style="{StaticResource MedievalLabelStyle}" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding FeaturesViewModel.ProgressSummary}" FontFamily="Garamond" FontSize="14" 
+                                       HorizontalAlignment="Center" Margin="0,5,0,0" Foreground="{DynamicResource PrimaryRed}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                <Button Content="🔄 Refresh Choices" Style="{StaticResource MedievalButtonStyle}" 
+                                        Command="{Binding FeaturesViewModel.RefreshChoicesCommand}" FontSize="12" Padding="10,5"/>
+                                <Button Content="🗑️ Reset All" Style="{StaticResource MedievalButtonStyle}" 
+                                        Command="{Binding FeaturesViewModel.ResetAllChoicesCommand}" FontSize="12" Padding="10,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Feature Choices Content -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="10,0,10,0">
+                        <StackPanel>
+                            <!-- Subclass Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.SubclassChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="🏰 Subclass Choices" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.SubclassChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0}'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="{Binding Level, StringFormat='Level: {0}'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontFamily="Garamond" FontSize="12" 
+                                                                   Margin="0,5,0,10"/>
+                                                        <ComboBox ItemsSource="{Binding AvailableSubclasses}" 
+                                                                  SelectedItem="{Binding SelectedSubclass, Mode=TwoWay}"
+                                                                  DisplayMemberPath="Name"
+                                                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                                                  FontSize="12"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Ability Score Improvement Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.AbilityScoreImprovementChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="📈 Ability Score Improvements" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.AbilityScoreImprovementChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="Choose to improve ability scores or select a feat (if allowed)" 
+                                                                   TextWrapping="Wrap" FontFamily="Garamond" FontSize="12" Margin="0,5,0,10"/>
+                                                        <CheckBox Content="Choose Feat Instead" IsChecked="{Binding ChooseFeat, Mode=TwoWay}"
+                                                                  Visibility="{Binding CanChooseFeat, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                  FontFamily="Garamond" FontSize="12" Margin="0,0,0,10"/>
+                                                        <!-- Feat selection would go here when ChooseFeat is true -->
+                                                        <!-- Ability score selection would go here when ChooseFeat is false -->
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Combat Style Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.CombatStyleChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="⚔️ Combat Styles" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.CombatStyleChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <ComboBox ItemsSource="{Binding AvailableStyles}" 
+                                                                  SelectedItem="{Binding SelectedStyle, Mode=TwoWay}"
+                                                                  DisplayMemberPath="Name"
+                                                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                                                  FontSize="12" Margin="0,10,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Magical Feature Choices (Maneuvers, Metamagic, Invocations, etc.) -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.MagicalFeatureChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="✨ Magical Features" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.MagicalFeatureChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="{Binding FeatureType, StringFormat='Type: {0}'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="{Binding NumberToChoose, StringFormat='Choose {0}:'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Margin="0,5,0,5"/>
+                                                        <ListBox ItemsSource="{Binding AvailableFeatures}" 
+                                                                 Height="120" Margin="0,5,0,5"
+                                                                 Background="White" BorderBrush="{DynamicResource PrimaryGold}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Margin="5">
+                                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+                                                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="12" 
+                                                                                   Foreground="DarkBlue" Margin="0,2,0,0"/>
+                                                                        <TextBlock Text="{Binding Prerequisites}" FontSize="10" FontStyle="Italic" 
+                                                                                   Foreground="Gray" Margin="0,2,0,0"
+                                                                                   Visibility="{Binding Prerequisites, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Skills/Tools Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.SkillsToolsChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="🛠️ Skills &amp; Tools" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.SkillsToolsChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <TextBlock Text="{Binding NumberToChoose, StringFormat='Choose {0} options:'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Margin="0,5,0,5"/>
+                                                        <!-- Skills -->
+                                                        <TextBlock Text="Skills:" FontFamily="Garamond" FontWeight="Bold" FontSize="12" 
+                                                                   Visibility="{Binding CanChooseSkills, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                        <ItemsControl ItemsSource="{Binding AvailableSkills}" 
+                                                                      Visibility="{Binding CanChooseSkills, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel/>
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <CheckBox Content="{Binding}" Margin="5,2" FontSize="12"/>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                        <!-- Tools -->
+                                                        <TextBlock Text="Tools:" FontFamily="Garamond" FontWeight="Bold" FontSize="12" 
+                                                                   Visibility="{Binding CanChooseTools, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                                   Margin="0,10,0,0"/>
+                                                        <ItemsControl ItemsSource="{Binding AvailableTools}" 
+                                                                      Visibility="{Binding CanChooseTools, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel/>
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <CheckBox Content="{Binding}" Margin="5,2" FontSize="12"/>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Creature Type Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.CreatureTypeChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="🐺 Creature Types" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.CreatureTypeChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <ComboBox ItemsSource="{Binding AvailableCreatureTypes}" 
+                                                                  SelectedItem="{Binding SelectedCreatureType, Mode=TwoWay}"
+                                                                  DisplayMemberPath="Name"
+                                                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                                                  FontSize="12" Margin="0,10,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Terrain Type Choices -->
+                            <Border Style="{DynamicResource MedievalPanelStyle}" Background="White" Margin="0,0,0,15"
+                                    Visibility="{Binding FeaturesViewModel.TerrainTypeChoices.Count, Converter={StaticResource ValueToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="🏔️ Terrain Types" Style="{StaticResource MedievalLabelStyle}" FontSize="18"/>
+                                    <ItemsControl ItemsSource="{Binding FeaturesViewModel.TerrainTypeChoices}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                                        BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,5,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="Garamond" FontWeight="Bold" FontSize="16"/>
+                                                        <TextBlock Text="{Binding ClassName, StringFormat='Class: {0} (Level {1})'}" FontFamily="Garamond" FontSize="12" 
+                                                                   Foreground="{DynamicResource PrimaryRed}" FontStyle="Italic"/>
+                                                        <ComboBox ItemsSource="{Binding AvailableTerrainTypes}" 
+                                                                  SelectedItem="{Binding SelectedTerrainType, Mode=TwoWay}"
+                                                                  DisplayMemberPath="Name"
+                                                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                                                  FontSize="12" Margin="0,10,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </TabItem>

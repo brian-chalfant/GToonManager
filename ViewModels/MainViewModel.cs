@@ -31,8 +31,9 @@ public class MainViewModel : INotifyPropertyChanged
     private PointBuyViewModel? _pointBuyViewModel;
     private RollingViewModel? _rollingViewModel;
     private FreeEntryViewModel? _freeEntryViewModel;
+    private FeaturesViewModel? _featuresViewModel;
 
-    // --- Features & Traits Tab ---
+    // --- Features & Traits Tab (for PDF export only) ---
     private ObservableCollection<FeatureTraitViewModel> _featuresAndTraits = new();
     public ObservableCollection<FeatureTraitViewModel> FeaturesAndTraits
     {
@@ -40,11 +41,11 @@ public class MainViewModel : INotifyPropertyChanged
         set { _featuresAndTraits = value; OnPropertyChanged(nameof(FeaturesAndTraits)); }
     }
 
-    private bool _featuresAndTraitsTabEnabled;
-    public bool FeaturesAndTraitsTabEnabled
+    private bool _featuresTabEnabled;
+    public bool FeaturesTabEnabled
     {
-        get => _featuresAndTraitsTabEnabled;
-        set { _featuresAndTraitsTabEnabled = value; OnPropertyChanged(nameof(FeaturesAndTraitsTabEnabled)); }
+        get => _featuresTabEnabled;
+        set { _featuresTabEnabled = value; OnPropertyChanged(nameof(FeaturesTabEnabled)); }
     }
 
     public MainViewModel()
@@ -87,6 +88,9 @@ public class MainViewModel : INotifyPropertyChanged
         
         // Create the initial ViewModel for the default method
         CreateViewModelForCurrentMethod();
+        
+        // Initialize Features ViewModel
+        InitializeFeaturesViewModel();
     }
 
     public Character CurrentCharacter
@@ -194,6 +198,16 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _freeEntryViewModel = value;
             OnPropertyChanged(nameof(FreeEntryViewModel));
+        }
+    }
+
+    public FeaturesViewModel? FeaturesViewModel
+    {
+        get => _featuresViewModel;
+        set
+        {
+            _featuresViewModel = value;
+            OnPropertyChanged(nameof(FeaturesViewModel));
         }
     }
 
@@ -596,6 +610,23 @@ public class MainViewModel : INotifyPropertyChanged
         LoadingWindow? loadingWindow = null;
         try
         {
+            // First, show the Features and Traits review window
+            var featuresAndTraitsWindow = new Views.FeaturesAndTraitsWindow(FeaturesAndTraits);
+            
+            // Set the owner safely
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow != featuresAndTraitsWindow && mainWindow.IsVisible)
+            {
+                featuresAndTraitsWindow.Owner = mainWindow;
+            }
+            
+            var reviewResult = featuresAndTraitsWindow.ShowDialog();
+            if (reviewResult != true)
+            {
+                StatusMessage = "PDF export cancelled by user";
+                return;
+            }
+
             var saveFileDialog = new SaveFileDialog
             {
                 Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*",
@@ -1575,7 +1606,15 @@ public class MainViewModel : INotifyPropertyChanged
     private void CurrentCharacter_ClassLevelsChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         UpdateFeaturesAndTraits();
-        OnPropertyChanged(nameof(FeaturesAndTraitsTabEnabled));
+        
+        // Enable/disable the Features tab based on whether there are class levels
+        FeaturesTabEnabled = CurrentCharacter.ClassLevels.Count > 0;
+        
+        // Refresh Features ViewModel when classes change
+        if (FeaturesViewModel != null)
+        {
+            InitializeFeaturesViewModel();
+        }
     }
 
     // --- Ability Score Selection Helpers for XAML ---
@@ -1692,7 +1731,13 @@ public class MainViewModel : INotifyPropertyChanged
             }
         }
         FeaturesAndTraits = new ObservableCollection<FeatureTraitViewModel>(list);
-        FeaturesAndTraitsTabEnabled = character.Species != null && character.Background != null && character.ClassLevels.Count > 0;
+        FeaturesTabEnabled = character.Species != null && character.Background != null && character.ClassLevels.Count > 0;
+    }
+
+    private void InitializeFeaturesViewModel()
+    {
+        var choiceDataService = new ChoiceDataService();
+        FeaturesViewModel = new FeaturesViewModel(CurrentCharacter, _classDataService, choiceDataService);
     }
 
     // Returns a string for PDF export of all selected features/traits, grouped by source
