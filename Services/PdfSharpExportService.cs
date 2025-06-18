@@ -22,7 +22,7 @@ public class PdfSharpExportService
         }
     }
 
-    public Task<bool> ExportCharacterToPdfAsync(Character character, string outputPath)
+    public Task<bool> ExportCharacterToPdfAsync(Character character, string outputPath, ViewModels.MainViewModel? mainViewModel = null)
     {
         try
         {
@@ -66,7 +66,58 @@ public class PdfSharpExportService
             foreach (var mapping in fieldMappings)
             {
                 fieldsAttempted++;
-                var value = GetCharacterValue(character, mapping.Key);
+                string value;
+                if (mainViewModel != null)
+                {
+                    // Handle Class Features overflow between Text54 and Text55
+                    if (mapping.Value == "Text54" || mapping.Value == "Text55")
+                    {
+                        // Only get the class features text once
+                        const int classFeaturesFieldLimit = 550; // Empirically determined for your PDF field size
+                        string allFeatures = mainViewModel.GetSelectedClassFeaturesText();
+                        string value54, value55;
+
+                        if (allFeatures.Length > classFeaturesFieldLimit)
+                        {
+                            int splitIndex = allFeatures.LastIndexOf(' ', classFeaturesFieldLimit);
+                            if (splitIndex == -1) splitIndex = classFeaturesFieldLimit; // fallback to hard split
+                            value54 = allFeatures.Substring(0, splitIndex);
+                            value55 = allFeatures.Substring(splitIndex).TrimStart();
+                        }
+                        else
+                        {
+                            value54 = allFeatures;
+                            value55 = string.Empty;
+                        }
+
+                        if (mapping.Value == "Text54")
+                            value = value54;
+                        else // Text55
+                            value = value55;
+                    }
+                    else if (mapping.Value == "Text57")
+                        value = mainViewModel.GetSelectedSpeciesTraitsText();
+                    else if (mapping.Value == "Text58")
+                        value = mainViewModel.GetSelectedFeatsText();
+                    else if (mapping.Key == "ClassFeatures")
+                        value = mainViewModel.GetSelectedClassFeaturesText();
+                    else if (mapping.Key == "SpeciesTraits")
+                        value = mainViewModel.GetSelectedSpeciesTraitsText();
+                    else if (mapping.Key == "Feats")
+                        value = mainViewModel.GetSelectedFeatsText();
+                    else if (mapping.Key == "Background")
+                    {
+                        value = mainViewModel.GetSelectedFeaturesAndTraitsText();
+                    }
+                    else
+                    {
+                        value = GetCharacterValue(character, mapping.Key);
+                    }
+                }
+                else
+                {
+                    value = GetCharacterValue(character, mapping.Key);
+                }
                 
                 if (TryFillField(form, mapping.Value, value))
                 {

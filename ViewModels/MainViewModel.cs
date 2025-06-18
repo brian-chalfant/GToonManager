@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
@@ -8,6 +9,7 @@ using GToonManager.Models;
 using GToonManager.Services;
 using GToonManager.Views;
 using Microsoft.Win32;
+using System.Text;
 
 namespace GToonManager.ViewModels;
 
@@ -29,6 +31,21 @@ public class MainViewModel : INotifyPropertyChanged
     private PointBuyViewModel? _pointBuyViewModel;
     private RollingViewModel? _rollingViewModel;
     private FreeEntryViewModel? _freeEntryViewModel;
+
+    // --- Features & Traits Tab ---
+    private ObservableCollection<FeatureTraitViewModel> _featuresAndTraits = new();
+    public ObservableCollection<FeatureTraitViewModel> FeaturesAndTraits
+    {
+        get => _featuresAndTraits;
+        set { _featuresAndTraits = value; OnPropertyChanged(nameof(FeaturesAndTraits)); }
+    }
+
+    private bool _featuresAndTraitsTabEnabled;
+    public bool FeaturesAndTraitsTabEnabled
+    {
+        get => _featuresAndTraitsTabEnabled;
+        set { _featuresAndTraitsTabEnabled = value; OnPropertyChanged(nameof(FeaturesAndTraitsTabEnabled)); }
+    }
 
     public MainViewModel()
     {
@@ -54,6 +71,8 @@ public class MainViewModel : INotifyPropertyChanged
         
         // Subscribe to character property changes
         _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
+        // Subscribe to class level changes for tab enablement
+        _currentCharacter.ClassLevels.CollectionChanged += CurrentCharacter_ClassLevelsChanged;
 
         // Ensure UI updates when BackgroundAbilityScoreSelections changes
         BackgroundAbilityScoreSelections.CollectionChanged += (s, e) =>
@@ -79,6 +98,7 @@ public class MainViewModel : INotifyPropertyChanged
             if (_currentCharacter != null)
             {
                 _currentCharacter.PropertyChanged -= CurrentCharacter_PropertyChanged;
+                _currentCharacter.ClassLevels.CollectionChanged -= CurrentCharacter_ClassLevelsChanged;
             }
             
             _currentCharacter = value;
@@ -89,6 +109,7 @@ public class MainViewModel : INotifyPropertyChanged
             {
                 _currentCharacter.SetSettings(_settings);
                 _currentCharacter.PropertyChanged += CurrentCharacter_PropertyChanged;
+                _currentCharacter.ClassLevels.CollectionChanged += CurrentCharacter_ClassLevelsChanged;
             }
         }
     }
@@ -316,6 +337,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand ApplyBackgroundCommand { get; private set; } = null!;
     public ICommand AddBackgroundAbilityScoreCommand { get; private set; } = null!;
     public ICommand RemoveBackgroundAbilityScoreCommand { get; private set; } = null!;
+    public ICommand ManageASICommand { get; private set; } = null!;
 
     private void InitializeCommands()
     {
@@ -347,6 +369,9 @@ public class MainViewModel : INotifyPropertyChanged
         ApplyBackgroundCommand = new RelayCommand(ApplyBackground);
         AddBackgroundAbilityScoreCommand = new RelayCommand(AddBackgroundAbilityScore);
         RemoveBackgroundAbilityScoreCommand = new RelayCommand(RemoveBackgroundAbilityScore);
+        
+        // ASI commands
+        ManageASICommand = new RelayCommand(ManageASI, CanManageASI);
     }
 
     private async void InitializeData()
@@ -605,7 +630,7 @@ public class MainViewModel : INotifyPropertyChanged
                 loadingWindow.UpdateProgress(80, "⚔️ Adding equipment and features...");
                 
                 // Perform the actual PDF export
-                var success = await pdfService.ExportCharacterToPdfAsync(CurrentCharacter, saveFileDialog.FileName);
+                var success = await pdfService.ExportCharacterToPdfAsync(CurrentCharacter, saveFileDialog.FileName, this);
                 
                 loadingWindow.UpdateProgress(100, "✅ Export complete!");
                 await Task.Delay(500); // Brief pause to show completion
@@ -1495,6 +1520,28 @@ public class MainViewModel : INotifyPropertyChanged
         return needed.OrderByDescending(x => x).ToList();
     }
 
+    private void ManageASI(object? parameter)
+    {
+        var asiViewModel = new AbilityScoreImprovementViewModel(CurrentCharacter, OnCharacterUpdated);
+        var asiWindow = new Views.AbilityScoreImprovementWindow(asiViewModel);
+        asiWindow.ShowDialog();
+    }
+
+    private bool CanManageASI(object? parameter)
+    {
+        return CurrentCharacter.ClassLevels.Count > 0;
+    }
+
+    private void OnCharacterUpdated(Character character)
+    {
+        // Refresh UI properties that might have changed
+        OnPropertyChanged(nameof(CurrentCharacter));
+        UpdateFeaturesAndTraits();
+        
+        // Force refresh of all ability score related properties
+        character.RefreshAbilityScoreModifiers();
+    }
+
     private void CurrentCharacter_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Character.Background))
@@ -1516,6 +1563,19 @@ public class MainViewModel : INotifyPropertyChanged
             // When background ability score choice changes, update the applied status
             OnPropertyChanged(nameof(HasAppliedBackgroundAbilities));
         }
+        if (e.PropertyName == nameof(Character.Species) ||
+            e.PropertyName == nameof(Character.Subspecies) ||
+            e.PropertyName == nameof(Character.Background) ||
+            e.PropertyName == nameof(Character.ClassLevels))
+        {
+            UpdateFeaturesAndTraits();
+        }
+    }
+
+    private void CurrentCharacter_ClassLevelsChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        UpdateFeaturesAndTraits();
+        OnPropertyChanged(nameof(FeaturesAndTraitsTabEnabled));
     }
 
     // --- Ability Score Selection Helpers for XAML ---
@@ -1542,6 +1602,176 @@ public class MainViewModel : INotifyPropertyChanged
         return result;
     }
 
+    // --- Features & Traits Tab ---
+    private void UpdateFeaturesAndTraits()
+    {
+        var list = new List<FeatureTraitViewModel>();
+        var character = CurrentCharacter;
+        // Species traits
+        if (character.Species != null)
+        {
+            foreach (var trait in character.Species.Traits)
+            {
+                list.Add(new FeatureTraitViewModel
+                {
+                    Name = trait.Name,
+                    Description = trait.Description,
+                    Source = $"Species: {character.Species.Name}",
+                    IsSelected = true
+                });
+            }
+        }
+        // Subspecies traits
+        if (character.Subspecies != null)
+        {
+            foreach (var trait in character.Subspecies.Traits)
+            {
+                list.Add(new FeatureTraitViewModel
+                {
+                    Name = trait.Name,
+                    Description = trait.Description,
+                    Source = $"Subspecies: {character.Subspecies.Name}",
+                    IsSelected = true
+                });
+            }
+        }
+        // Background feature
+        if (character.Background != null && character.Background.Feature != null)
+        {
+            list.Add(new FeatureTraitViewModel
+            {
+                Name = character.Background.Feature.Name,
+                Description = character.Background.Feature.Description,
+                Source = $"Feat: {character.Background.Feature.Name} (from Background: {character.Background.Name})",
+                IsSelected = true
+            });
+        }
+        // Class features (from all class levels)
+        foreach (var classLevel in character.ClassLevels)
+        {
+            if (classLevel.CharacterClass != null)
+            {
+                // Do NOT add the class itself as a feature (description)
+                // Add class features up to this level
+                foreach (var kvp in classLevel.CharacterClass.Features)
+                {
+                    int featureLevel = kvp.Key;
+                    if (featureLevel <= classLevel.Level)
+                    {
+                        foreach (var feature in kvp.Value)
+                        {
+                            // Skip Ability Score Improvement features - they will be handled separately
+                            if (feature.Name == "Ability Score Improvement")
+                                continue;
+                                
+                            list.Add(new FeatureTraitViewModel
+                            {
+                                Name = feature.Name,
+                                Description = feature.Description,
+                                Source = $"Class Feature: {classLevel.ClassName} (Level {featureLevel})",
+                                IsSelected = true
+                            });
+                        }
+                    }
+                }
+                // Subclass features
+                if (classLevel.ChosenSubclass != null)
+                {
+                    var features = classLevel.ChosenSubclass.GetFeaturesUpToLevel(classLevel.Level);
+                    foreach (var feature in features)
+                    {
+                        list.Add(new FeatureTraitViewModel
+                        {
+                            Name = feature.Name,
+                            Description = feature.Description,
+                            Source = $"Subclass: {classLevel.ChosenSubclass.Name} (Level {classLevel.Level})",
+                            IsSelected = true
+                        });
+                    }
+                }
+            }
+        }
+        FeaturesAndTraits = new ObservableCollection<FeatureTraitViewModel>(list);
+        FeaturesAndTraitsTabEnabled = character.Species != null && character.Background != null && character.ClassLevels.Count > 0;
+    }
+
+    // Returns a string for PDF export of all selected features/traits, grouped by source
+    public string GetSelectedFeaturesAndTraitsText()
+    {
+        var grouped = FeaturesAndTraits
+            .Where(f => f.IsSelected)
+            .GroupBy(f => f.Source)
+            .OrderBy(g => g.Key);
+        var sb = new StringBuilder();
+        foreach (var group in grouped)
+        {
+            sb.AppendLine($"{group.Key}:");
+            foreach (var item in group)
+            {
+                sb.AppendLine($"  {item.Name}: {item.Description}");
+            }
+            sb.AppendLine();
+        }
+        return sb.ToString().Trim();
+    }
+
+    public string GetSelectedClassFeaturesText()
+    {
+        var sb = new StringBuilder();
+        foreach (var item in FeaturesAndTraits.Where(f => f.IsSelected && f.Source.StartsWith("Class Feature") && f.Name != "Ability Score Improvement"))
+            sb.AppendLine($"- {item.Name}: {item.Description}");
+        foreach (var item in FeaturesAndTraits.Where(f => f.IsSelected && f.Source.StartsWith("Subclass")))
+            sb.AppendLine($"- {item.Name}: {item.Description}");
+        return sb.ToString().Trim();
+    }
+
+    public string GetSelectedSpeciesTraitsText()
+    {
+        var sb = new StringBuilder();
+        foreach (var item in FeaturesAndTraits.Where(f => f.IsSelected && (f.Source.StartsWith("Species") || f.Source.StartsWith("Subspecies"))))
+            sb.AppendLine($"- {item.Name}: {item.Description}");
+        return sb.ToString().Trim();
+    }
+
+    public string GetSelectedFeatsText()
+    {
+        var sb = new StringBuilder();
+        foreach (var item in FeaturesAndTraits.Where(f => f.IsSelected && f.Source.StartsWith("Feat")))
+            sb.AppendLine($"- {item.Name}: {item.Description}");
+        return sb.ToString().Trim();
+    }
+
+    // Get available Ability Score Improvement features for the current character
+    // This can be used for future ASI management UI
+    public List<(int Level, string ClassName, ClassFeature Feature)> GetAvailableAbilityScoreImprovements()
+    {
+        var asiFeatures = new List<(int Level, string ClassName, ClassFeature Feature)>();
+        var character = CurrentCharacter;
+        
+        foreach (var classLevel in character.ClassLevels)
+        {
+            if (classLevel.CharacterClass != null)
+            {
+                foreach (var kvp in classLevel.CharacterClass.Features)
+                {
+                    int featureLevel = kvp.Key;
+                    if (featureLevel <= classLevel.Level)
+                    {
+                        foreach (var feature in kvp.Value)
+                        {
+                            if (feature.Name == "Ability Score Improvement")
+                            {
+                                asiFeatures.Add((featureLevel, classLevel.ClassName, feature));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return asiFeatures.OrderBy(asi => asi.Level).ToList();
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged(string propertyName)
@@ -1559,4 +1789,23 @@ public class BackgroundAbilityScoreSelection
 {
     public string AbilityScore { get; set; } = string.Empty;
     public int Improvement { get; set; }
+}
+
+// Helper class for the tab
+public class FeatureTraitViewModel : INotifyPropertyChanged
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Source { get; set; } = string.Empty;
+    private bool _isSelected = true;
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set { _isSelected = value; OnPropertyChanged(nameof(IsSelected)); }
+    }
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 } 

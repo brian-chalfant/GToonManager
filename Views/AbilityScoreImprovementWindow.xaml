@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="GToonManager.Views.AbilityScoreImprovementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="⚔️ Ability Score Improvements" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="{DynamicResource MedievalBackground}">
+    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <!-- Medieval Panel Style -->
+        <Style x:Key="MedievalPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        
+        <!-- Medieval Button Style -->
+        <Style x:Key="MedievalButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGold}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryGold}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Medieval Label Style -->
+        <Style x:Key="MedievalLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Garamond"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryRed}"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{DynamicResource PrimaryRed}" Padding="20,15">
+            <Border BorderBrush="{DynamicResource PrimaryGold}" BorderThickness="1">
+                <TextBlock Text="⚔️ Ability Score Improvements" 
+                          FontFamily="Garamond" FontSize="28" FontWeight="Bold"
+                          Foreground="{DynamicResource PrimaryGold}" 
+                          HorizontalAlignment="Center"/>
+            </Border>
+        </Border>
+        
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
+            <StackPanel>
+                <!-- Character Info -->
+                <Border Style="{StaticResource MedievalPanelStyle}" Background="White">
+                    <StackPanel>
+                        <TextBlock Text="{Binding CharacterName, StringFormat='Character: {0}'}" 
+                                  Style="{StaticResource MedievalLabelStyle}" FontSize="18" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding CharacterLevel, StringFormat='Total Level: {0}'}" 
+                                  Style="{StaticResource MedievalLabelStyle}" FontSize="14" 
+                                  HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Current Ability Scores -->
+                <Border Style="{StaticResource MedievalPanelStyle}" Background="White">
+                    <StackPanel>
+                        <TextBlock Text="📊 Current Ability Scores" 
+                                  Style="{StaticResource MedievalLabelStyle}" FontSize="18" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- First Row -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="STR: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentStrength}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="DEX: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentDexterity}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="CON: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentConstitution}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                            
+                            <!-- Second Row -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="INT: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentIntelligence}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="WIS: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentWisdom}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="CHA: " Style="{StaticResource MedievalLabelStyle}" FontSize="14"/>
+                                <TextBlock Text="{Binding CurrentCharisma}" FontFamily="Garamond" FontSize="14" Foreground="{DynamicResource PrimaryRed}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Available ASIs -->
+                <Border Style="{StaticResource MedievalPanelStyle}" Background="White">
+                    <StackPanel>
+                        <TextBlock Text="⭐ Available Ability Score Improvements" 
+                                  Style="{StaticResource MedievalLabelStyle}" FontSize="18" 
+                                  HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                        
+                        <ItemsControl ItemsSource="{Binding AvailableASIs}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource PrimaryGold}" 
+                                           BorderBrush="{DynamicResource PrimaryRed}" 
+                                           BorderThickness="2" CornerRadius="6" 
+                                           Padding="15" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DisplayText}" 
+                                                      Style="{StaticResource MedievalLabelStyle}" 
+                                                      FontSize="16" HorizontalAlignment="Center" 
+                                                      Margin="0,0,0,10"/>
+                                            
+                                            <TextBlock Text="{Binding StatusText}" 
+                                                      FontFamily="Garamond" FontSize="12" 
+                                                      Foreground="{DynamicResource PrimaryRed}" 
+                                                      HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                            
+                                            <Button Content="{Binding ButtonText}" 
+                                                   Style="{StaticResource MedievalButtonStyle}"
+                                                   Command="{Binding DataContext.ConfigureASICommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                   CommandParameter="{Binding}"
+                                                   IsEnabled="{Binding CanConfigure}"
+                                                   HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                        <!-- No ASIs Available Message -->
+                        <TextBlock Text="No Ability Score Improvements available at current level." 
+                                  FontSize="14" HorizontalAlignment="Center" FontStyle="Italic">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource MedievalLabelStyle}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasAvailableASIs}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2" Background="{DynamicResource PrimaryGold}" Padding="20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="📄 Close" Style="{StaticResource MedievalButtonStyle}"
+                       Command="{Binding CloseCommand}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window> 

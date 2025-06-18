@@ -23,6 +23,90 @@ public class Character : INotifyPropertyChanged
     // Multiclass support
     private ObservableCollection<CharacterClassLevel> _classLevels = new();
 
+    // ASI tracking
+    public List<AppliedASI>? AppliedASIs { get; set; }
+    
+    private int? _strengthASI;
+    private int? _dexterityASI;
+    private int? _constitutionASI;
+    private int? _intelligenceASI;
+    private int? _wisdomASI;
+    private int? _charismaASI;
+    
+    public int? StrengthASI 
+    { 
+        get => _strengthASI; 
+        set 
+        { 
+            _strengthASI = value; 
+            OnPropertyChanged(nameof(StrengthASI));
+            OnPropertyChanged(nameof(StrengthTotal));
+            OnPropertyChanged(nameof(StrengthModifier));
+        } 
+    }
+    
+    public int? DexterityASI 
+    { 
+        get => _dexterityASI; 
+        set 
+        { 
+            _dexterityASI = value; 
+            OnPropertyChanged(nameof(DexterityASI));
+            OnPropertyChanged(nameof(DexterityTotal));
+            OnPropertyChanged(nameof(DexterityModifier));
+            OnPropertyChanged(nameof(CalculatedArmorClass));
+        } 
+    }
+    
+    public int? ConstitutionASI 
+    { 
+        get => _constitutionASI; 
+        set 
+        { 
+            _constitutionASI = value; 
+            OnPropertyChanged(nameof(ConstitutionASI));
+            OnPropertyChanged(nameof(ConstitutionTotal));
+            OnPropertyChanged(nameof(ConstitutionModifier));
+            OnPropertyChanged(nameof(CalculatedMaxHitPoints));
+        } 
+    }
+    
+    public int? IntelligenceASI 
+    { 
+        get => _intelligenceASI; 
+        set 
+        { 
+            _intelligenceASI = value; 
+            OnPropertyChanged(nameof(IntelligenceASI));
+            OnPropertyChanged(nameof(IntelligenceTotal));
+            OnPropertyChanged(nameof(IntelligenceModifier));
+        } 
+    }
+    
+    public int? WisdomASI 
+    { 
+        get => _wisdomASI; 
+        set 
+        { 
+            _wisdomASI = value; 
+            OnPropertyChanged(nameof(WisdomASI));
+            OnPropertyChanged(nameof(WisdomTotal));
+            OnPropertyChanged(nameof(WisdomModifier));
+        } 
+    }
+    
+    public int? CharismaASI 
+    { 
+        get => _charismaASI; 
+        set 
+        { 
+            _charismaASI = value; 
+            OnPropertyChanged(nameof(CharismaASI));
+            OnPropertyChanged(nameof(CharismaTotal));
+            OnPropertyChanged(nameof(CharismaModifier));
+        } 
+    }
+
     public Character()
     {
         _classLevels.CollectionChanged += (s, e) =>
@@ -241,13 +325,13 @@ public class Character : INotifyPropertyChanged
         }
     }
 
-    // Calculated properties
-    public int? StrengthModifier => AbilityScores.Strength.HasValue ? CalculateModifier(AbilityScores.Strength.Value) : (int?)null;
-    public int? DexterityModifier => AbilityScores.Dexterity.HasValue ? CalculateModifier(AbilityScores.Dexterity.Value) : (int?)null;
-    public int? ConstitutionModifier => AbilityScores.Constitution.HasValue ? CalculateModifier(AbilityScores.Constitution.Value) : (int?)null;
-    public int? IntelligenceModifier => AbilityScores.Intelligence.HasValue ? CalculateModifier(AbilityScores.Intelligence.Value) : (int?)null;
-    public int? WisdomModifier => AbilityScores.Wisdom.HasValue ? CalculateModifier(AbilityScores.Wisdom.Value) : (int?)null;
-    public int? CharismaModifier => AbilityScores.Charisma.HasValue ? CalculateModifier(AbilityScores.Charisma.Value) : (int?)null;
+    // Calculated properties - using total scores including all bonuses (species, background, ASI)
+    public int? StrengthModifier => StrengthTotal.HasValue ? CalculateModifier(StrengthTotal.Value) : (int?)null;
+    public int? DexterityModifier => DexterityTotal.HasValue ? CalculateModifier(DexterityTotal.Value) : (int?)null;
+    public int? ConstitutionModifier => ConstitutionTotal.HasValue ? CalculateModifier(ConstitutionTotal.Value) : (int?)null;
+    public int? IntelligenceModifier => IntelligenceTotal.HasValue ? CalculateModifier(IntelligenceTotal.Value) : (int?)null;
+    public int? WisdomModifier => WisdomTotal.HasValue ? CalculateModifier(WisdomTotal.Value) : (int?)null;
+    public int? CharismaModifier => CharismaTotal.HasValue ? CalculateModifier(CharismaTotal.Value) : (int?)null;
 
     public int ProficiencyBonus => (Level - 1) / 4 + 2;
 
@@ -267,13 +351,13 @@ public class Character : INotifyPropertyChanged
     public int WisdomBackgroundBonus => GetBackgroundBonus("wisdom");
     public int CharismaBackgroundBonus => GetBackgroundBonus("charisma");
 
-    // Total ability scores including species and background bonuses
-    public int? StrengthTotal => AbilityScores.Strength.HasValue ? AbilityScores.Strength.Value + StrengthSpeciesBonus + StrengthBackgroundBonus : (int?)null;
-    public int? DexterityTotal => AbilityScores.Dexterity.HasValue ? AbilityScores.Dexterity.Value + DexteritySpeciesBonus + DexterityBackgroundBonus : (int?)null;
-    public int? ConstitutionTotal => AbilityScores.Constitution.HasValue ? AbilityScores.Constitution.Value + ConstitutionSpeciesBonus + ConstitutionBackgroundBonus : (int?)null;
-    public int? IntelligenceTotal => AbilityScores.Intelligence.HasValue ? AbilityScores.Intelligence.Value + IntelligenceSpeciesBonus + IntelligenceBackgroundBonus : (int?)null;
-    public int? WisdomTotal => AbilityScores.Wisdom.HasValue ? AbilityScores.Wisdom.Value + WisdomSpeciesBonus + WisdomBackgroundBonus : (int?)null;
-    public int? CharismaTotal => AbilityScores.Charisma.HasValue ? AbilityScores.Charisma.Value + CharismaSpeciesBonus + CharismaBackgroundBonus : (int?)null;
+    // Total ability scores including species, background, and ASI bonuses
+    public int? StrengthTotal => AbilityScores.Strength.HasValue ? AbilityScores.Strength.Value + StrengthSpeciesBonus + StrengthBackgroundBonus + (StrengthASI ?? 0) : (int?)null;
+    public int? DexterityTotal => AbilityScores.Dexterity.HasValue ? AbilityScores.Dexterity.Value + DexteritySpeciesBonus + DexterityBackgroundBonus + (DexterityASI ?? 0) : (int?)null;
+    public int? ConstitutionTotal => AbilityScores.Constitution.HasValue ? AbilityScores.Constitution.Value + ConstitutionSpeciesBonus + ConstitutionBackgroundBonus + (ConstitutionASI ?? 0) : (int?)null;
+    public int? IntelligenceTotal => AbilityScores.Intelligence.HasValue ? AbilityScores.Intelligence.Value + IntelligenceSpeciesBonus + IntelligenceBackgroundBonus + (IntelligenceASI ?? 0) : (int?)null;
+    public int? WisdomTotal => AbilityScores.Wisdom.HasValue ? AbilityScores.Wisdom.Value + WisdomSpeciesBonus + WisdomBackgroundBonus + (WisdomASI ?? 0) : (int?)null;
+    public int? CharismaTotal => AbilityScores.Charisma.HasValue ? AbilityScores.Charisma.Value + CharismaSpeciesBonus + CharismaBackgroundBonus + (CharismaASI ?? 0) : (int?)null;
 
     // Skill proficiencies from species
     public List<string> SpeciesSkillProficiencies => GetSpeciesSkillProficiencies();
@@ -487,7 +571,7 @@ public class Character : INotifyPropertyChanged
         return 10 + (DexterityModifier ?? 0);
     }
 
-    private void RefreshAbilityScoreModifiers()
+    public void RefreshAbilityScoreModifiers()
     {
         OnPropertyChanged(nameof(StrengthSpeciesBonus));
         OnPropertyChanged(nameof(DexteritySpeciesBonus));
@@ -507,6 +591,12 @@ public class Character : INotifyPropertyChanged
         OnPropertyChanged(nameof(IntelligenceTotal));
         OnPropertyChanged(nameof(WisdomTotal));
         OnPropertyChanged(nameof(CharismaTotal));
+        OnPropertyChanged(nameof(StrengthModifier));
+        OnPropertyChanged(nameof(DexterityModifier));
+        OnPropertyChanged(nameof(ConstitutionModifier));
+        OnPropertyChanged(nameof(IntelligenceModifier));
+        OnPropertyChanged(nameof(WisdomModifier));
+        OnPropertyChanged(nameof(CharismaModifier));
         OnPropertyChanged(nameof(SpeciesSkillProficiencies));
         OnPropertyChanged(nameof(BackgroundSkillProficiencies));
         OnPropertyChanged(nameof(ClassSkillProficiencies));

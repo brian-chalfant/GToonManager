@@ -151,15 +151,18 @@ public class ClassDataService
         }
 
         // Parse subclass type from the feature that introduces subclass choice
-        if (classData.TryGetProperty("features", out var featuresElement))
-        {
-            characterClass.SubclassType = ParseSubclassType(featuresElement, characterClass.SubclassLevel);
-        }
+        characterClass.SubclassType = ParseSubclassType(classData.GetProperty("features"), characterClass.SubclassLevel);
 
         // Parse subclasses array
         if (classData.TryGetProperty("subclasses", out var subclassesElement) && subclassesElement.ValueKind == JsonValueKind.Array)
         {
             characterClass.Subclasses = ParseSubclasses(subclassesElement);
+        }
+
+        // Parse class features (declare featuresElement only here)
+        if (classData.TryGetProperty("features", out var featuresElement) && featuresElement.ValueKind == JsonValueKind.Object)
+        {
+            characterClass.Features = ParseClassFeatures(featuresElement);
         }
 
         return characterClass;
@@ -412,6 +415,30 @@ public class ClassDataService
             }
         }
 
+        return features;
+    }
+
+    private Dictionary<int, List<ClassFeature>> ParseClassFeatures(JsonElement featuresElement)
+    {
+        var features = new Dictionary<int, List<ClassFeature>>();
+        foreach (var levelProperty in featuresElement.EnumerateObject())
+        {
+            if (int.TryParse(levelProperty.Name, out int level))
+            {
+                var featureList = new List<ClassFeature>();
+                foreach (var featureElement in levelProperty.Value.EnumerateArray())
+                {
+                    var feature = new ClassFeature
+                    {
+                        Name = featureElement.GetProperty("name").GetString() ?? "",
+                        Description = featureElement.GetProperty("description").GetString() ?? "",
+                        Mechanics = featureElement.TryGetProperty("mechanics", out var mech) ? mech : null
+                    };
+                    featureList.Add(feature);
+                }
+                features[level] = featureList;
+            }
+        }
         return features;
     }
 } 

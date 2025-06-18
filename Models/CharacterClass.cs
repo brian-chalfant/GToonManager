@@ -27,6 +27,8 @@ public class CharacterClass
     public bool HasSubclasses => Subclasses.Any();
     public bool CanChooseSubclass(int characterLevel) => characterLevel >= SubclassLevel && HasSubclasses;
 
+    public Dictionary<int, List<ClassFeature>> Features { get; set; } = new();
+
     public override string ToString() => Name;
 }
 
@@ -36,4 +38,11 @@ public class SkillChoiceOptions
     public List<string> AvailableSkills { get; set; } = new();
     
     public bool HasChoices => ChooseCount > 0 && AvailableSkills.Count > 0;
+}
+
+public class ClassFeature
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public object? Mechanics { get; set; }
 } 
