@@ -1052,17 +1052,18 @@
                                 </Border>
                             </Border>
                             
-                            <!-- Ability Score Panels -->
-                            <Grid Grid.Row="2" Margin="20">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                                        <!-- Ability Score Panels with ScrollViewer -->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                                 
                                 <!-- Strength -->
                                 <Border Grid.Row="0" Grid.Column="0">
@@ -1099,23 +1100,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.StrengthBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.StrengthBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.StrengthBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.StrengthSpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.StrengthSpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.StrengthBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.StrengthBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.StrengthASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.StrengthASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.StrengthASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1166,23 +1221,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.DexterityBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.DexterityBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.DexterityBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.DexteritySpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.DexteritySpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.DexterityBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.DexterityBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.DexterityASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.DexterityASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.DexterityASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1233,23 +1342,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.ConstitutionBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.ConstitutionBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionSpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.ConstitutionSpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.ConstitutionBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.ConstitutionASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.ConstitutionASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1300,23 +1463,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.IntelligenceBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.IntelligenceBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceSpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.IntelligenceSpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.IntelligenceBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.IntelligenceASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.IntelligenceASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1367,23 +1584,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.WisdomBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.WisdomBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.WisdomBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.WisdomSpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.WisdomSpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.WisdomBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.WisdomBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.WisdomASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.WisdomASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.WisdomASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1434,23 +1705,77 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Background Enhancement Display -->
-                                            <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="40" CornerRadius="4" Margin="0,0,0,10"
-                                                   Visibility="{Binding CurrentCharacter.CharismaBackgroundBonus, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="#E8F5E8"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentCharacter.CharismaBackgroundBonus}" Value="0">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <TextBlock Text="{Binding CurrentCharacter.CharismaBackgroundBonus, StringFormat='+{0}'}" 
-                                                           FontFamily="Garamond" FontSize="18" FontWeight="Bold"
-                                                           Foreground="#2E8B57" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <!-- Modifier Sources Display -->
+                                            <StackPanel Orientation="Vertical" Width="100">
+                                                <!-- Species Enhancement Display -->
+                                                <Border BorderBrush="#8A2BE2" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F5E8FF"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.CharismaSpeciesBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Species" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.CharismaSpeciesBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#8A2BE2" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- Background Enhancement Display -->
+                                                <Border BorderBrush="#2E8B57" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#E8F5E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.CharismaBackgroundBonus}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Background" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.CharismaBackgroundBonus, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#2E8B57" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                
+                                                <!-- ASI Enhancement Display -->
+                                                <Border BorderBrush="#FF6347" BorderThickness="2" Width="100" Height="35" CornerRadius="4" Margin="0,0,0,5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#FFF0E8"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.CharismaASI}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CurrentCharacter.CharismaASI}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="ASI" FontFamily="Garamond" FontSize="10" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center" Opacity="0.8"/>
+                                                        <TextBlock Text="{Binding CurrentCharacter.CharismaASI, StringFormat='+{0}'}" 
+                                                                   FontFamily="Garamond" FontSize="14" FontWeight="Bold"
+                                                                   Foreground="#FF6347" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
                                             
                                             <!-- Final Score Display -->
                                             <Border Background="#FFD700" BorderBrush="#B8860B" BorderThickness="2" Width="100" Height="60" CornerRadius="6">
@@ -1466,6 +1791,7 @@
                                     </Grid>
                                 </Border>
                             </Grid>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
 
