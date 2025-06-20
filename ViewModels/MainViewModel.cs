@@ -226,6 +226,14 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(HasSkillChoices));
             OnPropertyChanged(nameof(AvailableSkillChoices));
             OnPropertyChanged(nameof(SkillChoicePrompt));
+            OnPropertyChanged(nameof(CurrentSkillChoices));
+            OnPropertyChanged(nameof(MaxSkillSelections));
+            OnPropertyChanged(nameof(CanAddMoreSkills));
+            OnPropertyChanged(nameof(HasRequiredSkillSelections));
+            OnPropertyChanged(nameof(HasMulticlassPrerequisites));
+            OnPropertyChanged(nameof(MulticlassPrerequisiteText));
+            OnPropertyChanged(nameof(CanAddClass));
+            OnPropertyChanged(nameof(ClassBenefitsDescription));
             
             // Clear previous selections when class changes
             SelectedSkills.Clear();
@@ -243,21 +251,93 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     // Skill selection properties
-    public bool HasSkillChoices => SelectedClassToAdd?.SkillChoices?.HasChoices == true;
+        // Determine if this would be the character's first class
+    public bool IsFirstClass => CurrentCharacter.ClassLevels.Count == 0;
     
-    public List<string> AvailableSkillChoices => SelectedClassToAdd?.SkillChoices?.AvailableSkills ?? new List<string>();
-    
-    public string SkillChoicePrompt => SelectedClassToAdd?.SkillChoices != null 
-        ? $"Choose {SelectedClassToAdd.SkillChoices.ChooseCount} skills from the list below:"
+    // Get the appropriate skill choices based on first class vs multiclass
+    public SkillChoiceOptions? CurrentSkillChoices
+    {
+        get
+        {
+            if (SelectedClassToAdd == null) return null;
+            
+            if (IsFirstClass && SelectedClassToAdd.StartingClassBenefits?.SkillProficiencies != null)
+                return SelectedClassToAdd.StartingClassBenefits.SkillProficiencies;
+            else if (!IsFirstClass)
+                return null; // Multiclassing typically doesn't grant skill choices
+            else
+                return SelectedClassToAdd.SkillChoices; // Fallback to legacy
+        }
+    }
+
+    public bool HasSkillChoices => CurrentSkillChoices?.HasChoices == true;
+
+    public List<string> AvailableSkillChoices => CurrentSkillChoices?.AvailableSkills ?? new List<string>();
+
+    public string SkillChoicePrompt => CurrentSkillChoices != null 
+        ? $"Choose {CurrentSkillChoices.ChooseCount} skills from the list below:"
         : "";
-    
+
     public ObservableCollection<SkillSelectionItem> SelectedSkills { get; } = new();
 
-    public int MaxSkillSelections => SelectedClassToAdd?.SkillChoices?.ChooseCount ?? 0;
-    
+    public int MaxSkillSelections => CurrentSkillChoices?.ChooseCount ?? 0;
+
     public bool CanAddMoreSkills => SelectedSkills.Count < MaxSkillSelections;
-    
+
     public bool HasRequiredSkillSelections => !HasSkillChoices || SelectedSkills.Count == MaxSkillSelections;
+    
+    // Multiclass prerequisite checking
+    public bool HasMulticlassPrerequisites => !IsFirstClass && SelectedClassToAdd?.MulticlassBenefits?.Prerequisites?.MinimumAbilityScores?.Count > 0;
+    
+    public string MulticlassPrerequisiteText
+    {
+        get
+        {
+            if (!HasMulticlassPrerequisites) return "";
+            
+            var prereqs = SelectedClassToAdd!.MulticlassBenefits!.Prerequisites!.MinimumAbilityScores!;
+            var prereqStrings = prereqs.Select(kvp => $"{CapitalizeFirst(kvp.Key)} {kvp.Value}+");
+            return $"Multiclass Prerequisites: {string.Join(", ", prereqStrings)}";
+        }
+    }
+    
+    public bool CanAddClass
+    {
+        get
+        {
+            if (SelectedClassToAdd == null) return false;
+            if (!HasRequiredSkillSelections) return false;
+            
+            // Check multiclass prerequisites if this isn't the first class
+            if (!IsFirstClass && HasMulticlassPrerequisites)
+            {
+                var prereqs = SelectedClassToAdd.MulticlassBenefits!.Prerequisites!.MinimumAbilityScores!;
+                foreach (var prereq in prereqs)
+                {
+                    var abilityScore = GetCurrentAbilityScore(prereq.Key);
+                    if (abilityScore < prereq.Value)
+                        return false;
+                }
+            }
+            
+            return true;
+        }
+    }
+    
+    public string ClassBenefitsDescription
+    {
+        get
+        {
+            if (SelectedClassToAdd == null) return "";
+            
+            if (IsFirstClass && SelectedClassToAdd.StartingClassBenefits != null)
+                return SelectedClassToAdd.StartingClassBenefits.Description;
+            else if (!IsFirstClass && SelectedClassToAdd.MulticlassBenefits != null)
+                return SelectedClassToAdd.MulticlassBenefits.Description;
+            else
+                return SelectedClassToAdd.Description;
+        }
+    }
 
     // Background ability score selection properties
     public Background? SelectedBackground
@@ -990,11 +1070,24 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (SelectedClassToAdd != null)
         {
-            // Check if we need skill selections and they haven't been made
-            if (HasSkillChoices && !HasRequiredSkillSelections)
+            // Check if this would be a valid addition
+            if (!CanAddClass)
             {
-                StatusMessage = $"Please select {MaxSkillSelections} skills for the {SelectedClassToAdd.Name} class";
-                return;
+                if (HasSkillChoices && !HasRequiredSkillSelections)
+                {
+                    StatusMessage = $"Please select {MaxSkillSelections} skills for the {SelectedClassToAdd.Name} class";
+                    return;
+                }
+                else if (HasMulticlassPrerequisites)
+                {
+                    StatusMessage = $"Multiclass prerequisites not met for {SelectedClassToAdd.Name}. {MulticlassPrerequisiteText}";
+                    return;
+                }
+                else
+                {
+                    StatusMessage = "Cannot add class";
+                    return;
+                }
             }
 
             // Create the class level with chosen skills
@@ -1013,12 +1106,19 @@ public class MainViewModel : INotifyPropertyChanged
             // Add the class level directly to the character
             CurrentCharacter.ClassLevels.Add(classLevel);
             
-            StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name}";
+            var benefitType = IsFirstClass ? "Starting Class" : "Multiclass";
+            StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name} ({benefitType})";
             
             // Clear selections
             SelectedClassToAdd = null;
             SelectedLevelToAdd = 1;
             SelectedSkills.Clear();
+            
+            // Refresh property bindings
+            OnPropertyChanged(nameof(IsFirstClass));
+            OnPropertyChanged(nameof(HasSkillChoices));
+            OnPropertyChanged(nameof(HasMulticlassPrerequisites));
+            OnPropertyChanged(nameof(CanAddClass));
         }
         else
         {
@@ -1639,6 +1739,31 @@ public class MainViewModel : INotifyPropertyChanged
         var result = BackgroundAbilityScoreSelections.Any(s => string.Equals(s.AbilityScore, abilityScore, StringComparison.OrdinalIgnoreCase));
         System.Diagnostics.Debug.WriteLine($"IsAbilityScoreSelected result: {result}");
         return result;
+    }
+    
+    private int GetCurrentAbilityScore(string abilityName)
+    {
+        // Get the base ability score from the character
+        int baseScore = abilityName.ToLower() switch
+        {
+            "strength" => CurrentCharacter.AbilityScores.Strength ?? 10,
+            "dexterity" => CurrentCharacter.AbilityScores.Dexterity ?? 10,
+            "constitution" => CurrentCharacter.AbilityScores.Constitution ?? 10,
+            "intelligence" => CurrentCharacter.AbilityScores.Intelligence ?? 10,
+            "wisdom" => CurrentCharacter.AbilityScores.Wisdom ?? 10,
+            "charisma" => CurrentCharacter.AbilityScores.Charisma ?? 10,
+            _ => 10
+        };
+        
+        // Add any bonuses from species, background, etc.
+        int bonus = GetAbilityScoreBonus(abilityName) ?? 0;
+        return baseScore + bonus;
+    }
+    
+    private string CapitalizeFirst(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+        return char.ToUpper(text[0]) + text.Substring(1).ToLower();
     }
 
     // --- Features & Traits Tab ---

@@ -882,21 +882,83 @@
                                 </StackPanel>
 
                                 <!-- Add Button -->
-                                <Button Grid.Row="0" Grid.Column="2" Content="⚔️ Add Class" 
+                                <Button Grid.Row="0" Grid.Column="2" 
                                         Command="{Binding AddClassCommand}"
-                                        Style="{DynamicResource MedievalButtonStyle}"
-                                        Background="{DynamicResource PrimaryRed}" Padding="20,12"
-                                        VerticalAlignment="Bottom" Margin="0,0,0,15"/>
+                                        Padding="20,12"
+                                        VerticalAlignment="Bottom" Margin="0,0,0,15">
+                                    <Button.Content>
+                                        <TextBlock FontFamily="Garamond" FontWeight="Bold" TextAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsFirstClass}" Value="True">
+                                                            <Setter Property="Text" Value="🏰 Add Starting Class"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsFirstClass}" Value="False">
+                                                            <Setter Property="Text" Value="⚔️ Multiclass Into"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Button.Content>
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource MedievalButtonStyle}">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryRed}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CanAddClass}" Value="False">
+                                                    <Setter Property="Background" Value="#888888"/>
+                                                    <Setter Property="Opacity" Value="0.6"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
 
                                 <!-- Class Description -->
                                 <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource MedievalPanelStyle}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding SelectedClassToAdd.Name}" Style="{DynamicResource MedievalLabelStyle}" 
                                                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                                        <TextBlock Text="{Binding SelectedClassToAdd.Description}" 
+                                        
+                                        <!-- Class Type Indicator -->
+                                        <Border Background="{DynamicResource PrimaryRed}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                               BorderThickness="2" CornerRadius="6" Padding="10,5" Margin="0,0,0,10"
+                                               HorizontalAlignment="Center">
+                                            <TextBlock FontFamily="Garamond" FontWeight="Bold" Foreground="{DynamicResource PrimaryGold}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsFirstClass}" Value="True">
+                                                                <Setter Property="Text" Value="🏰 STARTING CLASS BENEFITS"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsFirstClass}" Value="False">
+                                                                <Setter Property="Text" Value="⚔️ MULTICLASS BENEFITS"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                        
+                                        <!-- Class Benefits Description -->
+                                        <TextBlock Text="{Binding ClassBenefitsDescription}" 
                                                   FontFamily="Garamond" FontStyle="Italic" 
                                                   Foreground="{DynamicResource PrimaryRed}" Opacity="0.9"
                                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        
+                                        <!-- Multiclass Prerequisites Warning -->
+                                        <Border Background="#FFE4E1" BorderBrush="#FF6B6B" BorderThickness="2" 
+                                               CornerRadius="6" Padding="10" Margin="0,0,0,15"
+                                               Visibility="{Binding HasMulticlassPrerequisites, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <StackPanel>
+                                                <TextBlock Text="⚠️ Multiclass Prerequisites" FontFamily="Garamond" FontWeight="Bold" 
+                                                          Foreground="#B22222" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                <TextBlock Text="{Binding MulticlassPrerequisiteText}" FontFamily="Garamond" 
+                                                          Foreground="#B22222" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        
                                         <Grid Margin="0,0,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>

@@ -10,7 +10,7 @@ public class ClassDataService
 
     public ClassDataService()
     {
-        _classDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "classes");
+        _classDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "classes", "2024");
     }
 
     public async Task<List<CharacterClass>> LoadAllClassesAsync()
@@ -157,6 +157,18 @@ public class ClassDataService
         if (classData.TryGetProperty("subclasses", out var subclassesElement) && subclassesElement.ValueKind == JsonValueKind.Array)
         {
             characterClass.Subclasses = ParseSubclasses(subclassesElement);
+        }
+
+        // Parse 2024 D&D starting class benefits
+        if (classData.TryGetProperty("starting_class_benefits", out var startingBenefitsElement))
+        {
+            characterClass.StartingClassBenefits = ParseStartingClassBenefits(startingBenefitsElement);
+        }
+
+        // Parse 2024 D&D multiclass benefits
+        if (classData.TryGetProperty("multiclass_benefits", out var multiclassBenefitsElement))
+        {
+            characterClass.MulticlassBenefits = ParseMulticlassBenefits(multiclassBenefitsElement);
         }
 
         // Parse class features (declare featuresElement only here)
@@ -440,5 +452,71 @@ public class ClassDataService
             }
         }
         return features;
+    }
+
+    private StartingClassBenefits ParseStartingClassBenefits(JsonElement benefitsElement)
+    {
+        var benefits = new StartingClassBenefits();
+
+        if (benefitsElement.TryGetProperty("description", out var descElement))
+            benefits.Description = descElement.GetString() ?? string.Empty;
+
+        if (benefitsElement.TryGetProperty("primary_ability", out var primaryAbilityElement))
+            benefits.PrimaryAbility = ParseStringArray(primaryAbilityElement);
+
+        if (benefitsElement.TryGetProperty("standard_array_recommendation", out var standardArrayElement))
+            benefits.StandardArrayRecommendation = ParseStandardArrayRecommendation(standardArrayElement);
+
+        if (benefitsElement.TryGetProperty("saving_throw_proficiencies", out var savingThrowsElement))
+            benefits.SavingThrowProficiencies = ParseStringArray(savingThrowsElement);
+
+        if (benefitsElement.TryGetProperty("armor_proficiencies", out var armorProfElement))
+            benefits.ArmorProficiencies = ParseStringArray(armorProfElement);
+
+        if (benefitsElement.TryGetProperty("weapon_proficiencies", out var weaponProfElement))
+            benefits.WeaponProficiencies = ParseStringArray(weaponProfElement);
+
+        if (benefitsElement.TryGetProperty("tool_proficiencies", out var toolProfElement))
+            benefits.ToolProficiencies = ParseStringArray(toolProfElement);
+
+        if (benefitsElement.TryGetProperty("skill_proficiencies", out var skillProfElement))
+            benefits.SkillProficiencies = ParseSkillProficiencies(skillProfElement);
+
+        if (benefitsElement.TryGetProperty("equipment_grants", out var equipmentElement))
+            benefits.EquipmentGrants = equipmentElement;
+
+        return benefits;
+    }
+
+    private MulticlassBenefits ParseMulticlassBenefits(JsonElement benefitsElement)
+    {
+        var benefits = new MulticlassBenefits();
+
+        if (benefitsElement.TryGetProperty("description", out var descElement))
+            benefits.Description = descElement.GetString() ?? string.Empty;
+
+        if (benefitsElement.TryGetProperty("prerequisites", out var prereqElement))
+            benefits.Prerequisites = ParseMulticlassPrerequisites(prereqElement);
+
+        if (benefitsElement.TryGetProperty("weapon_proficiencies", out var weaponProfElement))
+            benefits.WeaponProficiencies = ParseStringArray(weaponProfElement);
+
+        if (benefitsElement.TryGetProperty("armor_proficiencies", out var armorProfElement))
+            benefits.ArmorProficiencies = ParseStringArray(armorProfElement);
+
+        if (benefitsElement.TryGetProperty("tool_proficiencies", out var toolProfElement))
+            benefits.ToolProficiencies = ParseStringArray(toolProfElement);
+
+        return benefits;
+    }
+
+    private MulticlassPrerequisites ParseMulticlassPrerequisites(JsonElement prereqElement)
+    {
+        var prereq = new MulticlassPrerequisites();
+
+        if (prereqElement.TryGetProperty("minimum_ability_scores", out var minAbilitiesElement))
+            prereq.MinimumAbilityScores = ParseStandardArrayRecommendation(minAbilitiesElement);
+
+        return prereq;
     }
 } 

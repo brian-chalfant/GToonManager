@@ -19,6 +19,10 @@ public class CharacterClass
     // Standard array recommendation for 2024 PHB
     public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
     
+    // 2024 D&D benefits structure
+    public StartingClassBenefits? StartingClassBenefits { get; set; }
+    public MulticlassBenefits? MulticlassBenefits { get; set; }
+    
     // Subclass information
     public int SubclassLevel { get; set; } = 3; // Level at which subclass is chosen
     public string SubclassType { get; set; } = string.Empty; // e.g., "archetype", "oath", "patron"
@@ -30,6 +34,33 @@ public class CharacterClass
     public Dictionary<int, List<ClassFeature>> Features { get; set; } = new();
 
     public override string ToString() => Name;
+}
+
+public class StartingClassBenefits
+{
+    public string Description { get; set; } = string.Empty;
+    public string[] PrimaryAbility { get; set; } = Array.Empty<string>();
+    public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
+    public string[] SavingThrowProficiencies { get; set; } = Array.Empty<string>();
+    public string[] ArmorProficiencies { get; set; } = Array.Empty<string>();
+    public string[] WeaponProficiencies { get; set; } = Array.Empty<string>();
+    public string[] ToolProficiencies { get; set; } = Array.Empty<string>();
+    public SkillChoiceOptions? SkillProficiencies { get; set; }
+    public object? EquipmentGrants { get; set; }
+}
+
+public class MulticlassBenefits
+{
+    public string Description { get; set; } = string.Empty;
+    public MulticlassPrerequisites? Prerequisites { get; set; }
+    public string[] WeaponProficiencies { get; set; } = Array.Empty<string>();
+    public string[] ArmorProficiencies { get; set; } = Array.Empty<string>();
+    public string[] ToolProficiencies { get; set; } = Array.Empty<string>();
+}
+
+public class MulticlassPrerequisites
+{
+    public Dictionary<string, int>? MinimumAbilityScores { get; set; }
 }
 
 public class SkillChoiceOptions
