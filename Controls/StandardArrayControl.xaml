@@ -236,6 +236,43 @@
                                             Command="{Binding ApplyClassRecommendationCommand}"
                                             Style="{StaticResource MedievalActionButtonStyle}"/>
                                 </Grid>
+                                
+                                <!-- Recommendation Selection (only visible if multiple recommendations available) -->
+                                <Grid Visibility="{Binding HasMultipleRecommendations, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="🎯 Build:" VerticalAlignment="Center" Margin="0,0,10,0"
+                                               FontFamily="Garamond" FontWeight="Bold" Foreground="{DynamicResource PrimaryRed}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableRecommendations}"
+                                              SelectedItem="{Binding SelectedRecommendation}"
+                                              DisplayMemberPath="Name"
+                                              Background="{DynamicResource ControlBackground}"
+                                              Foreground="{DynamicResource PrimaryRed}"
+                                              BorderBrush="{DynamicResource PrimaryGold}"
+                                              BorderThickness="2"
+                                              FontFamily="Garamond"
+                                              FontWeight="SemiBold"
+                                              Padding="10"/>
+                                </Grid>
+                                
+                                <!-- Recommendation Preview -->
+                                <Border Background="{DynamicResource ControlBackground}" BorderBrush="{DynamicResource PrimaryGold}" 
+                                        BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,10,0,0"
+                                        Visibility="{Binding HasSelectedRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="📊 Preview:" FontWeight="Bold" FontFamily="Garamond"
+                                                   Foreground="{DynamicResource PrimaryRed}" FontSize="12" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding RecommendationPreviewText}" FontFamily="Garamond"
+                                                   Foreground="{DynamicResource PrimaryRed}" FontSize="12" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding SelectedRecommendation.Description}" FontFamily="Garamond"
+                                                   Foreground="{DynamicResource PrimaryRed}" FontSize="11" FontStyle="Italic" 
+                                                   TextWrapping="Wrap" Margin="0,5,0,0"
+                                                   Visibility="{Binding HasSelectedRecommendation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </Border>
+                                
                                 <TextBlock Text="{Binding ClassRecommendationText}" 
                                            FontFamily="Garamond" FontStyle="Italic" 
                                            Foreground="{DynamicResource PrimaryRed}" Opacity="0.7" 

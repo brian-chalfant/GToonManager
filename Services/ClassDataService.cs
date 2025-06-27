@@ -144,25 +144,51 @@ public class ClassDataService
             characterClass.StandardArrayRecommendation = ParseStandardArrayRecommendation(standardArrayElement);
         }
 
+        // Parse multiple standard array recommendations for 2024 PHB
+        if (classData.TryGetProperty("standard_array_recommendations", out var standardArrayRecommendationsElement))
+        {
+            characterClass.StandardArrayRecommendations = ParseStandardArrayRecommendations(standardArrayRecommendationsElement);
+        }
+
         // Parse subclass information
         if (classData.TryGetProperty("subclass_level", out var subclassLevelElement))
         {
             characterClass.SubclassLevel = subclassLevelElement.GetInt32();
         }
+        else
+        {
+            // Default to level 3 for all 5.5e classes if not specified
+            characterClass.SubclassLevel = 3;
+        }
 
         // Parse subclass type from the feature that introduces subclass choice
         characterClass.SubclassType = ParseSubclassType(classData.GetProperty("features"), characterClass.SubclassLevel);
 
-        // Parse subclasses array
-        if (classData.TryGetProperty("subclasses", out var subclassesElement) && subclassesElement.ValueKind == JsonValueKind.Array)
+        // Parse subclasses - handle both array format (2014) and object format (2024)
+        if (classData.TryGetProperty("subclasses", out var subclassesElement))
         {
-            characterClass.Subclasses = ParseSubclasses(subclassesElement);
+            if (subclassesElement.ValueKind == JsonValueKind.Array)
+            {
+                // 2014 format: array of subclass objects
+                characterClass.Subclasses = ParseSubclasses(subclassesElement);
+            }
+            else if (subclassesElement.ValueKind == JsonValueKind.Object)
+            {
+                // 2024 format: object with subclass keys
+                characterClass.Subclasses = ParseSubclassesFromObject(subclassesElement);
+            }
         }
 
         // Parse 2024 D&D starting class benefits
         if (classData.TryGetProperty("starting_class_benefits", out var startingBenefitsElement))
         {
             characterClass.StartingClassBenefits = ParseStartingClassBenefits(startingBenefitsElement);
+            
+            // Also populate the main PrimaryAbility property from starting class benefits if not already set
+            if (string.IsNullOrEmpty(characterClass.PrimaryAbility) && characterClass.StartingClassBenefits.PrimaryAbility.Length > 0)
+            {
+                characterClass.PrimaryAbility = string.Join(" and ", characterClass.StartingClassBenefits.PrimaryAbility.Select(CapitalizeName));
+            }
         }
 
         // Parse 2024 D&D multiclass benefits
@@ -336,12 +362,61 @@ public class ClassDataService
         return recommendation.Count > 0 ? recommendation : null;
     }
 
+    private List<AbilityScoreRecommendation>? ParseStandardArrayRecommendations(JsonElement recommendationsElement)
+    {
+        if (recommendationsElement.ValueKind != JsonValueKind.Array)
+            return null;
+
+        var recommendations = new List<AbilityScoreRecommendation>();
+
+        foreach (var recElement in recommendationsElement.EnumerateArray())
+        {
+            var recommendation = new AbilityScoreRecommendation();
+
+            if (recElement.TryGetProperty("name", out var nameElement))
+                recommendation.Name = nameElement.GetString() ?? string.Empty;
+
+            if (recElement.TryGetProperty("description", out var descElement))
+                recommendation.Description = descElement.GetString() ?? string.Empty;
+
+            if (recElement.TryGetProperty("array", out var arrayElement))
+            {
+                recommendation.Array = ParseStandardArrayRecommendation(arrayElement) ?? new Dictionary<string, int>();
+            }
+
+            recommendations.Add(recommendation);
+        }
+
+        return recommendations.Count > 0 ? recommendations : null;
+    }
+
     private string CapitalizeName(string name)
     {
         if (string.IsNullOrEmpty(name))
             return name;
 
         return char.ToUpper(name[0]) + name.Substring(1).ToLower();
+    }
+
+    private string FormatSubclassName(string propertyName)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+            return propertyName;
+
+        // Convert underscores to spaces and apply title case
+        var formatted = propertyName.Replace("_", " ");
+        
+        // Split into words and capitalize each word
+        var words = formatted.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < words.Length; i++)
+        {
+            if (words[i].Length > 0)
+            {
+                words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower();
+            }
+        }
+        
+        return string.Join(" ", words);
     }
 
     private string ParseSubclassType(JsonElement featuresElement, int subclassLevel)
@@ -385,6 +460,41 @@ public class ClassDataService
                 subclass.Source = sourceElement.GetString() ?? string.Empty;
 
             if (subclassElement.TryGetProperty("features", out var featuresElement))
+                subclass.Features = ParseSubclassFeatures(featuresElement);
+
+            subclasses.Add(subclass);
+        }
+
+        return subclasses;
+    }
+
+    private List<Subclass> ParseSubclassesFromObject(JsonElement subclassesElement)
+    {
+        var subclasses = new List<Subclass>();
+
+        foreach (var subclassProperty in subclassesElement.EnumerateObject())
+        {
+            var subclass = new Subclass();
+            var subclassData = subclassProperty.Value;
+
+            // Use the property name as a fallback, but prefer the "name" field
+            if (subclassData.TryGetProperty("name", out var nameElement))
+            {
+                subclass.Name = nameElement.GetString() ?? subclassProperty.Name;
+            }
+            else
+            {
+                // Convert property key to proper name format (e.g., "BATTLE MASTER" -> "Battle Master")
+                subclass.Name = FormatSubclassName(subclassProperty.Name);
+            }
+
+            if (subclassData.TryGetProperty("description", out var descElement))
+                subclass.Description = descElement.GetString() ?? string.Empty;
+
+            if (subclassData.TryGetProperty("source", out var sourceElement))
+                subclass.Source = sourceElement.GetString() ?? string.Empty;
+
+            if (subclassData.TryGetProperty("features", out var featuresElement))
                 subclass.Features = ParseSubclassFeatures(featuresElement);
 
             subclasses.Add(subclass);
@@ -466,6 +576,9 @@ public class ClassDataService
 
         if (benefitsElement.TryGetProperty("standard_array_recommendation", out var standardArrayElement))
             benefits.StandardArrayRecommendation = ParseStandardArrayRecommendation(standardArrayElement);
+
+        if (benefitsElement.TryGetProperty("standard_array_recommendations", out var standardArrayRecommendationsElement))
+            benefits.StandardArrayRecommendations = ParseStandardArrayRecommendations(standardArrayRecommendationsElement);
 
         if (benefitsElement.TryGetProperty("saving_throw_proficiencies", out var savingThrowsElement))
             benefits.SavingThrowProficiencies = ParseStringArray(savingThrowsElement);

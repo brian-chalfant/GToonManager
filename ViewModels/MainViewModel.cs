@@ -25,6 +25,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly SpeciesDataService _speciesDataService;
     private readonly ClassDataService _classDataService;
     private readonly BackgroundDataService _backgroundDataService;
+    private readonly FeatDataService _featDataService;
     private string? _currentFilePath;
     private Settings _settings;
     private StandardArrayViewModel? _standardArrayViewModel;
@@ -54,6 +55,7 @@ public class MainViewModel : INotifyPropertyChanged
         _speciesDataService = new SpeciesDataService();
         _classDataService = new ClassDataService();
         _backgroundDataService = new BackgroundDataService();
+        _featDataService = new FeatDataService();
         
         // Load settings from file or create defaults
         _settings = SettingsService.LoadSettings();
@@ -232,7 +234,9 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(HasRequiredSkillSelections));
             OnPropertyChanged(nameof(HasMulticlassPrerequisites));
             OnPropertyChanged(nameof(MulticlassPrerequisiteText));
+            OnPropertyChanged(nameof(LevelCapWarningText));
             OnPropertyChanged(nameof(CanAddClass));
+            (AddClassCommand as RelayCommand)?.RaiseCanExecuteChanged();
             OnPropertyChanged(nameof(ClassBenefitsDescription));
             
             // Clear previous selections when class changes
@@ -247,6 +251,8 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _selectedLevelToAdd = Math.Max(1, Math.Min(20, value));
             OnPropertyChanged(nameof(SelectedLevelToAdd));
+            OnPropertyChanged(nameof(CanAddClass));
+            OnPropertyChanged(nameof(LevelCapWarningText));
         }
     }
 
@@ -296,8 +302,42 @@ public class MainViewModel : INotifyPropertyChanged
             if (!HasMulticlassPrerequisites) return "";
             
             var prereqs = SelectedClassToAdd!.MulticlassBenefits!.Prerequisites!.MinimumAbilityScores!;
-            var prereqStrings = prereqs.Select(kvp => $"{CapitalizeFirst(kvp.Key)} {kvp.Value}+");
-            return $"Multiclass Prerequisites: {string.Join(", ", prereqStrings)}";
+            var failedPrereqs = new List<string>();
+            
+            foreach (var prereq in prereqs)
+            {
+                var abilityScore = GetCurrentAbilityScore(prereq.Key);
+                if (abilityScore < prereq.Value)
+                {
+                    failedPrereqs.Add($"{CapitalizeFirst(prereq.Key)} {prereq.Value}+ (you have {abilityScore})");
+                }
+            }
+            
+            if (failedPrereqs.Count > 0)
+            {
+                return $"Multiclass Prerequisites not met: {string.Join(", ", failedPrereqs)}";
+            }
+            
+            return ""; // All prerequisites met, no warning needed
+        }
+    }
+    
+    public string LevelCapWarningText
+    {
+        get
+        {
+            if (SelectedClassToAdd == null) return "";
+            
+            int currentLevel = CurrentCharacter.Level;
+            int levelToAdd = SelectedLevelToAdd;
+            int totalLevel = currentLevel + levelToAdd;
+            
+            if (totalLevel > 20)
+            {
+                return $"Level cap exceeded: Current level {currentLevel} + {levelToAdd} levels = {totalLevel} (maximum is 20)";
+            }
+            
+            return "";
         }
     }
     
@@ -306,7 +346,15 @@ public class MainViewModel : INotifyPropertyChanged
         get
         {
             if (SelectedClassToAdd == null) return false;
-            if (!HasRequiredSkillSelections) return false;
+            
+            // Check level 20 cap - total character level cannot exceed 20
+            int currentLevel = CurrentCharacter.Level;
+            int levelToAdd = SelectedLevelToAdd;
+            if (currentLevel + levelToAdd > 20)
+            {
+                System.Diagnostics.Debug.WriteLine($"Level cap check FAILED: Current level {currentLevel} + adding {levelToAdd} = {currentLevel + levelToAdd} > 20");
+                return false;
+            }
             
             // Check multiclass prerequisites if this isn't the first class
             if (!IsFirstClass && HasMulticlassPrerequisites)
@@ -315,9 +363,14 @@ public class MainViewModel : INotifyPropertyChanged
                 foreach (var prereq in prereqs)
                 {
                     var abilityScore = GetCurrentAbilityScore(prereq.Key);
+                    System.Diagnostics.Debug.WriteLine($"Multiclass prerequisite check: {prereq.Key} = {abilityScore}, required = {prereq.Value}");
                     if (abilityScore < prereq.Value)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Multiclass prerequisite FAILED: {prereq.Key} {abilityScore} < {prereq.Value}");
                         return false;
+                    }
                 }
+                System.Diagnostics.Debug.WriteLine("All multiclass prerequisites MET");
             }
             
             return true;
@@ -453,8 +506,9 @@ public class MainViewModel : INotifyPropertyChanged
         OpenFreeEntryCommand = new RelayCommand(OpenFreeEntry);
         
         // Multiclass commands
-        AddClassCommand = new RelayCommand(AddClass);
+        AddClassCommand = new RelayCommand(AddClass, () => CanAddClass);
         RemoveClassCommand = new RelayCommand(RemoveClass, CanRemoveClass);
+        // Skill commands moved to Features tab
         AddSkillCommand = new RelayCommand(AddSkill);
         RemoveSkillCommand = new RelayCommand(RemoveSkill);
         ChooseSubclassCommand = new RelayCommand(ChooseSubclass);
@@ -1073,12 +1127,7 @@ public class MainViewModel : INotifyPropertyChanged
             // Check if this would be a valid addition
             if (!CanAddClass)
             {
-                if (HasSkillChoices && !HasRequiredSkillSelections)
-                {
-                    StatusMessage = $"Please select {MaxSkillSelections} skills for the {SelectedClassToAdd.Name} class";
-                    return;
-                }
-                else if (HasMulticlassPrerequisites)
+                if (HasMulticlassPrerequisites)
                 {
                     StatusMessage = $"Multiclass prerequisites not met for {SelectedClassToAdd.Name}. {MulticlassPrerequisiteText}";
                     return;
@@ -1090,24 +1139,18 @@ public class MainViewModel : INotifyPropertyChanged
                 }
             }
 
-            // Create the class level with chosen skills
+            // Create the class level
             var classLevel = new CharacterClassLevel 
             { 
                 CharacterClass = SelectedClassToAdd, 
                 Level = SelectedLevelToAdd 
             };
             
-            // Add chosen skills
-            foreach (var skillItem in SelectedSkills)
-            {
-                classLevel.ChosenSkillProficiencies.Add(skillItem.SkillName);
-            }
-            
             // Add the class level directly to the character
             CurrentCharacter.ClassLevels.Add(classLevel);
             
             var benefitType = IsFirstClass ? "Starting Class" : "Multiclass";
-            StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name} ({benefitType})";
+            StatusMessage = $"Added {SelectedLevelToAdd} level(s) of {SelectedClassToAdd.Name} ({benefitType}). Configure skill choices in the Features tab.";
             
             // Clear selections
             SelectedClassToAdd = null;
@@ -1119,6 +1162,10 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(HasSkillChoices));
             OnPropertyChanged(nameof(HasMulticlassPrerequisites));
             OnPropertyChanged(nameof(CanAddClass));
+            (AddClassCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            
+            // Refresh Features tab to show new choices
+            InitializeFeaturesViewModel();
         }
         else
         {
@@ -1336,6 +1383,19 @@ public class MainViewModel : INotifyPropertyChanged
         try
         {
             var viewModel = new RollingViewModel(CurrentCharacter, Settings.AbilityScoreMethod, Settings.RerollLimit);
+            
+            // Subscribe to property changes to populate classes when AssignmentViewModel is created
+            viewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(RollingViewModel.AssignmentViewModel) && viewModel.AssignmentViewModel != null)
+                {
+                    // Populate classes for the assignment view model
+                    foreach (var characterClass in Classes)
+                    {
+                        viewModel.AssignmentViewModel.Classes.Add(characterClass);
+                    }
+                }
+            };
             
             var control = new Controls.RollingControl();
             var window = new Views.AbilityScoreGenerationWindow();
@@ -1715,6 +1775,11 @@ public class MainViewModel : INotifyPropertyChanged
         {
             InitializeFeaturesViewModel();
         }
+        
+        // Update warning texts since character level changed
+        OnPropertyChanged(nameof(LevelCapWarningText));
+        OnPropertyChanged(nameof(CanAddClass));
+        (AddClassCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 
     // --- Ability Score Selection Helpers for XAML ---
@@ -1743,21 +1808,17 @@ public class MainViewModel : INotifyPropertyChanged
     
     private int GetCurrentAbilityScore(string abilityName)
     {
-        // Get the base ability score from the character
-        int baseScore = abilityName.ToLower() switch
+        // Use the Character's total ability score calculations which include all bonuses
+        return abilityName.ToLower() switch
         {
-            "strength" => CurrentCharacter.AbilityScores.Strength ?? 10,
-            "dexterity" => CurrentCharacter.AbilityScores.Dexterity ?? 10,
-            "constitution" => CurrentCharacter.AbilityScores.Constitution ?? 10,
-            "intelligence" => CurrentCharacter.AbilityScores.Intelligence ?? 10,
-            "wisdom" => CurrentCharacter.AbilityScores.Wisdom ?? 10,
-            "charisma" => CurrentCharacter.AbilityScores.Charisma ?? 10,
+            "strength" => CurrentCharacter.StrengthTotal ?? 10,
+            "dexterity" => CurrentCharacter.DexterityTotal ?? 10,
+            "constitution" => CurrentCharacter.ConstitutionTotal ?? 10,
+            "intelligence" => CurrentCharacter.IntelligenceTotal ?? 10,
+            "wisdom" => CurrentCharacter.WisdomTotal ?? 10,
+            "charisma" => CurrentCharacter.CharismaTotal ?? 10,
             _ => 10
         };
-        
-        // Add any bonuses from species, background, etc.
-        int bonus = GetAbilityScoreBonus(abilityName) ?? 0;
-        return baseScore + bonus;
     }
     
     private string CapitalizeFirst(string text)
@@ -1862,7 +1923,7 @@ public class MainViewModel : INotifyPropertyChanged
     private void InitializeFeaturesViewModel()
     {
         var choiceDataService = new ChoiceDataService();
-        FeaturesViewModel = new FeaturesViewModel(CurrentCharacter, _classDataService, choiceDataService);
+        FeaturesViewModel = new FeaturesViewModel(CurrentCharacter, _classDataService, choiceDataService, _featDataService);
     }
 
     // Returns a string for PDF export of all selected features/traits, grouped by source

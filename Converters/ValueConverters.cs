@@ -104,4 +104,88 @@ public class StringToVisibilityConverter : IValueConverter
     {
         throw new NotImplementedException();
     }
+}
+
+public class ValueEqualsConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value != null && parameter != null)
+        {
+            return value.ToString() == parameter.ToString();
+        }
+        return false;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is bool boolValue && boolValue && parameter != null)
+        {
+            var paramString = parameter.ToString();
+            
+            // Handle integer values
+            if (int.TryParse(paramString, out var intValue))
+            {
+                return intValue;
+            }
+            
+            // Handle enum values
+            if (targetType != null && targetType.IsEnum)
+            {
+                try
+                {
+                    return Enum.Parse(targetType, paramString);
+                }
+                catch
+                {
+                    // Fall back to default enum value
+                    return Enum.GetValues(targetType).GetValue(0);
+                }
+            }
+            
+            // Return the string value for other types
+            return paramString;
+        }
+        
+        // Return default value for the target type
+        if (targetType != null)
+        {
+            if (targetType == typeof(int) || targetType == typeof(int?))
+                return 0;
+            if (targetType.IsEnum)
+                return Enum.GetValues(targetType).GetValue(0);
+        }
+        
+        return 0;
+    }
+}
+
+public class ObjectToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value != null ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class InverseBooleanToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is bool boolValue)
+        {
+            return boolValue ? Visibility.Collapsed : Visibility.Visible;
+        }
+        return Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is Visibility visibility && visibility == Visibility.Collapsed;
+    }
 } 

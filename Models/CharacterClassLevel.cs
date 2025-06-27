@@ -18,6 +18,7 @@ public class CharacterClassLevel : INotifyPropertyChanged
             _characterClass = value;
             OnPropertyChanged(nameof(CharacterClass));
             OnPropertyChanged(nameof(ClassName));
+            OnPropertyChanged(nameof(CanChooseSubclass)); // Update subclass availability when class changes
         }
     }
 
@@ -28,6 +29,7 @@ public class CharacterClassLevel : INotifyPropertyChanged
         {
             _level = Math.Max(1, Math.Min(20, value)); // Clamp between 1 and 20
             OnPropertyChanged(nameof(Level));
+            OnPropertyChanged(nameof(CanChooseSubclass)); // Update subclass availability when level changes
         }
     }
 

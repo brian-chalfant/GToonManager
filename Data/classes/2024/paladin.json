@@ -1,0 +1,576 @@
+{
+    "name": "PALADIN",
+    "description": "A paladin character class with unique abilities and features.",
+    "hit_dice": "1d10",
+    "starting_class_benefits": {
+        "description": "Benefits gained when PALADIN is your first class",
+        "primary_ability": [
+            "strength",
+            "charisma"
+        ],
+        "standard_array_recommendations": [
+            {
+                "name": "Standard",
+                "description": "Classic sword-and-board or greatsword paladin",
+                "array": {
+                    "strength": 15,
+                    "dexterity": 8,
+                    "constitution": 13,
+                    "intelligence": 10,
+                    "wisdom": 12,
+                    "charisma": 14
+                }
+            },
+            {
+                "name": "Dex Paladin",
+                "description": "For a finesse/ranged paladin; less common",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 15,
+                    "constitution": 13,
+                    "intelligence": 10,
+                    "wisdom": 12,
+                    "charisma": 14
+                }
+            }
+        ],
+        "saving_throw_proficiencies": [
+            "wisdom",
+            "charisma"
+        ],
+        "armor_proficiencies": [
+            "light armor",
+            "medium armor",
+            "heavy armor",
+            "shields"
+        ],
+        "weapon_proficiencies": [
+            "simple weapons",
+            "martial weapons"
+        ],
+        "tool_proficiencies": [],
+        "skill_proficiencies": {
+            "choose": 2,
+            "from": [
+                ": Athletics",
+                "Insight",
+                "Intimidation",
+                "Medicine",
+                "Persuasion",
+                "Religion"
+            ]
+        },
+        "equipment_grants": {
+            "choice": {
+                "description": "Choose one of the following equipment packages",
+                "options": [
+                    {
+                        "name": "Equipment Package",
+                        "description": "Standard paladin equipment and gold",
+                        "fixed": [
+                            {
+                                "item": "Chain Mail",
+                                "quantity": 1,
+                                "description": "Chain Mail"
+                            },
+                            {
+                                "item": "Holy Symbol",
+                                "quantity": 1,
+                                "description": "Holy Symbol"
+                            },
+                            {
+                                "item": "Javelin",
+                                "quantity": 6,
+                                "description": "Javelin"
+                            },
+                            {
+                                "item": "Longsword",
+                                "quantity": 1,
+                                "description": "Longsword"
+                            },
+                            {
+                                "item": "Priest\u2019s Pack",
+                                "quantity": 1,
+                                "description": "Priest\u2019s Pack"
+                            },
+                            {
+                                "item": "Shield",
+                                "quantity": 1,
+                                "description": "Shield"
+                            },
+                            {
+                                "item": "BREAKING YOUR OATH",
+                                "quantity": 1,
+                                "description": "BREAKING YOUR OATH"
+                            },
+                            {
+                                "item": "A Paladin tries to hold to the highest standards of conduct, but even the most dedicated are fallible. Sometimes a Paladin transgresses their oath. A Paladin who has broken a vow typically seeks absolution, spending an all-night vigil as a sign of penitence or undertaking a fast. After a rite of forgiveness, the Paladin starts fresh.",
+                                "quantity": 1,
+                                "description": "A Paladin tries to hold to the highest standards of conduct, but even the most dedicated are fallible. Sometimes a Paladin transgresses their oath. A Paladin who has broken a vow typically seeks absolution, spending an all-night vigil as a sign of penitence or undertaking a fast. After a rite of forgiveness, the Paladin starts fresh."
+                            },
+                            {
+                                "item": "If your Paladin unrepentantly violates their oath, talk to your DM. Your Paladin should probably take a more appropriate subclass or even abandon the class and adopt another one.",
+                                "quantity": 1,
+                                "description": "If your Paladin unrepentantly violates their oath, talk to your DM. Your Paladin should probably take a more appropriate subclass or even abandon the class and adopt another one."
+                            }
+                        ],
+                        "currency": {
+                            "gold": 9
+                        }
+                    },
+                    {
+                        "name": "Gold Only",
+                        "description": "Choose gold instead of equipment",
+                        "currency": {
+                            "gold": 27
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "multiclass_benefits": {
+        "description": "Benefits gained when multiclassing into PALADIN",
+        "prerequisites": {
+            "minimum_ability_scores": {
+                "strength": 13
+            }
+        },
+        "weapon_proficiencies": [
+            "simple weapons"
+        ],
+        "armor_proficiencies": [
+            "light armor"
+        ]
+    },
+    "features": {},
+    "subclasses": {
+        "OATH OF DEVOTION": {
+            "name": "OATH OF DEVOTION",
+            "description": "The Oath of Devotion binds Paladins to the loftiest ideals of justice and order. These Paladins meet the ideal of the knight in shining armor. They hold themselves to the highest standards of conduct, and some, for better or worse, hold the rest of the world to the same standards. Many who swear this oath are devoted to gods of law and good and use their gods\u2019 tenets as the measure of their devotion. They hold angels as their ideals and incorporate images of angelic wings into their helmets or coats of arms. TENETS OF DEVOTION Though the exact words and strictures of the Oath of Devotion vary, Paladins of this oath share these tenets. Honesty. Don\u2019t lie or cheat. Let your word be your promise. Courage. Never fear to act, though caution is wise. Compassion. Aid others, protect the weak, and...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "The magic of your oath ensures you always have certain spells ready; when you reach a Paladin level specified in the Oath of Devotion Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "OATH OF DEVOTION SPELLS",
+                        "description": "Paladin Level\tSpells 3rd\tProtection from Evil and Good, Shield of Faith 5th\tAid, Zone of Truth 9th\tBeacon of Hope, Dispel Magic 13th\tFreedom of Movement, Guardian of Faith 17th\tCommune, Flame Strike",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "SACRED WEAPON",
+                        "description": "When you take the Attack action, you can expend one use of your Channel Divinity to imbue one melee weapon that you are holding with positive energy. For 10 minutes or until you use this feature again, you can add your Charisma modifier to attack rolls you make with that weapon (minimum bonus of +1), and each time you hit with it, you cause it to deal its normal damage type or Radiant damage. The weapon also emits Bright Light in a 20-foot radius and Dim Light 20 feet beyond that. You can end this effect early (no action required). This effect also ends if you aren\u2019t carrying the weapon.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF DEVOTION",
+                        "description": "You and your allies have Immunity to the Charmed condition while in your Aura of Protection. If a Charmed ally enters the aura, that condition has no effect on that ally while there.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "SMITE OF PROTECTION",
+                        "description": "Your magical smites now radiate protective energy. Whenever you cast Divine Smite, you and your allies have Half Cover while in your Aura of Protection. The aura has this benefit until the start of your next turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "HOLY NIMBUS",
+                        "description": "As a Bonus Action, you can imbue your Aura of Protection with holy power, granting the benefits below for 10 minutes or until you end them (no action required). Once you use this feature, you can\u2019t use it again until you finish a Long Rest. You can also restore your use of it by expending a level 5 spell slot (no action required). Holy Ward. You have Advantage on any saving throw you are forced to make by a Fiend or an Undead. Radiant Damage. Whenever an enemy starts its turn in the aura, that creature takes Radiant damage equal to your Proficiency Bonus + your Charisma modifier. Sunlight. The aura is filled with Bright Light that is sunlight.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "OATH OF GLORY": {
+            "name": "OATH OF GLORY",
+            "description": "Paladins who take the Oath of Glory believe they and their companions are destined to achieve glory through deeds of heroism. They train diligently and encourage their companions so they\u2019re all ready when destiny calls. TENETS OF GLORY Though the exact words and strictures of the Oath of Glory vary, Paladins of this oath share these tenets. Actions over Words. Strive to be known by glorious deeds, not words. Challenges Are but Tests. Face hardships with courage, and encourage your allies to face them with you. Hone the Body. Like raw stone, your body must be worked so its potential can be realized. Discipline the Soul. You must marshal the discipline to overcome failings within yourself that threaten to dim the glory of you and your friends. 3RD LEVEL: OATH SPELLS The magic of your oath en...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "The magic of your oath ensures you always have certain spells ready; when you reach a Paladin level specified in the Oath of Glory Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "OATH OF GLORY SPELLS",
+                        "description": "Paladin Level\tSpells 3rd\tGuiding Bolt, Heroism 5th\tEnhance Ability, Magic Weapon 9th\tHaste, Protection from Energy 13th\tCompulsion, Freedom of Movement 17th\tLegend Lore, Yolande's Regal Presence",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "INSPIRING SMITE",
+                        "description": "Immediately after you cast Divine Smite, you can expend one use of your Channel Divinity and distribute Temporary Hit Points to creatures of your choice within 30 feet of yourself, which can include you. The total number of Temporary Hit Points equals 2d8 + your Paladin level, divided among the chosen creatures however you like.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "PEERLESS ATHLETE",
+                        "description": "As a Bonus Action, you can expend one use of your Channel Divinity to augment your athleticism. For 1 hour, you have Advantage on Strength (Athletics) and Dexterity (Acrobatics) checks and the distance of your Long and High Jumps increases by 10 feet (this extra distance costs movement as normal).",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF ALACRITY",
+                        "description": "Your Speed increases by 10 feet. In addition, whenever an ally enters your Aura of Protection for the first time on a turn or starts their turn there, the ally's Speed increases by 10 feet until the end of their next turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "GLORIOUS DEFENSE",
+                        "description": "You can turn defense into a sudden strike. When you or another creature you can see within 10 feet of you is hit by an attack roll, you can use your Reaction to grant a bonus to the target\u2019s AC against that attack, potentially causing it to miss. The bonus equals your Charisma modifier (minimum of +1). If the attack misses, you can make one attack with a weapon against the attacker as part of this Reaction if the attacker is within your weapon\u2019s range. You can use this feature a number of times equal to your Charisma modifier (minimum of once), and you regain all expended uses when you finish a Long Rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "LIVING LEGEND",
+                        "description": "You can empower yourself with the legends\u2014whether true or exaggerated\u2014of your great deeds. As a Bonus Action, you gain the benefits below for 10 minutes. Once you use this feature, you can\u2019t use it again until you finish a Long Rest. You can also restore your use of it by expending a level 5 spell slot (no action required). Charismatic. You are blessed with an otherworldly presence, gaining Advantage on all Charisma checks. Saving Throw Reroll. If you fail a saving throw, you can use your Reaction to reroll it. You must use this new roll. Unerring Strike. Once on each of your turns when you make an attack roll with a weapon and miss, you can cause that attack to hit instead.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "OATH OF THE ANCIENTS": {
+            "name": "OATH OF THE ANCIENTS",
+            "description": "The Oath of the Ancients is as old as the first elves and the rituals of Druids. Paladins who swear this oath cherish the light; they love the beautiful and life-giving things of the world more than any principles of honor, courage, and justice. They adorn their armor and clothing with images of growing things\u2014leaves, antlers, or flowers\u2014to reflect their commitment to preserving life and light in the world. TENETS OF THE ANCIENTS Though the exact words and strictures of the Oath of Ancients vary, Paladins of this oath share these tenets. Kindle the Light. Through your acts of mercy, kindness, and forgiveness, kindle the light of hope in the world, beating back despair. Shelter the Light. Where life flourishes, stand against the forces that would render it barren. Preserve Your Own Light. D...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "The magic of your oath ensures you always have certain spells ready; when you reach a Paladin level specified in the Oath of the Ancients Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "OATH OF THE ANCIENTS SPELLS",
+                        "description": "Paladin Level\tSpells 3rd\tEnsnaring Strike, Speak with Animals 5th\tMisty Step, Moonbeam 9th\tPlant Growth, Protection from Energy 13th\tIce Storm, Stoneskin 17th\tCommune with Nature, Tree Stride",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "NATURE\u2019S WRATH",
+                        "description": "As a Magic Action, you can expend one use of your Channel Divinity to conjure spectral vines around nearby creatures. Each creature of your choice that you can see within 15 feet of yourself must succeed on a Strength saving throw or have the Restrained condition for 1 minute. A Restrained creature repeats the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF WARDING",
+                        "description": "Ancient magic lies so heavily upon you that it forms an eldritch ward, blunting energy from beyond the Material Plane. You and your allies have resistance to Necrotic, Psychic, and Radiant damage while in your Aura of Protection.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "UNDYING SENTINEL",
+                        "description": "When you are reduced to 0 Hit Points and not killed outright, you can drop to 1 Hit Point instead, and you regain a number of Hit Points equal to three times your Paladin level. Once you use this feature, you can\u2019t do so again until you finish a Long Rest. Additionally, and you can\u2019t be aged magically and you cease visibly aging.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "ELDER CHAMPION",
+                        "description": "As a Bonus Action, you can imbue your Aura of Protection with primal power, granting the following benefits for 1 minute or until you end them (no action required). Once you use this feature, you can\u2019t use it again until you finish a Long Rest. You can also restore your use of it by expending a level 5 spell slot (no action required). Diminish Defiance. Enemies in the aura have Disadvantage on saving throws against your spells and Channel Divinity options. Regeneration. At the start of each of your turns, you regain 10 Hit Points. Swift Spells. Whenever you cast a spell that has a casting time of 1 action, you can cast it using a Bonus Action instead.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "OATH OF VENGEANCE": {
+            "name": "OATH OF VENGEANCE",
+            "description": "The Oath of Vengeance is a solemn commitment to punish those who have committed grievously evil acts. When evil armies slaughtered helpless villagers, when a tyrant defied the will of the gods, when a thieves\u2019 guild grew too violent and powerful, when a dragon rampaged through the countryside\u2014at times like these, paladins arose and swore an Oath of Vengeance to set right what has gone wrong. TENETS OF VENGEANCE Though the exact words and strictures of the Oath of Vengeance vary, Paladins of this oath share these tenets. Fight the Greater Evil. Faced with a choice of fighting my sworn foes or combating a lesser evil, I choose the greater evil. No Mercy for the Wicked. Ordinary foes might win my mercy, but my sworn enemies do not. By Any Means Necessary. My qualms can\u2019t get in the way of exte...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "The magic of your oath ensures you always have certain spells ready; when you reach a Paladin level specified in the Oath of Vengeance Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "OATH OF VENGEANCE SPELLS",
+                        "description": "Paladin Level\tSpells 3rd\tBane, Hunter's Mark 5th\tHold Person, Misty Step 9th\tHaste, Protection from Energy 13th\tBanishment, Dimension Door 17th\tHold Monster, Scrying",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "VOW OF ENMITY",
+                        "description": "When you take the Attack action, you can expend one use of your Channel Divinity to utter a vow of enmity against a creature you can see within 30 feet of yourself. You gain Advantage on attack rolls against the creature for 1 minute or until you use this feature again. If the creature dropped to 0 Hit Points before the vow ends, you can transfer the vow to a different creature within 30 feet of yourself (no action required).",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "RELENTLESS AVENGER",
+                        "description": "Your supernatural focus helps you close off a foe\u2019s retreat. When you hit a creature with an Opportunity Attack, you can reduce the creature\u2019s Speed to 0 until the end of the current turn. You can then move up to half your Speed as part of the same Reaction. This movement doesn\u2019t provoke Opportunity Attacks.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "SOUL OF VENGEANCE",
+                        "description": "Immediately after a creature under the effect of your Vow of Enmity hits or misses with an attack roll, you can take a Reaction to make a melee attack against that creature if it\u2019s within range.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "AVENGING ANGEL",
+                        "description": "As a Bonus Action, you the benefits below for 10 minutes or until you end them (no action required). Once you use this feature, you can\u2019t use it again until you finish a Long Rest. You can also restore your use of it by expending a level 5 spell slot (no action required). Flight. You sprout spectral wings on your back, have a Fly Speed of 60 feet can Hover. Frightful Aura. Whenever an enemy starts its turn in your Aura of Protection, that creature must succeed on a Wisdom saving throw or have the Frightened condition for 1 minute or until it takes any damage. Attack rolls against the Frightened creature have Advantage.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Oath of Conquest": {
+            "name": "Oath of Conquest",
+            "description": "The Oath of Conquest calls to paladins who seek glory in battle and the subjugation of their enemies. It isn\u2019t enough for these paladins to establish order. They must crush the forces of chaos. Sometimes called knight tyrants or iron mongers, those who swear this oath gathered into grim orders that served gods or philosophies of war and well-ordered might. Some of these paladins went so far as to consort with the powers of the Nine Hells, valuing the rule of law over the balm of mercy. The archdevil Bel, warlord of Avernus, counted many of these paladins \u2013 called hell knights \u2013 as his most ardent supporters. Hell knights covered their armor with trophies taken from fallen enemies, a grim warning to any who dared oppose them and the decrees of their lords. These knights were often most fiercely resis...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "You gain oath spells at the paladin levels listed. OATH OF CONQUEST SPELLS",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "CHANNEL DIVINITY",
+                        "description": "You gain the following two Channel Divinity options. Conquering Presence. You can use your Channel Divinity to exude a terrifying presence. As an action, you force each creature of your choice that you can see within 30 feet of you to make a Wisdom saving throw. On a failed save, a creature becomes frightened of you for 1 minute. The frightened creature can repeat this saving throw at the end of each of its turns, ending the effect on itself on a success. Guided Strike. You can use your Channel Divinity to strike with supernatural accuracy. When you make an attack roll, you can use your Channel Divinity to gain a +10 bonus to the roll. You make this choice after you see the roll, but before the DM says whether the attack hits or misses.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF CONQUEST",
+                        "description": "You constantly emanate a menacing aura while you\u2019re not incapacitated. The aura extended 10 feet from you in every direction, but not through total cover. If a creature is frightened of you, its speed is reduced to 0 while in the aura, and that creature took psychic damage equal to half your paladin level if it started its turn there. At 18th level, the range of this aura increased to 30 feet.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "SCORNFUL REBUKE",
+                        "description": "Those who dared to strike you were psychically punished for their audacity. Whenever a creature hit you with an attack, that creature took psychic damage equal to your Charisma modifier (minimum of 1) if you\u2019re not incapacitated.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "INVINCIBLE CONQUERER",
+                        "description": "You gain the ability to harness extraordinary martial prowess. As an action, you can magically become an avatar of conquest, gaining the following benefits for 1 minute: You have resistance to all damage. When you take the Attack action on your turn, you can make one additional attack as part of that action. Your melee weapon attacks scored a critical hit on a roll of 19 or 20 on the d20. Once you use this feature, you can\u2019t use it again until you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Oath of Redemption": {
+            "name": "Oath of Redemption",
+            "description": "The Oath of Redemption sets a paladin on a difficult path, one that requires a holy warrior to use violence only as a last resort. Paladins who dedicated themselves to this oath believed that any person can be redeemed and that the path of benevolence and justice is one that anyone can walk. These paladins faced evil creatures in the hope of turning them to the light, and the paladins slain them only when such a deed would clearly save other lives. Paladins who followed this path were known as redeemers. While redeemers were idealists, they were no fools. Redeemers knew that undead, demons, devils, and other supernatural threats could be inherently evil. Against such foes, the paladins brought the full wrath of their weapons and spells to bear. Yet the redeemers still prayed that, one day, even creatures ...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "You gain oath spells at the paladin levels listed. OATH OF REDEMPTION SPELLS",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "CHANNEL DIVINITY",
+                        "description": "You gain the following two Channel Divinity options. Emissary of Peace. You can use your Channel Divinity to augment your presence with divine power. As a bonus action, you granted yourself a +5 bonus to Charisma (Persuasion) checks for the next 10 minutes. Rebuke the Violent. You can use your Channel Divinity to rebuke those who used violence. Immediately after an attacker within 30 feet of you dealt damage with an attack against a creature other than you, you can use your reaction to force the attacker to make a Wisdom saving throw. On a failed save, the attacker took radiant damage equal to the damage it just dealt. On a successful save, it took half as much damage.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF THE GUARDIAN",
+                        "description": "You can shield your allies from harm at the cost of your own health. When a creature within 10 feet of you took damage, you can use your reaction to magically take that damage, instead of that creature taking it. This feature didn't transfer any other effects that might accompany the damage, and this damage couldn't be reduced in any way. At 18th level, the range of this aura increased to 30 feet.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "PROTECTIVE SPIRIT",
+                        "description": "A holy presence mended your wounds in combat. You regained hit points equal to 1d6 + half your paladin level if you ended your turn in combat with fewer than half of your hit points remaining and you weren\u2019t incapacitated.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "EMISSARY OF REDEMPTION",
+                        "description": "You became an avatar of peace, which gave you the following benefits. You had resistance to all damage dealt by other creatures (their attacks, spells, and other effects). Whenever a creature damaged you, it took radiant damage equal to half the amount it dealt to you. If you attacked a creature, cast a spell on it, or dealt damage to it by any means but this feature, neither benefit worked against that creature until you finished a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Oath of the Watchers": {
+            "name": "Oath of the Watchers",
+            "description": "The Oath of the Watchers binds paladins to protect mortal realms from the predations of extraplanar creatures, many of which could lay waste to mortal soldiers. Thus, the Watchers honed their minds, spirits, and bodies to be the ultimate weapons against such threats. Paladins who followed the Watchers' oath were ever vigilant in spotting the influence of extraplanar forces, often establishing a network of spies and informants to gather information on suspected cults. To a Watcher, keeping a healthy suspicion and awareness about one's surroundings was as natural as wearing armor in battle. Tenets of the Watchers A paladin who assumed the Oath of the Watchers swore to safeguard mortal realms from otherwordly threats. Vigilance. The threats you faced were cunning, powerful, and subversive. Be ever al...",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "You gain oath spells at the paladin levels listed. OATH OF THE WATCHERS SPELLS",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "CHANNEL DIVINITY",
+                        "description": "You gain the following two Channel Divinity options. See the Sacred Oath class feature for how Channel Divinity works. Watcher's Will. You can use your Channel Divinity to invest your presence with the warding power of your faith. As an action, you can choose a number of creatures you can see within 30 feet of you, up to a number equal to your Charisma modifier (minimum of one creature). For 1 minute, you and the chosen creatures had advantage on Intelligence, Wisdom, and Charisma saving throws. Abjure the Extraplanar. You can use your Channel Divinity to castigate unworldly beings. As an action, you presented your holy symbol and each aberration, celestial, elemental, fey, or fiend within 30 feet of you that could hear you must make a Wisdom saving throw. On a failed save, the creature was tu...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF THE SENTINEL",
+                        "description": "You emitted an aura of alertness while you weren't incapacitated. When you and any creatures of your choice within 10 feet of you rolled initiative, you all gained a bonus to initiative equal to your proficiency bonus. At 18th level, the range of this aura increased to 30 feet.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "VIGILANT REBUKE",
+                        "description": "You've learned how to chastise anyone who dared wield beguilements against you and your wards. Whenever you or a creature you could see within 30 feet of you succeeded on an Intelligence, a Wisdom, or a Charisma saving throw, you could use your reaction to deal 2d8 + your Charisma modifier force damage to the creature that forced the saving throw.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "MORTAL BULWARK",
+                        "description": "You manifested a spark of divine power in defense of the mortal realms. As a bonus action, you gained the following benefits for 1 minute: You gained truesight with a range of 120 feet. You had advantage on attack rolls against aberrations, celestials, elementals, fey, and fiends. When you hit a creature with an attack roll and dealt damage to it, you could also force it to make a Charisma saving throw against your spell save DC. On a failed save, the creature was magically banished to its native plane of existence if it's currently not there. On a successful save, the creature couldn't be banished by this feature for 24 hours. Once you used this bonus action, you couldn't use it again until you finished a long rest, unless you expended a 5th-level spell slot to use it again.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Oathbreaker": {
+            "name": "Oathbreaker",
+            "description": "An oathbreaker was a paladin who broke their sacred oaths to pursue some dark ambition or serve an evil power. Whatever light burned in the paladin's heart been extinguished. Only darkness remained.",
+            "features": {
+                "3": [
+                    {
+                        "name": "OATH SPELLS",
+                        "description": "You gained oath spells at the paladin levels listed.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "CHANNEL DIVINITY",
+                        "description": "You gained the following two Channel Divinity options. Control Undead. As an action, you targeted one undead creature you could see within 30 feet of you. The target must make a Wisdom saving throw. On a failed save, the target must obey your commands for the next 24 hours, or until you used this Channel Divinity option again. An undead whose challenge rating was equal to or greater than your paladin level was immune to this effect. Dreadful Aspect. As an action, you channel the darkest emotions and focused them into a burst of magical menace. Each creature of your choice within 30 feet of you must make a Wisdom saving throw if it could see you. On a failed save, the target was frightened of you for 1 minute. If a creature frightened by this effect ended its turn more than 30 feet away from you, it could a...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "AURA OF HATE",
+                        "description": "You, as well any fiends and undead within 10 feet of you, gained a bonus to melee weapon damage rolls equal to your Charisma modifier (minimum of +1). A creature could benefit from this feature from only one paladin at a time. At 18th level, the range of this aura increased to 30 feet.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "SUPERNATURAL RESISTANCE",
+                        "description": "You gained resistance to bludgeoning, piercing, and slashing damage from non-magical weapons.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "DREAD LORD",
+                        "description": "You could, as an action, surround yourself with an aura of gloom that lasted for 1 minute. The aura reduced any bright light in a 30-foot radius around you to dim light. Whenever an enemy that was frightened by you started its turn in the aura, it took 4d10 psychic damage. Additionally, you and any creatures of your choosing in the aura were draped in deeper shadow. Creatures that relied on sight had disadvantage on attack rolls against creatures draped in this shadow. While the aura lasted, you could use a bonus action on your turn to cause the shadows in the aura to attack one creature. Make a melee spell attack against the target. If the attack hit, the target took necrotic damage equal to 3d10 + your Charisma modifier. After activating the aura, you couldn't do so again until you finished a long r...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

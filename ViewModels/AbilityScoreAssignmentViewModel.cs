@@ -11,6 +11,8 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
     private ObservableCollection<int> _generatedScores = new();
     private Dictionary<string, int?> _assignments = new();
     private CharacterClass? _selectedClass;
+    private AbilityScoreRecommendation? _selectedRecommendation;
+    private ObservableCollection<CharacterClass> _classes = new();
 
     public AbilityScoreAssignmentViewModel(Character character)
     {
@@ -29,6 +31,16 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<CharacterClass> Classes
+    {
+        get => _classes;
+        set
+        {
+            _classes = value;
+            OnPropertyChanged();
+        }
+    }
+
     public CharacterClass? SelectedClass
     {
         get => _selectedClass;
@@ -37,15 +49,109 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
             _selectedClass = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(HasClassRecommendation));
+            OnPropertyChanged(nameof(HasMultipleRecommendations));
+            OnPropertyChanged(nameof(AvailableRecommendations));
             OnPropertyChanged(nameof(ClassRecommendationText));
+            
+            // Auto-select first recommendation if any are available
+            if (AvailableRecommendations?.Count > 0)
+            {
+                SelectedRecommendation = AvailableRecommendations[0];
+            }
+            else
+            {
+                SelectedRecommendation = null;
+            }
         }
     }
 
-    public bool HasClassRecommendation => SelectedClass?.StandardArrayRecommendation != null;
+    public AbilityScoreRecommendation? SelectedRecommendation
+    {
+        get => _selectedRecommendation;
+        set
+        {
+            _selectedRecommendation = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasSelectedRecommendation));
+            OnPropertyChanged(nameof(RecommendationPreviewText));
+            OnPropertyChanged(nameof(HasClassRecommendation)); // Update this as it depends on selected recommendation
+        }
+    }
+
+    public bool HasClassRecommendation => HasSelectedRecommendation || SelectedClass?.StandardArrayRecommendation != null;
+
+    public bool HasMultipleRecommendations 
+    { 
+        get 
+        {
+            var result = SelectedClass?.HasMultipleRecommendations == true;
+            System.Diagnostics.Debug.WriteLine($"AbilityScoreAssignmentViewModel.HasMultipleRecommendations: {result} for class {SelectedClass?.Name}");
+            if (SelectedClass != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"  StartingClassBenefits?.StandardArrayRecommendations?.Count: {SelectedClass.StartingClassBenefits?.StandardArrayRecommendations?.Count}");
+                System.Diagnostics.Debug.WriteLine($"  StandardArrayRecommendations?.Count: {SelectedClass.StandardArrayRecommendations?.Count}");
+            }
+            return result;
+        }
+    }
+
+    public bool HasSelectedRecommendation => SelectedRecommendation != null;
+
+    public List<AbilityScoreRecommendation>? AvailableRecommendations
+    {
+        get
+        {
+            // First try the new structure in starting_class_benefits
+            if (SelectedClass?.StartingClassBenefits?.StandardArrayRecommendations?.Count > 0)
+                return SelectedClass.StartingClassBenefits.StandardArrayRecommendations;
+            
+            // Then try at the class level
+            if (SelectedClass?.StandardArrayRecommendations?.Count > 0)
+                return SelectedClass.StandardArrayRecommendations;
+            
+            // No multiple recommendations available
+            return null;
+        }
+    }
 
     public string ClassRecommendationText => SelectedClass != null 
         ? $"Recommended for {SelectedClass.Name}" 
         : "";
+
+    public string RecommendationPreviewText
+    {
+        get
+        {
+            if (SelectedRecommendation?.Array != null)
+            {
+                var preview = SelectedRecommendation.Array
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            else if (SelectedClass?.StandardArrayRecommendation != null)
+            {
+                var rec = SelectedClass.StandardArrayRecommendation;
+                var preview = rec
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            else if (AvailableRecommendations?.Count > 0)
+            {
+                // Fallback: show first available recommendation even if not selected
+                var firstRec = AvailableRecommendations[0];
+                var preview = firstRec.Array
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            return "";
+        }
+    }
 
     // Assignment properties for each ability
     public int? StrengthAssignment
@@ -275,12 +381,22 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
 
     private void ApplyClassRecommendation()
     {
-        if (SelectedClass?.StandardArrayRecommendation == null) return;
+        Dictionary<string, int>? recommendation = null;
 
-        var recommendation = SelectedClass.StandardArrayRecommendation;
+        // Use selected recommendation if available, otherwise fall back to legacy single recommendation
+        if (SelectedRecommendation?.Array != null)
+        {
+            recommendation = SelectedRecommendation.Array;
+        }
+        else if (SelectedClass?.StandardArrayRecommendation != null)
+        {
+            recommendation = SelectedClass.StandardArrayRecommendation;
+        }
+
+        if (recommendation == null) return;
         var sortedScores = GeneratedScores.OrderByDescending(x => x).ToList();
         
-        System.Diagnostics.Debug.WriteLine($"ApplyClassRecommendation for {SelectedClass.Name}");
+        System.Diagnostics.Debug.WriteLine($"ApplyClassRecommendation for {SelectedClass?.Name}");
         System.Diagnostics.Debug.WriteLine($"Generated scores: [{string.Join(", ", sortedScores)}]");
         
         // Ensure we have exactly 6 scores
@@ -393,6 +509,13 @@ public class AbilityScoreAssignmentViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(IntelligenceAvailableScores));
         OnPropertyChanged(nameof(WisdomAvailableScores));
         OnPropertyChanged(nameof(CharismaAvailableScores));
+    }
+
+    private string CapitalizeFirst(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+        return char.ToUpper(input[0]) + input.Substring(1).ToLower();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

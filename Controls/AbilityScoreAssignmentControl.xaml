@@ -81,6 +81,20 @@
                 <TextBlock Text="⚔️ Assign Ability Scores ⚔️" FontSize="20" FontWeight="Bold" 
                            Style="{StaticResource MedievalTextStyle}" HorizontalAlignment="Center" Margin="0,0,0,25"/>
                 
+                <!-- Class Selection Section -->
+                <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
+                        CornerRadius="8" Padding="20" Margin="0,0,0,25">
+                    <StackPanel>
+                        <TextBlock Text="🏰 Select Class for Recommendations" FontWeight="Bold" 
+                                   Style="{StaticResource MedievalTextStyle}" FontSize="14" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                        <ComboBox ItemsSource="{Binding Classes}" 
+                                  SelectedItem="{Binding SelectedClass}"
+                                  DisplayMemberPath="Name" 
+                                  Style="{StaticResource MedievalComboBoxStyle}"
+                                  HorizontalAlignment="Center" MinWidth="200"/>
+                    </StackPanel>
+                </Border>
+                
                 <!-- Class Recommendation Section -->
                 <Border Background="White" BorderBrush="{StaticResource PrimaryGold}" BorderThickness="2" 
                         CornerRadius="8" Padding="20" Margin="0,0,0,25"
@@ -88,6 +102,36 @@
                     <StackPanel>
                         <TextBlock Text="{Binding ClassRecommendationText}" FontWeight="Bold" 
                                    Style="{StaticResource MedievalTextStyle}" FontSize="14" Margin="0,0,0,15"/>
+                        
+                        <!-- Recommendation Selection (only visible if multiple recommendations available) -->
+                        <Grid Visibility="{Binding HasMultipleRecommendations, Converter={StaticResource BoolToVisConverter}}" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🎯 Build:" VerticalAlignment="Center" Margin="0,0,10,0"
+                                       Style="{StaticResource MedievalTextStyle}" FontSize="14"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableRecommendations}"
+                                      SelectedItem="{Binding SelectedRecommendation}"
+                                      DisplayMemberPath="Name"
+                                      Style="{StaticResource MedievalComboBoxStyle}"/>
+                        </Grid>
+                        
+                        <!-- Recommendation Preview -->
+                        <Border Background="{StaticResource MedievalBackground}" BorderBrush="{StaticResource PrimaryGold}" 
+                                BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,15"
+                                Visibility="{Binding HasSelectedRecommendation, Converter={StaticResource BoolToVisConverter}}">
+                            <StackPanel>
+                                <TextBlock Text="📊 Preview:" FontWeight="Bold" Style="{StaticResource MedievalTextStyle}" 
+                                           FontSize="12" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding RecommendationPreviewText}" Style="{StaticResource MedievalTextStyle}" 
+                                           FontSize="12" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedRecommendation.Description}" Style="{StaticResource MedievalTextStyle}" 
+                                           FontSize="11" FontStyle="Italic" TextWrapping="Wrap" Margin="0,5,0,0"
+                                           Visibility="{Binding HasSelectedRecommendation, Converter={StaticResource BoolToVisConverter}}"/>
+                            </StackPanel>
+                        </Border>
+                        
                         <Button Content="⚡ Apply Class Recommendation" Command="{Binding ApplyClassRecommendationCommand}"
                                 Style="{StaticResource MedievalButtonStyle}" Background="#228B22" HorizontalAlignment="Center"/>
                     </StackPanel>

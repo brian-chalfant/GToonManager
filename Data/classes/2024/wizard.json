@@ -1,0 +1,733 @@
+{
+    "name": "WIZARD",
+    "description": "A wizard character class with unique abilities and features.",
+    "hit_dice": "1d6",
+    "starting_class_benefits": {
+        "description": "Benefits gained when WIZARD is your first class",
+        "primary_ability": [
+            "intelligence"
+        ],
+        "standard_array_recommendations": [
+            {
+                "name": "Standard",
+                "description": "Classic spellcaster with some survivability",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 13,
+                    "constitution": 14,
+                    "intelligence": 15,
+                    "wisdom": 12,
+                    "charisma": 10
+                }
+            }
+        ],
+        "saving_throw_proficiencies": [
+            "intelligence",
+            "wisdom"
+        ],
+        "armor_proficiencies": [
+            "none"
+        ],
+        "weapon_proficiencies": [
+            "simple weapons"
+        ],
+        "tool_proficiencies": [],
+        "skill_proficiencies": {
+            "choose": 2,
+            "from": [
+                ": Arcana",
+                "History",
+                "Insight",
+                "Investigation",
+                "Medicine",
+                "Religion"
+            ]
+        },
+        "equipment_grants": {
+            "choice": {
+                "description": "Choose one of the following equipment packages",
+                "options": [
+                    {
+                        "name": "Equipment Package",
+                        "description": "Standard wizard equipment and gold",
+                        "fixed": [
+                            {
+                                "item": "Arcane Focus",
+                                "quantity": 1,
+                                "description": "Arcane Focus"
+                            },
+                            {
+                                "item": "Dagger",
+                                "quantity": 2,
+                                "description": "Dagger"
+                            },
+                            {
+                                "item": "Robe",
+                                "quantity": 1,
+                                "description": "Robe"
+                            },
+                            {
+                                "item": "Scholar\u2019s Pack",
+                                "quantity": 1,
+                                "description": "Scholar\u2019s Pack"
+                            }
+                        ],
+                        "currency": {
+                            "gold": 5
+                        }
+                    },
+                    {
+                        "name": "Gold Only",
+                        "description": "Choose gold instead of equipment",
+                        "currency": {
+                            "gold": 15
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "multiclass_benefits": {
+        "description": "Benefits gained when multiclassing into WIZARD",
+        "prerequisites": {
+            "minimum_ability_scores": {
+                "intelligence": 13
+            }
+        },
+        "weapon_proficiencies": [
+            "simple weapons"
+        ],
+        "armor_proficiencies": [
+            "none"
+        ]
+    },
+    "features": {
+        "1": [
+            {
+                "name": "SPELLCASTING",
+                "description": "As a student of arcane magic, you have learned to cast spells. See the Player\u2019s Handbook for rules on spellcasting. The information below details how you use those rules as a Wizard. Cantrips. You know three cantrips of your choice from the Wizard spell list. Light, Mage Hand and Ray of Frost are recommended. Whenever you finish a Long Rest, you can replace one of your cantrips from this feature with another Wizard cantrip of your choice. When you reach levels 4 and 10 in this class, you learn another Wizard cantrip of your choice, as shown in the Cantrips column of the Wizard table. Spellbook. Your wizardly apprenticeship culminated in the creation of a unique book in your possession: your spellbook. It is a Tiny object that weighs 3 pounds, and it contains 100 pages, which can be read on...",
+                "mechanics": {
+                    "type": "passive"
+                }
+            },
+            {
+                "name": "RITUAL ADEPT",
+                "description": "You can cast any spell as a Ritual if that spell has the Ritual tag and the spell is in your spellbook. You needn\u2019t have the spell prepared, but you must read from the book to cast a spell in this way.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            },
+            {
+                "name": "ARCANE RECOVERY",
+                "description": "You can regain some of your magical energy by studying your spellbook. When you finish a Short Rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your Wizard level (rounded up), and none of the slots can be level 6 or higher. For example, if you\u2019re a level 4 Wizard, you can recover up to two levels worth of spell slots, regaining either a level 2 spell slot or two level 1 spell slots. Once you use this feature, you can\u2019t do so again until you finish a Long Rest.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "2": [
+            {
+                "name": "SCHOLAR",
+                "description": "While studying magic, you also specialized in an academic field of study. Choose one of the following skills in which you have proficiency: Arcana, History, Investigation, Medicine, Nature or Religion. You have Expertise in the chosen skill.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "3": [
+            {
+                "name": "WIZARD SUBCLASS",
+                "description": "You gain a Wizard subclass of your choice:",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "4": [
+            {
+                "name": "ABILITY SCORE IMPROVEMENT",
+                "description": "You gain the Ability Score Improvement feat or another feat of your choice for which you qualify. As shown on the Wizard table, you gain this feature again at levels 8, 12 and 16.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "5": [
+            {
+                "name": "MEMORIZE SPELL",
+                "description": "Whenever you finish a Short Rest, you can study your spellbook and replace one of the level 1+ Wizard spells you have prepared for your Spellcasting feature with another level 1+ spell from the book.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "18": [
+            {
+                "name": "SPELL MASTERY",
+                "description": "You have achieved such mastery over certain spells that you can cast them at will. Choose a level 1 and a level 2 spell that are in your spellbook and that have a casting time of an action. You always have those spells prepared, and you can cast them at their lowest level without expending a spell slot. If you want to cast either spell at a higher level, you must expend a spell slot. Whenever you finish a Long Rest, you can study your spellbook and replace one of those spells for another eligible spell of the same level from the book.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "19": [
+            {
+                "name": "EPIC BOON",
+                "description": "You gain an Epic Boon feat or another feat of your choice for which you qualify. Boon of Fate is recommended.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "20": [
+            {
+                "name": "SIGNATURE SPELLS",
+                "description": "Choose two level 3 spells in your spellbook as your signature spells. You always have these spells prepared, and you can cast each of them once at level 3 without expending a spell slot. When you do so, you can\u2019t do so again until you finish a Short Rest or Long Rest. To cast either spell at a higher level, you must expend a spell slot.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ]
+    },
+    "subclasses": {
+        "ABJURER": {
+            "name": "ABJURER",
+            "description": "Your study of magic is focused on spells that block, banish, or protect\u2014ending harmful effects, banishing evil influences, and protecting the weak. Abjurers are sought when baleful spirits require exorcism, when important locations must be guarded against magical spying, and when portals to other planes of existence must be closed. Adventuring parties value Abjurers for the protection they provide their companions against a variety of hostile magic and other attacks.",
+            "features": {
+                "3": [
+                    {
+                        "name": "ABJURATION SAVANT",
+                        "description": "Choose two Wizard spells from the Abjuration school, each of which must be no higher than level 2, and add them to your spellbook for free. In addition, whenever you gain access to a new level of spell slots in this class, you can add one Wizard spell from the Abjuration school to your spellbook for free. The chosen spell must be of a level for which you have spell slots.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARCANE WARD",
+                        "description": "You can weave magic around yourself for protection. When you cast an Abjuration spell with a spell slot, you can simultaneously use a strand of the spell\u2019s magic to create a magical ward on yourself that lasts until you finish a Long Rest. The ward has a Hit Point maximum equal to twice your Wizard level plus your Intelligence modifier. Whenever you take damage, the ward takes the damage instead and if you have any Resistances or Vulnerabilities, apply them before reducing the ward's Hit Points. If this damage reduces the ward to 0 Hit Points, you take any remaining damage. While the ward has 0 Hit Points, it can\u2019t absorb damage, but its magic remains. Whenever you cast an Abjuration spell with a spell slot, the ward regains a number of Hit Points equal to twice the level of the spell slot...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "PROJECTED WARD",
+                        "description": "When a creature that you can see within 30 feet of yourself takes damage, you can use your Reaction to cause your Arcane Ward to absorb that damage. If this damage reduces the ward to 0 Hit Points, the warded creature takes any remaining damage. If that creature has any Resistances or Vulnerabilities, apply them before reducing the ward's Hit Points.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "SPELL BREAKER",
+                        "description": "You always have the Counter Spell and Dispel Magic spell prepared. In addition, you can cast Dispel Magic as a Bonus Action, and you can add your Proficiency Bonus to its ability check. When you cast either spell with a spell slot, that slot isn't expended if the spell fails to stop a spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "SPELL RESISTANCE",
+                        "description": "You have Advantage on saving throws against spells, and you have Resistance against the damage of spells.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "DIVINER": {
+            "name": "DIVINER",
+            "description": "The counsel of a Diviner is sought by those who seek a clearer understanding of the past, present, and future. As a Diviner, you strive to part the veils of space, time, and consciousness so you can see clearly. You work to master spells of discernment, remote viewing, supernatural knowledge, and foresight.",
+            "features": {
+                "3": [
+                    {
+                        "name": "DIVINATION SAVANT",
+                        "description": "Choose two Wizard spells from the Divination school, each of which must be no higher than level 2, and add them to your spellbook for free. In addition, whenever you gain access to a new level of spell slots in this class, you can add one Wizard spell from the Divination school to your spellbook for free. The chosen spell must be of a level for which you have spell slots.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "PORTENT",
+                        "description": "Glimpses of the future begin to press in on your awareness. Whenever you finish a Long Rest, roll two d20s and record the numbers rolled. You can replace any D20 Test made by you or a creature that you can see with one of these foretelling rolls. You must choose to do so before the roll, and you can replace a roll in this way only once per turn. Each foretelling roll can be used only once. When you finish a Long Rest, you lose any unused foretelling rolls.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "EXPERT DIVINATION",
+                        "description": "Casting Divination spells comes so easily to you that it expends only a fraction of your spellcasting efforts. When you cast a Divination spell using a level 2+ spell slot, you regain one expended spell slot. The slot you regain must be of a level lower than the slot you expended and can\u2019t be higher than level 5.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "THE THIRD EYE",
+                        "description": "You can increase your powers of perception. As a Bonus Action, choose one of the following benefits, which lasts until you start a Short Rest or Long Rest. You can\u2019t use this feature again until you finish a Short Rest or Long Rest. Darkvision. You gain Darkvision out to a range of 120 feet. Greater Comprehension. You can read any language. See Invisibility. You can cast See Invisibility without expending a spell slot.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "GREATER PORTENT",
+                        "description": "The visions in your dreams intensify and paint a more accurate picture in your mind of what is to come. Roll three d20s for your Portent feature rather than two.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "EVOKER": {
+            "name": "EVOKER",
+            "description": "You focus your study on magic that creates powerful elemental effects such as bitter cold, searing flame, rolling thunder, crackling lightning, and burning acid. Some Evokers find employment in military forces, serving as artillery to blast enemy armies from afar. Others use their spectacular power to protect the weak, while some seek their own gain as adventurers.",
+            "features": {
+                "3": [
+                    {
+                        "name": "EVOCATION SAVANT",
+                        "description": "Choose two Wizard spells from the Evocation school, each of which must be no higher than level 2, and add them to your spellbook for free. In addition, whenever you gain access to a new level of spell slots in this class, you can add one Wizard spell from the Evocation school to your spellbook for free. The chosen spell must be of a level for which you have spell slots.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "POTENT CANTRIP",
+                        "description": "Your damaging cantrips affect even creatures that avoid the brunt of the effect. When you cast a cantrip at a creature and you miss with the attack roll or the target succeeds on a saving throw against the cantrip, the target takes half the cantrip\u2019s damage (if any) but suffers no additional effect from the cantrip.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "SCULPT SPELLS",
+                        "description": "You can create pockets of relative safety within the effects of your evocations. When you cast an Evocation spell that affects other creatures that you can see, you can choose a number of them equal to 1 + the spell\u2019s level. The chosen creatures automatically succeed on their saving throws against the spell, and they take no damage if they would normally take half damage on a successful save.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "EMPOWERED EVOCATION",
+                        "description": "Whenever you cast a Wizard spell from the Evocation school, you can add your Intelligence modifier to one damage roll of that spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "OVERCHANNEL",
+                        "description": "You can increase the power of your spells. When you cast a Wizard spell with a spell slot of levels 1\u20135 that deals damage, you can deal maximum damage with that spell on the turn you cast it. The first time you do so, you suffer no adverse effect. If you use this feature again before you finish a Long Rest, you take 2d12 Necrotic damage for each level of the spell slot immediately after you cast it. This damage ignores Resistance and Immunity. Each time you use this feature again before finishing a Long Rest, the Necrotic damage per spell level increases by 1d12.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "ILLUSIONIST": {
+            "name": "ILLUSIONIST",
+            "description": "You focus your study on magic that dazzles the senses and tricks the mind. Your magic is subtle, but the illusions you craft make the impossible seem real. Some Illusionists\u2014including many Gnome Wizards\u2014are benign tricksters who use their spells to entertain. Others are more sinister masters of deception, using their illusions to frighten and fool others for their personal gain.",
+            "features": {
+                "3": [
+                    {
+                        "name": "ILLUSION SAVANT",
+                        "description": "Choose two Wizard spells from the Illusion school, each of which must be no higher than level 2, and add them to your spellbook for free. In addition, whenever you gain access to a new level of spell slots in this class, you can add one Wizard spell from the Illusion school to your spellbook for free. The chosen spell must be of a level for which you have spell slots.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "IMPROVED ILLUSIONS",
+                        "description": "You can cast Illusion spells without providing Verbal components and if an Illusion spell you cast has a range of 10+ feet, the range increases by 60 feet. You also know the Minor Illusion cantrip. If you already know it, you learn a different Wizard cantrip of your choice. The cantrip doesn\u2019t count against your number of cantrips known. You can create both a sound and an image with a single casting of Minor Illusion and you can cast it as a Bonus Action.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "PHANTASMAL CREATURES",
+                        "description": "You always have the Summon Beast and Summon Fey spells prepared. Whenever you cast either spell, you can change its school to Illusion, which causes the summoned creature to appear spectral. You can cast the Illusion version of each spell without expending a spell slot, but casting it without a slot halves the creature's Hit Points. Once you cast either spell without a spell slot, you must finish a Short Rest before you can cast the spell in that way again.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "ILLUSORY SELF",
+                        "description": "When a creature makes an attack roll against you, you can use your Reaction to interpose the illusory duplicate between the attacker and yourself. The attack automatically misses you, then the illusion dissipates. Once you use this feature, you can\u2019t use it again until you finish a Short Rest or Long Rest. You can also restore your use of it by expending a of level 2+ spell slot (no action required).",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "ILLUSORY REALITY",
+                        "description": "You have learned to weave shadow magic into your illusions to give them a semi-reality. When you cast an Illusion spell with a spell slot, you can choose one inanimate, nonmagical object that is part of the illusion and make that object real. You can do this on your turn as a Bonus Action while the spell is ongoing. The object remains real for 1 minute, during which it can't deal damage or give any conditions. For example, you can create an illusion of a bridge over a chasm and then make it real long enough for your allies to cross.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Bladesinger": {
+            "name": "Bladesinger",
+            "description": "Bladesingers master a tradition of wizardry that incorporates swordplay and dance. Originally created by elves, this tradition has been adopted by non-elf practitioners, who honor and expand on the elven ways. In combat, a bladesinger uses a series of intricate, elegant maneuvers that fend off harm and allow the bladesinger to channel magic into devastating attacks and a cunning defense. Many who have observed a bladesinger at work remember the display as one of the more beautiful experiences in their life, a glorious dance accompanied by a singing blade. 3RD LEVEL: TRAINING IN WAR AND SONG You gain proficiency with light armor, and you gain proficiency with one type of one-handed melee weapon of your choice. You also gain proficiency in the Performance skill if you don\u2019t already have it. ...",
+            "features": {
+                "3": [
+                    {
+                        "name": "TRAINING IN WAR AND SONG",
+                        "description": "You gain proficiency with light armor, and you gain proficiency with one type of one-handed melee weapon of your choice. You also gain proficiency in the Performance skill if you don\u2019t already have it.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "BLADESONG",
+                        "description": "You can invoke an elven magic called the Bladesong, provided that you aren\u2019t wearing medium or heavy armor or using a shield. It graces you with supernatural speed, agility, and focus. You can use a bonus action to start the Bladesong, which lasts for 1 minute. It ends early if you are incapacitated, if you don medium or heavy armor or a shield, or if you use two hands to make an attack with a weapon. You can also dismiss the Bladesong at any time (no action required). While your Bladesong is active, you gain the following benefits: You gain a bonus to your AC equal to your Intelligence modifier (minimum of +1) Your walking speed increases by 10 feet. You have advantage on Dexterity (Acrobatics) checks. You gain a bonus to any Constitution saving throw you make to maintain your concentration on a spell. The bonus equals your Intelligence modifier (minimum of +1). You can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses of it when you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "EXTRA ATTACK",
+                        "description": "You can attack twice, instead of once, whenever you take the Attack action on your turn. Moreover, you can cast one of your cantrips in place of one of those attacks.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "SONG OF DEFENSE",
+                        "description": "You can direct your magic to absorb damage while your Bladesong is active. When you take damage, you can use your reaction to expend one spell slot and reduce that damage to you by an amount equal to five times the spell slot's level.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "SONG OF VICTORY",
+                        "description": "You can add your Intelligence modifier (minimum of +1) to the damage of your melee weapon attacks while your Bladesong is active.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Order of Scribes": {
+            "name": "Order of Scribes",
+            "description": "Magic of the book-that's what many folk call wizardry. The name is apt, given how much time wizards spend poring over tomes and penning theories about the nature of magic. It's rare to see wizards traveling without books and scrolls sprouting from their bags, and a wizard would go to great lengths to plumb an archive of ancient knowledge. Among wizards, the Order of Scribes is the most bookish. It takes many forms in different worlds, but its primary mission is the same everywhere: recording magical discoveries so that wizardry can flourish. And while all wizards value spellbooks, a wizard in the Order of Scribes magically awakens their book, turning it into a trusted companion. All wizards study books, but a wizardly scribe talks to theirs! 3RD LEVEL: WIZARDLY QUILL As a bonus action, you...",
+            "features": {
+                "3": [
+                    {
+                        "name": "WIZARDLY QUILL",
+                        "description": "As a bonus action, you can magically create a Tiny quill in your free hand. The magic quill has the following properties: The quill doesn\u2019t require ink. When you write with it, it produces ink in a color of your choice on the writing surface. The time you must spend to copy a spell into your spell book equals 2 minutes per spell level if you use the quill for the transcription. You can erase anything you write with the quill if you wave the feather over the text as a bonus action, provided the text is within 5 feet of you. This quill disappears if you create another one or if you die.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "AWAKENED SPELLBOOK",
+                        "description": "Using specially prepared inks and ancient incantations passed down by your wizardly order, you have awakened an arcane sentience within your spellbook, while you are holding the book, it grants you the following benefits: You can use the book as a spellcasting focus for your wizard spells. When you cast a wizard spell with a spell slot, you can temporarily replace its damage type with a type that appears in another spell in your spellbook, which magically alters the spell's formula for this casting only. The latter spell must be of the same level as the spell slot you expend. When you cast a wizard spell as a ritual, you can use the spell's normal casting time, rather than adding 10 minutes to it. Once you use this benefit, you can't do so again until you finish a long rest. If necessary, you can replace the book over the course of a short rest by using your Wizardly Quill to write arcane sigils in a blank book or a magic spellbook to which you're attuned. At the end of the rest, your spellbook's consciousness is summoned into the new book, which the consciousness transforms into your spellbook, along with all its spells. If the previous book still existed somewhere, all the spells vanish from its pages.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "MANIFEST MIND",
+                        "description": "You can conjure forth the mind of your Awakened Spellbook. As a bonus action while the book is on your person, you can cause the mind to manifest as a Tiny spectral object, hovering in an unoccupied space of your choice within 60 feet of you. The spectral mind is intangible and doesn't occupy its space, and it sheds dim light in a 10-foot radius. It looks like a ghostly tome, a cascade of text, or a scholar from the past (your choice). While manifested, the spectral mind can hear and see, and it has darkvision with a range of 60 feet. The mind can telepathically share with you what it sees and hears (no action required). Whenever you cast a wizard spell on your turn, you can cast it as if you were in the spectral mind's space, instead of your own, using its senses. You can do so a number of times per day equal to your proficiency bonus, and you regain all expended uses when you finish a long rest. As a bonus action, you can cause the spectral mind to hover up to 30 feet to an unoccupied space that you or it can see. It can pass through creatures but not objects. The spectral mind stops manifesting if it is ever more than 300 feet away from you, if someone casts Dispel Magic on it, if the Awakened Spellbook is destroyed, if you die, or if you dismiss the spectral mind as a bonus action. Once you conjure the mind, you can't do so again until you finish a long rest, unless you expend a spell slot of any level to conjure it again.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "MASTER SCRIVENER",
+                        "description": "Whenever you finish a long rest, you can create one magic scroll by touching your Wizardly Quill to a blank piece of paper or parchment and causing one spell from your Awakened Spellbook to be copied onto the scroll. The spellbook must be within 5 feet of you when you make the scroll. The chosen spell must be of 1st or 2nd level and must have a casting time of 1 action. Once in the scroll, the spell's power is enhanced, counting as one level higher than normal. You can cast the spell from the scroll by reading it as an action. The scroll is unintelligible to anyone else, and the spell vanishes from the scroll when you cast it or when you finish your next long rest. You are also adept at crafting spell scrolls, which are described in the treasure chapter of the Dungeon Master's Guide. The gold and time you must spend to make such a scroll are halved if you use your Wizardly Quill.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "ONE WITH THE WORD",
+                        "description": "Your connection to your Awakened Spellbook has become so profound that your soul has become entwined with it. While the book is on your person, you have advantage on all Intelligence (Arcana) checks, as the spellbook helps you remember magical lore. Moreover, if you take damage while your spellbook's mind is manifested, you can prevent all of that damage to you by using your reaction to dismiss the spectral mind, using its magic to save yourself. Then roll 3d6. The spellbook temporarily loses spells of your choice that have a combined spell level equal to that roll or higher. For example, if the roll's total is 9, spells vanish from the book that have a combined level of at least 9, which could mean one 9th-level spell, three 3rd-level spells, or some other combination. If there aren't enough spells in the book to cover this cost, you drop to 0 hit points. Until you finish 1d6 long rests, you are incapable of casting the lost spells, even if you find them on a scroll or in another spellbook. After you finish the required number of rests, the spells reappear in the spell book. Once you use this reaction, you can't do so again until you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "War Magic": {
+            "name": "War Magic",
+            "description": "A variety of arcane colleges specialize in training wizards for war. The tradition of War Magic blends principles of evocation and abjuration, rather than specializing in either of those schools. It teaches techniques that empower a caster\u2019s spells, while also providing methods for wizards to bolster their own defenses. Followers of this tradition are known as war mages. They see their magic as both a weapon and armor, a resource superior to any piece of steel. War mages act fast in battle, using their spells to seize tactical control of a situation. Their spells strike hard, while their defensive skills foil their opponents\u2019 attempts to counterattack. War mages are also adept at turning other spellcasters' magical energy against them. 3RD LEVEL: ARCANE DEFLECTION You have learned to weave...",
+            "features": {
+                "3": [
+                    {
+                        "name": "ARCANE DEFLECTION",
+                        "description": "You have learned to weave your magic to fortify yourself against harm. When you are hit by an attack or you fail a saving throw, you can use your reaction to gain a +2 bonus to your AC against that attack or a +4 bonus to that saving throw. When you use this feature, you can\u2019t cast spells other than cantrips until the end of your next turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "TACTICAL WIT",
+                        "description": "Your keen ability to assess tactical situations allows you to act quickly in battle. You can give yourself a bonus to your initiative rolls equal to your Intelligence modifier.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARTIFICER SUBCLASS",
+                        "description": "You gain an Artificer subclass, Your choice grants you features at 5th level and again at 9th and 15th level.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "Alchemist",
+                        "description": "",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "Armourer",
+                        "description": "",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "Artillerist",
+                        "description": "Battle Smith Subclasses are detailed after this class\u2019s description. A subclass is a specialization that grants you special features at certain Artificer levels. For the rest of your career, you gain each of your subclass\u2019s features that are of your Artificer level and lower.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "THE RIGHT TOOL FOR THE JOB",
+                        "description": "You've learned how to produce exactly the tool you need: with thieves' tools or artisan's tools in hand, you can magically create one set of artisan's tools in an unoccupied space within 5 feet of you. This creation requires 1 hour of uninterrupted work, which can coincide with a short or long rest. Though the product of magic, the tools are non-magical, and they vanish when you use this feature again.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "POWER SURGE",
+                        "description": "You can store magical energy within yourself to later empower your damaging spells. You can store a maximum number of power surges equal to your Intelligence modifier (minimum of one). Whenever you finish a long rest, your number of power surges resets to one. Whenever you successfully end a spell with Dispel Magic or Counterspell, you gain one power surge, as you steal magic from the spell you foiled. If you end a short rest with no power surges, you gain one power surge. Once per turn when you deal damage to a creature or object with a wizard spell, you can spend one power surge to deal extra force damage to that target. The extra damage equals half your wizard level.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "TOOL EXPERTISE",
+                        "description": "Your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a tool.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "DURABLE MAGIC",
+                        "description": "The magic you channel helps ward off harm. While you maintain concentration on a spell, you have a +2 bonus to AC and all saving throws.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "MAGIC ITEM ADEPT",
+                        "description": "You achieve a profound understanding of how to use and make magic items, giving you the following benefits: You can attune to up to four magic items at once. If you craft a magic item with a rarity of common or uncommon, it takes you a quarter of the normal time, and it costs you half as much of the usual gold.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "DEFLECTING SHROUD",
+                        "description": "Your Arcane Deflection becomes infused with deadly magic. When you use your Arcane Deflection feature, you can cause magical energy to arc from you. Up to three creatures of your choice within 60 feet of you each take force damage equal to half your wizard level. =========================",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARTIFICER",
+                        "description": "https://5point5.fandom.com/wiki/Artificer_Infusion_Options https://5point5.fandom.com/wiki/Artificer_Spell_List This is a non-playtest class (and subclasses) that can be used. Check with your DM first before using it. Masters of invention, artificers use ingenuity and magic to unlock extraordinary capabilities in objects. They see magic as a complex system waiting to be decoded and then harnessed in their spells and inventions. You can find everything you need to play one of these inventors in the next few sections. Artificers use a variety of tools to channel their arcane power. To cast a spell, an artificer might use alchemist's supplies to create a potent elixir, calligrapher's supplies to inscribe a sigil of power, or tinker's tools to craft a temporary charm. The magic of artificers is tied to their tools and their talents, and few other characters can produce the right tool for a job as well as an artificer.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "CREATING AN ARTIFICER",
+                        "description": "To create a Artificer, consult the following lists, which provide Hit Points, proficiencies, and armor training. If you\u2019re making a level 1 character, also consult the \u201cStarting Equipment\u201d section, and if you\u2019re using the multiclassing rules, see the \u201cMulticlassing and the Artificer\u201d sidebar. Then look at the Artificer table to see the class features you get at each level in this class. Descriptions of those features appear in the \u201cArtificer Class Features\u201d section.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "HIT POINTS",
+                        "description": "Hit Dice: 1d8 per artificer level Hit Points at 1st Level: 8 + your Constitution modifier Hit Points after 1st Level: 1d8 (5) + your Constitution modifier per artificer level",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "PROFICIENCIES",
+                        "description": "Saving Throws: Constitution, Intelligence Skills (Choose 2): Arcana, History, Investigation, Medicine, Nature, Perception, Sleight of Hand Weapons: Simple weapons, Firearms Tools: Thieves\u2019 tools, tinker\u2019s tools, one type of artisan\u2019s tools of your choice",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARMOR TRAINING",
+                        "description": "Light armor, medium armor, shields",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "STARTING EQUIPMENT",
+                        "description": "",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "Any two simple weapons",
+                        "description": "",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "A light crossbow",
+                        "description": "20 bolts (a) Studded leather armor or (b) Scale mail Thieves\u2019 tools and a Dungeoneer\u2019s pack 5 GP",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "MULTICLASSING AND THE ARTIFICER",
+                        "description": "If your group uses the multiclassing rules in the Player\u2019s Handbook, here\u2019s what you need to know if you choose Artificer as one of your classes. Ability Score Minimum. As a multiclass character, you must have a score of at least 13 in the Artificer\u2019s primary ability, Intelligence, to take a level in this class or to take a level in another class if you\u2019re already a Artificer. Proficiencies Gained. If Artificer isn\u2019t your initial class, here are the proficiencies you gain when you take your first level as an artificer: thieves\u2019 tools, tinker\u2019s tools. Armor Training. When you gain your first Artificer level, you gain armor training Light armor, Medium armor and Shields. Spell Slots. Add half your levels (rounded up) in the Artificer class to the appropriate levels from other classes to determine your available spell slots, as detailed in the multiclassing rules. You prepare spells for each of your classes individually, referring to the rules of each class to determine the number of spells you prepare for it.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARTIFICER CLASS FEATURES",
+                        "description": "As an Artificer, you gain the following class features when you reach the specified levels in this class. These features are listed on the Artificer table. The Artificer\tSpell Slots per Spell Level Level\tProficiency Bonus\tFeatures\tInfusions Known\tInfused Items\tCantrips Known\t1st\t2nd\t3rd\t4th\t5th 1st\t+2\tMagical Tinkering, Spellcasting\t-\t-\t2\t2\t-\t-\t-\t- 2nd\t+2\tInfuse Item\t4\t2\t2\t2\t-\t-\t-\t- 3rd\t+2\tArtificer Specialist, The Right Tool for the Job\t4\t2\t2\t3\t-\t-\t-\t- 4th\t+2\tAbility Score Improvement\t4\t2\t2\t3\t-\t-\t-\t- 5th\t+3\tArtificer Specialist feature\t4\t2\t2\t4\t2\t-\t-\t- 6th\t+3\tTool Expertise\t6\t3\t2\t4\t2\t-\t-\t- 7th\t+3\tFlash of Genius\t6\t3\t2\t4\t3\t-\t-\t- 8th\t+3\tAbility Score Improvement\t6\t3\t2\t4\t3\t-\t-\t- 9th\t+4\tArtificer Specialist feature\t6\t3\t2\t4\t3\t2\t-\t- 10th\t+4\tMagic Item Adept\t8\t4\t3\t4\t3\t2\t-\t- 11th\t+4\tSpell-Storing Item\t8\t4\t3\t4\t3\t3\t-\t- 12th\t+4\tAbility Score Improvement\t8\t4\t3\t4\t3\t3\t-\t- 13th\t+5\t-\t8\t4\t3\t4\t3\t3\t1\t- 14th\t+5\tMagic Item Savant\t10\t5\t4\t4\t3\t3\t1\t- 15th\t+5\tArtificer Specialist feature\t10\t5\t4\t4\t3\t3\t2\t- 16th\t+5\tAbility Score Improvement\t10\t5\t4\t4\t3\t3\t2\t- 17th\t+6\t-\t10\t5\t4\t4\t3\t3\t3\t1 18th\t+6\tMagic Item Master\t12\t6\t4\t4\t3\t3\t3\t1 19th\t+6\tAbility Score Improvement\t12\t6\t4\t4\t3\t3\t3\t2 20th\t+6\tSoul of Artifice\t12\t6\t4\t4\t3\t3\t3\t2",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "MAGIC ITEM SAVANT",
+                        "description": "At 14th level, your skill with magic items deepens more, giving you the following benefits: You can attune to up to five magic items at once. You ignore all class, race, spell and level requirements on attuning to or using a magic item.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "1": [
+                    {
+                        "name": "MAGICAL TINKERING",
+                        "description": "At 1st level, you've learned how to invest a spark of magic into mundane objects. To use this ability, you must have thieves' tools or artisan's tools in hand. You then touch a Tiny non-magical object as an action and give it one of the following magical properties of your choice: The object sheds bright light in a 5-foot radius and dim light for an additional 5 feet. Whenever tapped by a creature, the object emits a recorded message that can be heard up to 10 feet away. You utter the message when you bestow this property on the object, and the recording can be no more than 6 seconds long. The object continuously emits your choice of an odor or a nonverbal sound (wind, waves, chirping, or the like). The chosen phenomenon is perceivable up to 10 feet away. A static visual effect appears on one of the object's surfaces. This effect can be a picture, up to 25 words of text, lines and shapes, or a mixture of these elements, as you like. The chosen property lasts indefinitely. As an action, you can touch the object and end the property early. You can bestow magic on multiple objects, touching one object each time you use this feature, though a single object can only bear one property at a time. The maximum number of objects you can affect with this feature at one time is equal to your Intelligence modifier (minimum of one object). If you try to exceed your maximum, the oldest property immediately ends, and then the new property applies.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "SPELLCASTING",
+                        "description": "You've studied the workings of magic and how to cast spells, channeling the magic through objects. To observers, you don't appear to be casting spells in a conventional way; you appear to produce wonders from mundane items and outlandish inventions. See the Player\u2019s Handbook for rules on spellcasting. The information below details how you use those rules as a Artificer. Tools Required. You produce your artificer spell effects through your tools. You must have a spellcasting focus-specifically thieves' tools or some kind of artisan's tool-in hand when you cast any spell with this Spellcasting feature (meaning the spell has an \"M\" component when you cast it). You must be proficient with the tool to use it in this way. See the equipment chapter in the Player's Handbook for descriptions of these tools. After you gain the Infuse Item feature at 2nd level, you can also use any item bearing one of your infusions as a spellcasting focus. Cantrips. At 1st level, you know two cantrips of your choice from the artificer spell list. At higher levels, you learn additional artificer can trips of your choice, as shown in the Cantrips Known column of the Artificer table. When you gain a level in this class, you can replace one of the artificer cantrips you know with another cantrip from the artificer spell list. Preparing and Casting Spells. The Artificer table shows how many spell slots you have to cast your artificer spells. To cast one of your artificer spells of 1st level or higher, you must expend a slot of the spell's level or higher. You regain all expended spell slots when you finish a long rest. You prepare the list of artificer spells that are available for you to cast, choosing from the artificer spell list. When you do so, choose a number of artificer spells equal to your Intelligence modifier + half your artificer level, rounded down (minimum of one spell). The spells must be of a level for which you have spell slots. For example, if you are a 5th-level artificer, you have four 1st-level and two 2nd-level spell slots. With an Intelligence of 14, your list of prepared spells can include four spells of 1st or 2nd level, in any combination. If you prepare the 1st-level spell Cure Wounds, you can cast it using a lst-level or a 2nd-level slot. Casting the spell doesn't remove it from your list of prepared spells. Changing your Prepared Spells. You can change your list of prepared spells when you finish a long rest. Preparing a new list of artificer spells requires time spent tinkering with your spellcasting focuses: at least 1 minute per spell level for each spell on your list. Spellcasting Ability. Intelligence is your spellcasting ability for the spells you cast with your Artificer features. Ritual Casting. You can cast an artificer spell as a ritual if that spell has the ritual tag and you have the spell prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "2": [
+                    {
+                        "name": "INFUSE ITEM",
+                        "description": "You've gained the ability to imbue mundane items with certain magical infusions, turning those objects into magic items. When you gain this feature, pick four Artificer Infusions to learn. You learn additional infusions of your choice when you reach certain levels in this class, as shown in the Infusions Known column of the Artificer table. Whenever you gain a level in this class, you can replace one of the artificer infusions you learned with a new one. Whenever you finish a long rest, you can touch a non-magical object and imbue it with one of your artificer infusions, turning it into a magic item. An infusion works on only certain kinds of objects, as specified in the infusion's description. If the item requires attunement, you can attune yourself to it the instant you infuse the item. If you decide to attune to the item later, you must do so using the normal process for attunement (see the attunement rules in the Dungeon Master's Guide). Your infusion remains in an item indefinitely, but when you die, the infusion vanishes after a number of days equal to your Intelligence modifier (minimum of 1 day). The infusion also vanishes if you replace your knowledge of the infusion. You can infuse more than one non-magical object at the end of a long rest; the maximum number of objects appears in the Infused Items column of the Artificer table. You must touch each of the objects, and each of your infusions can be in only one object at a time. Moreover, no object can bear more than one of your infusions at a time. If you try to exceed your maximum number of infusions, the oldest infusion ends, and then the new infusion applies. If an infusion ends on an item that contains other things, like a bag of holding, its contents harmlessly appear in and around its space.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "4": [
+                    {
+                        "name": "ABILITY SCORE IMPROVEMENT",
+                        "description": "You gain the Ability Score Improvement feat or another feat of your choice for which you qualify. As shown on the Artificer table, you gain this feature again at levels 8, 12, 16, and 19.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "name": "FLASH OF GENIUS",
+                        "description": "You've gained the ability to come up with solutions under pressure. When you or another creature you can see within 30 feet of you makes an ability check or a saving throw, you can use your reaction to add your Intelligence modifier to the roll. You can use this feature a number of times equal to your Intelligence modifier (minimum of once). You regain all expended uses when you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "11": [
+                    {
+                        "name": "SPELL-STORING ITEM",
+                        "description": "You can now store a spell in an object. Whenever you finish a long rest, you can touch one simple or martial weapon or one item that you can use as a spellcasting focus, and you store a spell in it, choosing a 1st- or 2nd-level spell from the artificer spell list that requires 1 action to cast (you needn't have it prepared). While holding the object, a creature can take an action to produce the spell's effect from it, using your spellcasting ability modifier. If the spell requires concentration, the creature must concentrate. The spell stays in the object until it's been used a number of times equal to twice your Intelligence modifier (minimum of twice) or until you use this feature again to store a spell in an object.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "18": [
+                    {
+                        "name": "MAGIC ITEM MASTER",
+                        "description": "You can attune up to six magic items at once.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "20": [
+                    {
+                        "name": "SOUL OF ARTIFICE",
+                        "description": "You develop a mystical connection to your magic items, which you can draw on for protection, giving you the following benefits: You gain a +1 bonus to all saving throws per magic item you are currently attuned to. If you're reduced to 0 hit points but not killed out-right, you can use your reaction to end one of your artificer infusions, causing you to drop to 1 hit point instead of 0.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

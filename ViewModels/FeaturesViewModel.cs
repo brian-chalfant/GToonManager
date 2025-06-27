@@ -14,12 +14,18 @@ public class FeaturesViewModel : INotifyPropertyChanged
     private Character _character;
     private readonly ClassDataService _classDataService;
     private readonly ChoiceDataService _choiceDataService;
+    private readonly FeatDataService _featDataService;
 
-    public FeaturesViewModel(Character character, ClassDataService classDataService, ChoiceDataService choiceDataService)
+    public FeaturesViewModel(Character character, ClassDataService classDataService, ChoiceDataService choiceDataService, FeatDataService featDataService)
     {
+        System.Diagnostics.Debug.WriteLine("[FeaturesViewModel] Constructor called");
         _character = character;
         _classDataService = classDataService;
         _choiceDataService = choiceDataService;
+        _featDataService = featDataService;
+        
+        System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Character: {character?.Name ?? "null"}");
+        System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Character class levels: {character?.ClassLevels?.Count ?? 0}");
         
         InitializeCommands();
         LoadChoiceDataAndChoices();
@@ -94,6 +100,10 @@ public class FeaturesViewModel : INotifyPropertyChanged
             await _choiceDataService.LoadChoiceDataAsync();
             System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Choice data loaded successfully");
             
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Starting to load feat data...");
+            await _featDataService.LoadFeatsAsync();
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Feat data loaded successfully");
+            
             var availableTypes = _choiceDataService.GetAvailableChoiceTypes();
             System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Available choice types: {string.Join(", ", availableTypes)}");
             
@@ -113,11 +123,18 @@ public class FeaturesViewModel : INotifyPropertyChanged
         ClearAllChoices();
 
         System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Loading choices for character with {_character.ClassLevels.Count} class levels");
+        System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Character name: {_character.Name}");
 
         // Load choices based on character's classes and levels
         foreach (var classLevel in _character.ClassLevels)
         {
             System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Processing {classLevel.ClassName} level {classLevel.Level}");
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] CharacterClass is null: {classLevel.CharacterClass == null}");
+            if (classLevel.CharacterClass != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] CharacterClass name: {classLevel.CharacterClass.Name}");
+                System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Features count: {classLevel.CharacterClass.Features?.Count ?? 0}");
+            }
             LoadChoicesForClassLevel(classLevel);
         }
 
@@ -136,12 +153,23 @@ public class FeaturesViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(CompletedRequiredChoices));
         OnPropertyChanged(nameof(AllRequiredChoicesCompleted));
         OnPropertyChanged(nameof(ProgressSummary));
+        
+        // Apply any existing ASI choices to character
+        ApplyASIChoicesToCharacter();
     }
 
     private void LoadChoicesForClassLevel(CharacterClassLevel classLevel)
     {
         var characterClass = classLevel.CharacterClass;
         if (characterClass == null) return;
+        
+        // Check for starting class benefits skill choices (level 1 only and only for first class)
+        if (classLevel.Level >= 1 && _character.ClassLevels.FirstOrDefault() == classLevel)
+        {
+            LoadStartingClassSkillChoices(characterClass);
+        }
+        
+        // Subclass selection is handled in Classes & Multiclassing tab, not here
         
         // Iterate through each level of this class
         for (int level = 1; level <= classLevel.Level; level++)
@@ -163,6 +191,10 @@ public class FeaturesViewModel : INotifyPropertyChanged
             foreach (var feature in features)
             {
                 System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Processing feature: {feature.Name}");
+                if (feature.Name == "Ability Score Improvement")
+                {
+                    System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] *** FOUND ASI FEATURE *** at level {level}");
+                }
                 ProcessFeatureForChoices(feature, characterClass.Name, level);
             }
         }
@@ -171,6 +203,10 @@ public class FeaturesViewModel : INotifyPropertyChanged
             System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] No features found at level {level} for {characterClass.Name}");
             if (characterClass.Features == null)
                 System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Features dictionary is null for {characterClass.Name}");
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Available feature levels: {string.Join(", ", characterClass.Features.Keys)}");
+            }
         }
     }
 
@@ -322,7 +358,7 @@ public class FeaturesViewModel : INotifyPropertyChanged
 
     private AbilityScoreImprovementChoice CreateAbilityScoreImprovementChoice(ClassFeature feature, string className, int level)
     {
-        return new AbilityScoreImprovementChoice
+        var choice = new AbilityScoreImprovementChoice
         {
             Id = $"{className}_{level}_{feature.Name}",
             Name = feature.Name,
@@ -330,8 +366,82 @@ public class FeaturesViewModel : INotifyPropertyChanged
             Level = level,
             ClassName = className,
             IsRequired = true,
-            CanChooseFeat = true // Could be configurable
+            CanChooseFeat = true,
+            Character = _character
         };
+
+        // Subscribe to completion status changes to update summary
+        choice.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(AbilityScoreImprovementChoice.IsCompleted))
+            {
+                OnPropertyChanged(nameof(CompletedChoices));
+                OnPropertyChanged(nameof(CompletedRequiredChoices));
+                OnPropertyChanged(nameof(AllRequiredChoicesCompleted));
+                OnPropertyChanged(nameof(ProgressSummary));
+                
+                // Apply ASI changes to character whenever completion status changes
+                ApplyASIChoicesToCharacter();
+            }
+        };
+
+        // Load available feats
+        PopulateAvailableFeats(choice);
+        
+        // Initialize ability score selections for all six abilities
+        InitializeAbilityScoreSelections(choice);
+
+        return choice;
+    }
+
+    private void PopulateAvailableFeats(AbilityScoreImprovementChoice choice)
+    {
+        try
+        {
+            // Get all available feats (origin feats + general feats)
+            var allFeats = _featDataService.GetAllFeats();
+            
+            // For now, include all feats - in the future we could filter by prerequisites
+            foreach (var feat in allFeats)
+            {
+                choice.AvailableFeats.Add(feat);
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Populated {choice.AvailableFeats.Count} feats for ASI choice");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Error populating feats: {ex.Message}");
+        }
+    }
+
+    private void InitializeAbilityScoreSelections(AbilityScoreImprovementChoice choice)
+    {
+        // Create ability score selections for all abilities
+        foreach (var ability in choice.AvailableAbilities)
+        {
+            var selection = new AbilityScoreSelection
+            {
+                AbilityScore = ability,
+                Improvement = 0
+            };
+            
+            // Set the parent choice for validation
+            selection.SetParentChoice(choice);
+            
+            // Subscribe to property changes to update completion status
+            selection.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(AbilityScoreSelection.Improvement))
+                {
+                    choice.UpdateCompletionStatus();
+                    // Apply ASI changes to character whenever improvement values change
+                    ApplyASIChoicesToCharacter();
+                }
+            };
+            
+            choice.AbilityScoreSelections.Add(selection);
+        }
     }
 
     private CombatStyleChoice CreateCombatStyleChoice(ClassFeature feature, string className, int level)
@@ -663,6 +773,43 @@ public class FeaturesViewModel : INotifyPropertyChanged
         // Load any choices from species (less common, but possible)
     }
 
+    private void LoadStartingClassSkillChoices(CharacterClass characterClass)
+    {
+        // Check if the class has starting skill proficiency choices
+        if (characterClass.StartingClassBenefits?.SkillProficiencies?.HasChoices == true)
+        {
+            var skillProficiencies = characterClass.StartingClassBenefits.SkillProficiencies;
+            System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Found starting class skill choice for {characterClass.Name}: Choose {skillProficiencies.ChooseCount} from {skillProficiencies.AvailableSkills.Count} skills");
+            
+            var skillChoice = new SkillsToolsChoice
+            {
+                Id = $"{characterClass.Name}_Starting_Skills",
+                Name = "Starting Skill Proficiencies",
+                Description = $"Choose {skillProficiencies.ChooseCount} skill proficiencies for your {characterClass.Name} class",
+                Level = 1,
+                ClassName = characterClass.Name,
+                IsRequired = true,
+                NumberToChoose = skillProficiencies.ChooseCount
+            };
+            
+            // Populate available skills using the new SkillOption system
+            foreach (var skill in skillProficiencies.AvailableSkills)
+            {
+                var skillOption = new SkillOption { Name = skill };
+                skillOption.PropertyChanged += (sender, e) =>
+                {
+                    if (e.PropertyName == nameof(SkillOption.IsSelected))
+                    {
+                        skillChoice.UpdateCompletionStatus();
+                    }
+                };
+                skillChoice.SkillOptions.Add(skillOption);
+            }
+            
+            SkillsToolsChoices.Add(skillChoice);
+        }
+    }
+
     private void LoadBackgroundChoices()
     {
         // Load any choices from background (less common, but possible)
@@ -682,53 +829,101 @@ public class FeaturesViewModel : INotifyPropertyChanged
 
     private void RefreshChoices()
     {
-        LoadChoiceDataAndChoices();
+        LoadAvailableChoices();
     }
 
     private void ResetAllChoices()
     {
-        // Reset all selections
+        // Reset all choices to their initial state
         foreach (var choice in SubclassChoices)
         {
             choice.SelectedSubclass = null;
+            choice.LegacySelectedSubclass = null;
         }
+        
         foreach (var choice in AbilityScoreImprovementChoices)
         {
+            choice.ChoiceType = ASIChoiceType.AbilityScoreIncrease;
             choice.SelectedFeat = null;
-            choice.ChooseFeat = false;
-            choice.AbilityScoreSelections.Clear();
+            foreach (var selection in choice.AbilityScoreSelections)
+            {
+                selection.Improvement = 0;
+            }
         }
+        
         foreach (var choice in CombatStyleChoices)
         {
             choice.SelectedStyle = null;
         }
+        
         foreach (var choice in SkillsToolsChoices)
         {
             choice.SelectedSkills.Clear();
             choice.SelectedTools.Clear();
         }
+        
         foreach (var choice in CreatureTypeChoices)
         {
             choice.SelectedCreatureType = null;
-            choice.SelectedHumanoidRaces.Clear();
         }
+        
         foreach (var choice in TerrainTypeChoices)
         {
             choice.SelectedTerrainType = null;
         }
+        
         foreach (var choice in SpellChoices)
         {
             choice.SelectedSpells.Clear();
         }
+        
         foreach (var choice in MagicalFeatureChoices)
         {
             choice.SelectedFeatures.Clear();
         }
+    }
 
-        OnPropertyChanged(nameof(CompletedChoices));
-        OnPropertyChanged(nameof(CompletedRequiredChoices));
-        OnPropertyChanged(nameof(AllRequiredChoicesCompleted));
-        OnPropertyChanged(nameof(ProgressSummary));
+    // Apply completed ASI choices to the character's ASI properties
+    private void ApplyASIChoicesToCharacter()
+    {
+        // Reset character ASI values
+        _character.StrengthASI = 0;
+        _character.DexterityASI = 0;
+        _character.ConstitutionASI = 0;
+        _character.IntelligenceASI = 0;
+        _character.WisdomASI = 0;
+        _character.CharismaASI = 0;
+
+        // Apply improvements from all completed ASI choices
+        foreach (var asiChoice in AbilityScoreImprovementChoices.Where(c => c.IsCompleted && c.IsChoosingAbilityScores))
+        {
+            foreach (var selection in asiChoice.AbilityScoreSelections.Where(s => s.Improvement > 0))
+            {
+                switch (selection.AbilityScore.ToLowerInvariant())
+                {
+                    case "strength":
+                        _character.StrengthASI = (_character.StrengthASI ?? 0) + selection.Improvement;
+                        break;
+                    case "dexterity":
+                        _character.DexterityASI = (_character.DexterityASI ?? 0) + selection.Improvement;
+                        break;
+                    case "constitution":
+                        _character.ConstitutionASI = (_character.ConstitutionASI ?? 0) + selection.Improvement;
+                        break;
+                    case "intelligence":
+                        _character.IntelligenceASI = (_character.IntelligenceASI ?? 0) + selection.Improvement;
+                        break;
+                    case "wisdom":
+                        _character.WisdomASI = (_character.WisdomASI ?? 0) + selection.Improvement;
+                        break;
+                    case "charisma":
+                        _character.CharismaASI = (_character.CharismaASI ?? 0) + selection.Improvement;
+                        break;
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"[FeaturesViewModel] Applied ASI to character - STR: {_character.StrengthASI}, DEX: {_character.DexterityASI}, CON: {_character.ConstitutionASI}, INT: {_character.IntelligenceASI}, WIS: {_character.WisdomASI}, CHA: {_character.CharismaASI}");
     }
 
     private void OnCharacterPropertyChanged(object? sender, PropertyChangedEventArgs e)

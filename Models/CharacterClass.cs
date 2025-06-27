@@ -16,8 +16,30 @@ public class CharacterClass
     // New property for parsed skill choices
     public SkillChoiceOptions? SkillChoices { get; set; }
     
-    // Standard array recommendation for 2024 PHB
+    // Standard array recommendation for 2024 PHB (legacy support)
     public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
+    
+    // Multiple standard array recommendations for 2024 PHB
+    public List<AbilityScoreRecommendation>? StandardArrayRecommendations { get; set; }
+    
+    // Helper properties for recommendations
+    public bool HasMultipleRecommendations 
+    { 
+        get 
+        {
+            // Check starting class benefits first
+            if (StartingClassBenefits?.StandardArrayRecommendations?.Count > 1)
+                return true;
+            
+            // Then check class level
+            if (StandardArrayRecommendations?.Count > 1)
+                return true;
+                
+            return false;
+        }
+    }
+    
+    public bool HasAnyRecommendations => StandardArrayRecommendation != null || StandardArrayRecommendations?.Count > 0 || StartingClassBenefits?.StandardArrayRecommendations?.Count > 0;
     
     // 2024 D&D benefits structure
     public StartingClassBenefits? StartingClassBenefits { get; set; }
@@ -36,11 +58,21 @@ public class CharacterClass
     public override string ToString() => Name;
 }
 
+public class AbilityScoreRecommendation
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public Dictionary<string, int> Array { get; set; } = new();
+    
+    public override string ToString() => Name;
+}
+
 public class StartingClassBenefits
 {
     public string Description { get; set; } = string.Empty;
     public string[] PrimaryAbility { get; set; } = Array.Empty<string>();
     public Dictionary<string, int>? StandardArrayRecommendation { get; set; }
+    public List<AbilityScoreRecommendation>? StandardArrayRecommendations { get; set; }
     public string[] SavingThrowProficiencies { get; set; } = Array.Empty<string>();
     public string[] ArmorProficiencies { get; set; } = Array.Empty<string>();
     public string[] WeaponProficiencies { get; set; } = Array.Empty<string>();

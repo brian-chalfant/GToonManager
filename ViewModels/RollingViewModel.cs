@@ -197,6 +197,8 @@ public class RollingViewModel : INotifyPropertyChanged
         // Create assignment ViewModel
         AssignmentViewModel = new AbilityScoreAssignmentViewModel(_character);
         AssignmentViewModel.SetGeneratedScores(RolledScores);
+        
+        // Note: Classes need to be populated by the calling view model (MainViewModel)
     }
 
     private void Reroll()

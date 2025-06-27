@@ -1,9 +1,9 @@
 {
-    "name": "Barbarian",
+    "name": "BARBARIAN",
     "description": "A fierce warrior of primitive background who can enter a battle rage.",
     "hit_dice": "1d12",
     "starting_class_benefits": {
-        "description": "Benefits gained when Barbarian is your first class",
+        "description": "Benefits gained when BARBARIAN is your first class",
         "primary_ability": [
             "strength"
         ],
@@ -15,6 +15,20 @@
             "charisma": 10,
             "intelligence": 8
         },
+        "standard_array_recommendations": [
+            {
+                "name": "Standard",
+                "description": "Classic frontline bruiser, focused on melee damage and durability",
+                "array": {
+                    "strength": 15,
+                    "dexterity": 13,
+                    "constitution": 14,
+                    "intelligence": 8,
+                    "wisdom": 12,
+                    "charisma": 10
+                }
+            }
+        ],
         "saving_throw_proficiencies": [
             "strength",
             "constitution"
@@ -96,7 +110,7 @@
     "features": {
         "1": [
             {
-                "name": "Rage",
+                "name": "RAGE",
                 "description": "On your turn, you can enter a rage as a bonus action. While raging, you gain advantage on Strength checks and Strength saving throws, a bonus to the damage roll that increases as you gain levels, and resistance to bludgeoning, piercing, and slashing damage.",
                 "mechanics": {
                     "action_type": "bonus_action",
@@ -122,11 +136,18 @@
                     "effects": [
                         {
                             "type": "advantage",
-                            "on": ["strength_check", "strength_save"]
+                            "on": [
+                                "strength_check",
+                                "strength_save"
+                            ]
                         },
                         {
                             "type": "resistance",
-                            "to": ["bludgeoning", "piercing", "slashing"]
+                            "to": [
+                                "bludgeoning",
+                                "piercing",
+                                "slashing"
+                            ]
                         }
                     ],
                     "conditions": [
@@ -137,7 +158,7 @@
                 }
             },
             {
-                "name": "Unarmored Defense",
+                "name": "UNARMORED DEFENSE",
                 "description": "While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.",
                 "mechanics": {
                     "type": "passive",
@@ -157,7 +178,7 @@
         ],
         "2": [
             {
-                "name": "Reckless Attack",
+                "name": "RECKLESS ATTACK",
                 "description": "When you make your first attack on your turn, you can decide to attack recklessly. Doing so gives you advantage on melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn.",
                 "mechanics": {
                     "type": "combat_option",
@@ -187,7 +208,7 @@
                 }
             },
             {
-                "name": "Danger Sense",
+                "name": "DANGER SENSE",
                 "description": "You have advantage on Dexterity saving throws against effects that you can see, such as traps and spells.",
                 "mechanics": {
                     "type": "passive",
@@ -207,7 +228,7 @@
         ],
         "3": [
             {
-                "name": "Primal Knowledge",
+                "name": "PRIMAL KNOWLEDGE",
                 "description": "You gain proficiency in another skill of your choice from the skill list available to Barbarians at level 1. In addition, while your Rage is active, you can channel primal power when you attempt certain tasks; whenever you make an ability check using one of the following skills, you can make it as a Strength check even if it normally uses a different ability: Acrobatics, Intimidation, Perception, Stealth, or Survival. When you use this ability, your Strength represents primal power coursing through you, honing your agility, bearing, and senses.",
                 "mechanics": {
                     "type": "passive",
@@ -231,7 +252,7 @@
                             "substitute_ability": "strength",
                             "for_skills": [
                                 "Acrobatics",
-                                "Intimidation", 
+                                "Intimidation",
                                 "Perception",
                                 "Stealth",
                                 "Survival"
@@ -266,7 +287,7 @@
         ],
         "5": [
             {
-                "name": "Extra Attack",
+                "name": "EXTRA ATTACK",
                 "description": "You can attack twice, instead of once, whenever you take the Attack action on your turn.",
                 "mechanics": {
                     "type": "passive",
@@ -282,7 +303,7 @@
                 }
             },
             {
-                "name": "Fast Movement",
+                "name": "FAST MOVEMENT",
                 "description": "Your speed increases by 10 feet while you aren't wearing heavy armor.",
                 "mechanics": {
                     "type": "passive",
@@ -301,7 +322,7 @@
         ],
         "7": [
             {
-                "name": "Feral Instinct",
+                "name": "FERAL INSTINCT",
                 "description": "You have advantage on initiative rolls. Additionally, if you are surprised at the beginning of combat and aren't incapacitated, you can act normally on your first turn by entering a rage before doing anything else.",
                 "mechanics": {
                     "type": "passive",
@@ -336,7 +357,7 @@
         ],
         "9": [
             {
-                "name": "Brutal Strike",
+                "name": "BRUTAL STRIKE",
                 "description": "When using Reckless Attack, you can forgo advantage on one Strength-based attack (that doesn't have disadvantage) to deal an extra 1d10 damage on a hit and choose one Brutal Strike effect: Forceful Blow (push target 15 feet away, then move up to half your speed toward target without provoking opportunity attacks) or Hamstring Blow (reduce target's speed by 15 feet until start of your next turn).",
                 "mechanics": {
                     "type": "combat_option",
@@ -381,7 +402,7 @@
                                 },
                                 {
                                     "name": "Hamstring Blow",
-                                    "description": "The target's Speed is reduced by 15 feet until the start of your next turn. A target can be affected by only one Hamstring Blow at a time—the most recent one.",
+                                    "description": "The target's Speed is reduced by 15 feet until the start of your next turn. A target can be affected by only one Hamstring Blow at a time\u2014the most recent one.",
                                     "effects": [
                                         {
                                             "type": "speed_reduction",
@@ -399,7 +420,7 @@
         ],
         "11": [
             {
-                "name": "Relentless Rage",
+                "name": "RELLENTLESS RAGE",
                 "description": "If you drop to 0 hit points while raging and don't die outright, you can make a DC 10 Constitution saving throw. If you succeed, you drop to 1 hit point instead. Each time you use this feature after the first, the DC increases by 5. When you finish a short or long rest, the DC resets to 10.",
                 "mechanics": {
                     "type": "reaction",
@@ -444,7 +465,7 @@
         ],
         "13": [
             {
-                "name": "Improved Brutal Strike (2 dice)",
+                "name": "IMPROVED BRUTAL STRIKE (2 DICE)",
                 "description": "You can roll 2d10 additional weapon damage dice when determining the extra damage for a critical hit with a melee attack.",
                 "mechanics": {
                     "type": "passive_enhancement",
@@ -458,7 +479,7 @@
         ],
         "15": [
             {
-                "name": "Persistent Rage",
+                "name": "PERSISTENT RAGE",
                 "description": "When you roll Initiative, you can regain all expended uses of Rage (once per long rest). Your Rage now lasts for 10 minutes without needing to do anything to extend it. Your Rage ends early only if you have the Unconscious condition or don Heavy armor.",
                 "mechanics": {
                     "type": "passive",
@@ -517,7 +538,7 @@
         ],
         "17": [
             {
-                "name": "Improved Brutal Strike (3 dice)",
+                "name": "IMPROVED BRUTAL STRIKE (3 DICE)",
                 "description": "You can roll 3d10 additional weapon damage dice when determining the extra damage for a critical hit with a melee attack.",
                 "mechanics": {
                     "type": "passive_enhancement",
@@ -531,7 +552,7 @@
         ],
         "18": [
             {
-                "name": "Indomitable Might",
+                "name": "INDOMITABLE MIGHT",
                 "description": "If your total for a Strength check is less than your Strength score, you can use that score in place of the total.",
                 "mechanics": {
                     "type": "passive",
@@ -547,7 +568,7 @@
         ],
         "19": [
             {
-                "name": "Epic Boon",
+                "name": "EPIC BOON",
                 "description": "Gain an Epic Boon Feat or another feat of your choice for which you qualify. Recommendation: Boon of Irresistible Offense.",
                 "mechanics": {
                     "type": "feat_choice",
@@ -567,19 +588,25 @@
         ],
         "20": [
             {
-                "name": "Primal Champion",
+                "name": "PRIMAL CHAMPION",
                 "description": "Your Strength and Constitution scores increase by 4. Your maximum for those scores is now 25.",
                 "mechanics": {
                     "type": "passive",
                     "effects": [
                         {
                             "type": "ability_score_increase",
-                            "abilities": ["strength", "constitution"],
+                            "abilities": [
+                                "strength",
+                                "constitution"
+                            ],
                             "amount": 4
                         },
                         {
                             "type": "ability_score_maximum",
-                            "abilities": ["strength", "constitution"],
+                            "abilities": [
+                                "strength",
+                                "constitution"
+                            ],
                             "new_maximum": 24
                         }
                     ]
@@ -588,14 +615,14 @@
         ]
     },
     "subclass_level": 3,
-    "subclasses": [
-        {
+    "subclasses": {
+        "Path of the Berserker": {
             "name": "Path of the Berserker",
             "description": "Barbarians who walk the Path of the Berserker direct their Rage primarily toward violence. Their path is one of untrammeled fury, and they thrill in the chaos of battle as they allow their Rage to seize and empower them.",
             "features": {
                 "3": [
                     {
-                        "name": "Frenzy",
+                        "name": "FRENZY",
                         "description": "When you use Reckless Attack while raging, the first Strength-based attack that hits on your turn deals extra damage equal to a number of d6s equal to your Rage Damage bonus. The extra damage is the same type as the weapon or Unarmed Strike.",
                         "mechanics": {
                             "type": "combat_option",
@@ -620,19 +647,27 @@
                 ],
                 "6": [
                     {
-                        "name": "Mindless Rage",
+                        "name": "MINDLESS RAGE",
                         "description": "You have immunity to the Charmed and Frightened conditions while raging. If you're Charmed or Frightened when you enter Rage, those conditions end immediately.",
                         "mechanics": {
                             "type": "passive",
                             "effects": [
                                 {
                                     "type": "immunity",
-                                    "to": ["charmed", "frightened"],
-                                    "conditions": ["while raging"]
+                                    "to": [
+                                        "charmed",
+                                        "frightened"
+                                    ],
+                                    "conditions": [
+                                        "while raging"
+                                    ]
                                 },
                                 {
                                     "type": "end_condition",
-                                    "conditions": ["charmed", "frightened"],
+                                    "conditions": [
+                                        "charmed",
+                                        "frightened"
+                                    ],
                                     "trigger": "when entering rage"
                                 }
                             ]
@@ -641,7 +676,7 @@
                 ],
                 "10": [
                     {
-                        "name": "Retaliation",
+                        "name": "RETALIATION",
                         "description": "When you take damage from a creature within 5 feet, you can use your reaction to make one melee weapon attack or Unarmed Strike against that creature.",
                         "mechanics": {
                             "type": "reaction",
@@ -650,7 +685,10 @@
                                 {
                                     "type": "melee_attack",
                                     "target": "triggering_creature",
-                                    "options": ["weapon", "unarmed_strike"]
+                                    "options": [
+                                        "weapon",
+                                        "unarmed_strike"
+                                    ]
                                 }
                             ],
                             "conditions": [
@@ -662,7 +700,7 @@
                 ],
                 "14": [
                     {
-                        "name": "Intimidating Presence",
+                        "name": "INTIMIDATING PRESENCE",
                         "description": "As a bonus action, each creature of your choice within a 30-foot emanation must make a Wisdom save (DC 8 + Strength modifier + proficiency bonus) or be frightened for 1 minute (save ends at end of each turn). Once per long rest, or by expending a Rage use.",
                         "mechanics": {
                             "type": "bonus_action",
@@ -708,13 +746,13 @@
                 ]
             }
         },
-        {
+        "Path of the Wild Heart": {
             "name": "Path of the Wild Heart",
             "description": "Barbarians who follow the Path of the Wild Heart view themselves as kin to animals. These Barbarians learn magical means to communicate with animals, and their Rage heightens their connection to animals as it fills them with supernatural might.",
             "features": {
                 "3": [
                     {
-                        "name": "Animal Speaker",
+                        "name": "ANIMAL SPEAKER",
                         "description": "You can cast Beast Sense and Speak with Animals as rituals (Wisdom).",
                         "mechanics": {
                             "type": "spellcasting",
@@ -732,7 +770,7 @@
                         }
                     },
                     {
-                        "name": "Rage of the Wilds",
+                        "name": "RAGE OF THE WILDS",
                         "description": "When you activate Rage, choose Bear (resistance to all damage except Force, Necrotic, Psychic, Radiant), Eagle (Disengage and Dash free on activation, then as bonus actions), or Wolf (allies have advantage vs your enemies within 5 feet).",
                         "mechanics": {
                             "type": "choice",
@@ -743,8 +781,12 @@
                                     "effects": [
                                         {
                                             "type": "resistance",
-                                            "to": ["all damage except force, necrotic, psychic, radiant"],
-                                            "conditions": ["while raging"]
+                                            "to": [
+                                                "all damage except force, necrotic, psychic, radiant"
+                                            ],
+                                            "conditions": [
+                                                "while raging"
+                                            ]
                                         }
                                     ]
                                 },
@@ -753,13 +795,21 @@
                                     "effects": [
                                         {
                                             "type": "free_actions",
-                                            "actions": ["disengage", "dash"],
+                                            "actions": [
+                                                "disengage",
+                                                "dash"
+                                            ],
                                             "timing": "part of rage activation"
                                         },
                                         {
                                             "type": "bonus_actions",
-                                            "actions": ["disengage", "dash"],
-                                            "conditions": ["while raging"]
+                                            "actions": [
+                                                "disengage",
+                                                "dash"
+                                            ],
+                                            "conditions": [
+                                                "while raging"
+                                            ]
                                         }
                                     ]
                                 },
@@ -783,7 +833,7 @@
                 ],
                 "6": [
                     {
-                        "name": "Aspect of the Wilds",
+                        "name": "ASPECT OF THE WILDS",
                         "description": "Choose one (changeable on long rest): Owl (Darkvision 60 feet, or +60 feet), Panther (Climb Speed = Speed), or Salmon (Swim Speed = Speed).",
                         "mechanics": {
                             "type": "choice",
@@ -823,7 +873,7 @@
                 ],
                 "10": [
                     {
-                        "name": "Nature Speaker",
+                        "name": "NATURE SPEAKER",
                         "description": "You can cast Commune with Nature as a ritual (Wisdom).",
                         "mechanics": {
                             "type": "spellcasting",
@@ -839,7 +889,7 @@
                 ],
                 "14": [
                     {
-                        "name": "Power of the Wilds",
+                        "name": "POWER OF THE WILDS",
                         "description": "When you activate Rage, choose Falcon (Fly Speed = Speed if unarmored), Lion (enemies within 5 feet have disadvantage vs others), or Ram (melee attacks knock Large or smaller prone).",
                         "mechanics": {
                             "type": "choice",
@@ -880,7 +930,9 @@
                                             "trigger": "hit_with_melee_attack",
                                             "effect": "prone_condition",
                                             "target_size": "large_or_smaller",
-                                            "conditions": ["while raging"]
+                                            "conditions": [
+                                                "while raging"
+                                            ]
                                         }
                                     ]
                                 }
@@ -890,13 +942,13 @@
                 ]
             }
         },
-        {
+        "Path of the World Tree": {
             "name": "Path of the World Tree",
             "description": "Barbarians who follow the Path of the World Tree connect with the cosmic tree Yggdrasil through their Rage. This tree grows among the Outer Planes, connecting them to each other and the Material Plane. These Barbarians draw on the tree's magic for vitality and as a means of dimensional travel.",
             "features": {
                 "3": [
                     {
-                        "name": "Vitality of the Tree",
+                        "name": "VITALITY OF THE TREE",
                         "description": "When you activate Rage, gain temporary HP = Barbarian level. At start of each turn while raging, choose a creature within 10 feet to gain temporary HP = Rage Damage bonus d6s (vanish when Rage ends).",
                         "mechanics": {
                             "type": "passive",
@@ -929,12 +981,15 @@
                 ],
                 "6": [
                     {
-                        "name": "Branches of the Tree",
+                        "name": "BRANCHES OF THE TREE",
                         "description": "When a creature starts its turn within 30 feet while raging, reaction to summon spectral branches. Strength save (DC 8 + Strength + proficiency) or teleport within 5 feet of you and Speed = 0 until end of turn.",
                         "mechanics": {
                             "type": "reaction",
                             "trigger": "creature_starts_turn_within_30_feet",
-                            "conditions": ["while_raging", "can_see_creature"],
+                            "conditions": [
+                                "while_raging",
+                                "can_see_creature"
+                            ],
                             "effects": [
                                 {
                                     "type": "saving_throw",
@@ -965,7 +1020,7 @@
                 ],
                 "10": [
                     {
-                        "name": "Battering Roots",
+                        "name": "BATTERING ROOTS",
                         "description": "Reach +10 feet with Heavy or Versatile melee weapons. When you hit with such weapons, activate Push or Topple mastery plus another mastery property.",
                         "mechanics": {
                             "type": "passive",
@@ -973,13 +1028,19 @@
                                 {
                                     "type": "reach_increase",
                                     "amount": 10,
-                                    "weapons": ["heavy", "versatile"],
+                                    "weapons": [
+                                        "heavy",
+                                        "versatile"
+                                    ],
                                     "timing": "during_your_turn"
                                 },
                                 {
                                     "type": "mastery_enhancement",
                                     "trigger": "hit_with_qualifying_weapon",
-                                    "additional_mastery": ["push", "topple"],
+                                    "additional_mastery": [
+                                        "push",
+                                        "topple"
+                                    ],
                                     "stacks_with": "different_mastery_property"
                                 }
                             ]
@@ -988,13 +1049,16 @@
                 ],
                 "14": [
                     {
-                        "name": "Travel along the Tree",
+                        "name": "TRAVEL ALONG THE TREE",
                         "description": "When you activate Rage and as bonus action while raging, teleport up to 60 feet. Once per Rage: 150 feet range and bring up to 6 willing creatures within 10 feet (they teleport within 10 feet of destination).",
                         "mechanics": {
                             "type": "teleportation",
                             "basic_teleport": {
                                 "range": 60,
-                                "timing": ["rage_activation", "bonus_action_while_raging"]
+                                "timing": [
+                                    "rage_activation",
+                                    "bonus_action_while_raging"
+                                ]
                             },
                             "enhanced_teleport": {
                                 "range": 150,
@@ -1013,13 +1077,13 @@
                 ]
             }
         },
-        {
+        "Path of the Zealot": {
             "name": "Path of the Zealot",
             "description": "Barbarians who walk the Path of the Zealot receive boons from a god or pantheon. These Barbarians experience their Rage as an ecstatic episode of divine union that infuses them with power. They are often allies to the priests and other followers of their god or pantheon.",
             "features": {
                 "3": [
                     {
-                        "name": "Divine Fury",
+                        "name": "DIVINE FURY",
                         "description": "While raging, first weapon or unarmed hit each turn deals extra damage = 1d6 + half Barbarian level. Choose Necrotic or Radiant each time.",
                         "mechanics": {
                             "type": "passive",
@@ -1032,15 +1096,20 @@
                                         "bonus": "half_barbarian_level"
                                     },
                                     "damage_type": {
-                                        "choose_each_time": ["necrotic", "radiant"]
+                                        "choose_each_time": [
+                                            "necrotic",
+                                            "radiant"
+                                        ]
                                     },
-                                    "conditions": ["while_raging"]
+                                    "conditions": [
+                                        "while_raging"
+                                    ]
                                 }
                             ]
                         }
                     },
                     {
-                        "name": "Warrior of the Gods",
+                        "name": "WARRIOR OF THE GODS",
                         "description": "Healing pool: 4d12s. Bonus action to expend dice and heal for total rolled. Regains all dice on long rest. Maximum: 5 dice at 6th, 6 dice at 12th, 7 dice at 17th level.",
                         "mechanics": {
                             "type": "healing_pool",
@@ -1064,7 +1133,7 @@
                 ],
                 "6": [
                     {
-                        "name": "Fanatical Focus",
+                        "name": "FANATICAL FOCUS",
                         "description": "Once per Rage, when you fail a save, reroll with bonus = Rage Damage bonus. Must use new roll.",
                         "mechanics": {
                             "type": "reaction",
@@ -1085,14 +1154,17 @@
                 ],
                 "10": [
                     {
-                        "name": "Zealous Presence",
+                        "name": "ZEALOUS PRESENCE",
                         "description": "Bonus action: up to 10 other creatures within 60 feet gain advantage on attacks and saves until start of next turn. Once per long rest or expend Rage use.",
                         "mechanics": {
                             "type": "bonus_action",
                             "effects": [
                                 {
                                     "type": "grant_advantage",
-                                    "on": ["attack_rolls", "saving_throws"],
+                                    "on": [
+                                        "attack_rolls",
+                                        "saving_throws"
+                                    ],
                                     "target": {
                                         "type": "other_creatures",
                                         "number": 10,
@@ -1114,7 +1186,7 @@
                 ],
                 "14": [
                     {
-                        "name": "Rage of the Gods",
+                        "name": "RAGE OF THE GODS",
                         "description": "When activating Rage, divine warrior form for 1 minute or until 0 HP. Once per long rest. Grants: Fly Speed = Speed with hover, resistance to Necrotic/Psychic/Radiant, reaction to restore creature within 50 feet from 0 HP to HP = Barbarian level (costs Rage use).",
                         "mechanics": {
                             "type": "transformation",
@@ -1131,7 +1203,11 @@
                                 },
                                 {
                                     "type": "resistance",
-                                    "to": ["necrotic", "psychic", "radiant"]
+                                    "to": [
+                                        "necrotic",
+                                        "psychic",
+                                        "radiant"
+                                    ]
                                 },
                                 {
                                     "type": "revivification",
@@ -1146,13 +1222,13 @@
                 ]
             }
         },
-        {
+        "Path of the Beast": {
             "name": "Path of the Beast",
             "description": "Barbarians who embrace their bestial nature, transforming their bodies in battle.",
             "features": {
                 "3": [
                     {
-                        "name": "Form of the Beast",
+                        "name": "FORM OF THE BEAST",
                         "description": "When you enter your rage, you can transform, revealing the bestial power within you. Until your rage ends, you manifest a natural weapon, choosing either claws, bite, or tail.",
                         "mechanics": {
                             "type": "choice",
@@ -1167,7 +1243,9 @@
                                                 "name": "claws",
                                                 "damage": "1d6",
                                                 "damage_type": "slashing",
-                                                "properties": ["light"],
+                                                "properties": [
+                                                    "light"
+                                                ],
                                                 "special": "Can make one additional attack when taking Attack action"
                                             }
                                         }
@@ -1201,7 +1279,9 @@
                                                 "name": "tail",
                                                 "damage": "1d8",
                                                 "damage_type": "piercing",
-                                                "properties": ["reach"],
+                                                "properties": [
+                                                    "reach"
+                                                ],
                                                 "special": {
                                                     "reaction": {
                                                         "trigger": "hit_by_attack_within_10_feet",
@@ -1219,7 +1299,7 @@
                 ],
                 "6": [
                     {
-                        "name": "Bestial Soul",
+                        "name": "BESTIAL SOUL",
                         "description": "You gain additional benefits when using your Form of the Beast feature, and you can enhance your bestial features to gain different movement types.",
                         "mechanics": {
                             "type": "choice",
@@ -1255,7 +1335,9 @@
                                         },
                                         {
                                             "type": "no_fall_damage",
-                                            "conditions": ["end_turn_on_ground"]
+                                            "conditions": [
+                                                "end_turn_on_ground"
+                                            ]
                                         }
                                     ]
                                 }
@@ -1266,7 +1348,7 @@
                 ],
                 "10": [
                     {
-                        "name": "Infectious Fury",
+                        "name": "INFECTIOUS FURY",
                         "description": "When you hit a creature with your natural weapons while raging, you can force the target to make a saving throw, potentially causing them to attack another creature or take damage.",
                         "mechanics": {
                             "type": "special_attack",
@@ -1300,13 +1382,15 @@
                             "uses": {
                                 "per_rage": "proficiency_bonus"
                             },
-                            "conditions": ["while_raging"]
+                            "conditions": [
+                                "while_raging"
+                            ]
                         }
                     }
                 ],
                 "14": [
                     {
-                        "name": "Call the Hunt",
+                        "name": "CALL THE HUNT",
                         "description": "You can call forth your inner bestial power to enhance your allies. As an action, you grant temporary hit points and bonus damage to nearby allies.",
                         "mechanics": {
                             "type": "action",
@@ -1338,8 +1422,8 @@
                 ]
             }
         }
-    ],
-    "version": "5E",
+    },
+    "version": "5.5E",
     "source": "PHB",
     "source_page": 46
 }

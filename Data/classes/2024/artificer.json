@@ -1,0 +1,658 @@
+{
+    "name": "ARTIFICER",
+    "description": "Masters of invention, artificers use ingenuity and magic to unlock extraordinary capabilities in objects.",
+    "hit_dice": "1d8",
+    "starting_class_benefits": {
+        "description": "Benefits gained when ARTIFICER is your first class",
+        "primary_ability": [
+            "intelligence"
+        ],
+        "standard_array_recommendations": [
+            {
+                "name": "Standard",
+                "description": "Gish/inventor style, good for armorers and tool use",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 14,
+                    "constitution": 13,
+                    "intelligence": 15,
+                    "wisdom": 12,
+                    "charisma": 10
+                }
+            },
+            {
+                "name": "Battle Smith/Armorer",
+                "description": "Emphasize durability, armor, or spell focus",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 13,
+                    "constitution": 14,
+                    "intelligence": 15,
+                    "wisdom": 12,
+                    "charisma": 10
+                }
+            }
+        ],
+        "saving_throw_proficiencies": [
+            "constitution",
+            "intelligence"
+        ],
+        "armor_proficiencies": [
+            "light armor",
+            "medium armor",
+            "shields"
+        ],
+        "weapon_proficiencies": [
+            "simple weapons",
+            "firearms"
+        ],
+        "tool_proficiencies": [
+            "Thieves' tools",
+            "tinker's tools",
+            {"choose": 2, 
+             "from": [
+                "Alchemist's supplies",
+                "Brewer's supplies",
+                "Calligrapher's supplies",
+                "Carpenter's tools",
+                "Cartographer's tools",
+                "Cobbler's tools",
+                "Cook's utensils",
+                "Glassblower's tools",
+                "Jeweler's tools",
+                "Leatherworker's tools",
+                "Mason's tools",
+                "Painter's supplies",
+                "Potter's tools",
+                "Smith's tools",
+                "Weaver's tools",
+                "Woodcarver's tools"
+            ]}
+        ],
+        "skill_proficiencies": {
+            "choose": 2,
+            "from": [
+                "Arcana",
+                "History",
+                "Investigation",
+                "Medicine",
+                "Nature",
+                "Perception",
+                "Sleight of Hand"
+            ]
+        },
+        "equipment_grants": {
+            "choice": {
+                "description": "Choose one of the following equipment packages",
+                "options": [
+                    {
+                        "name": "Equipment Package",
+                        "description": "Standard artificer equipment and gold",
+                        "fixed": [
+                            {
+                                "item": "simple weapon",
+                                "quantity": 2,
+                                "description": "Any two simple weapons"
+                            },
+                            {
+                                "item": "A light crossbow",
+                                "quantity": 1,
+                                "description": "A light crossbow"
+                            },
+                            {
+                                "item": "20 bolts",
+                                "quantity": 1,
+                                "description": "20 bolts"
+                            },
+                            {
+                                "item": "Studded Leather Armor or Scale Mail Armor",
+                                "quantity": 1,
+                                "description": "One type of armor"
+                            },
+                            {
+                                "item": "Thieves' tools and a Dungeoneer's pack",
+                                "quantity": 1,
+                                "description": "Thieves' tools and a Dungeoneer's pack"
+                            }
+                        ],
+                        "currency": {
+                            "gold": 5
+                        }
+                    },
+                    {
+                        "name": "Gold Only",
+                        "description": "Choose gold instead of equipment",
+                        "currency": {
+                            "gold": 75
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "multiclass_benefits": {
+        "description": "Benefits gained when multiclassing into ARTIFICER",
+        "prerequisites": {
+            "minimum_ability_scores": {
+                "intelligence": 13
+            }
+        },
+        "tool_proficiencies": [
+            "Thieves' tools",
+            "tinker's tools"
+        ],
+        "armor_proficiencies": [
+            "light armor",
+            "medium armor",
+            "shields"
+        ]
+    },
+    "features": {
+        "1": [
+            {
+                "name": "MAGICAL TINKERING",
+                "description": "As an action, touch a Tiny nonmagical object to give it a magical effect—light, sound, smell, message, or image. Affect up to your INT modifier of objects. Requires thieves' or artisan's tools. Ends oldest effect if limit exceeded.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            },
+            {
+                "name": "SPELLCASTING",
+                "description": "You cast spells by channeling magic through tools and inventions, using thieves' tools or artisan's tools as a focus for spells with material components. Know 2 cantrips at 1st level; learn more as you level up. Prepare a number of artificer spells equal to your Intelligence modifier plus half your artificer level (rounded down), changing your prepared list after a long rest. Intelligence is your spellcasting ability. You can cast prepared artificer spells as rituals if they have the ritual tag.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "2": [
+            {
+                "name": "INFUSE ITEM",
+                "description": "At 2nd level, you learn to imbue mundane items with magical infusions. Choose 4 infusions to learn, swapping one per level if desired. After a long rest, touch nonmagical objects to infuse them, up to your max. Infusions last until replaced or you die. Only one infusion per object. If you exceed your infused items limit, the oldest infusion ends. Some infusions require attunement, which you can do instantly when infusing the item. Contents of containers appear safely if the infusion ends.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "3": [
+            {
+                "name": "THE RIGHT TOOL FOR THE JOB",
+                "description": "With thieves' or artisan's tools, you can magically create any set of artisan's tools in 1 hour (can overlap a rest). The tools are non-magical and vanish if you use this feature again. Created in an unoccupied space within 5 feet.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "4": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "6": [
+            {
+                "name": "TOOL EXPERTISE",
+                "description": "Your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a tool.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "7": [
+            {
+                "name": "FLASH OF GENIUS",
+                "description": "When you or a creature within 30 feet makes an ability check or saving throw, use your reaction to add your Intelligence modifier to the roll. Uses equal INT modifier (min 1). All uses restored after a long rest.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "8": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "10": [
+            {
+                "name": "MAGIC ITEM ADEPT",
+                "description": "You can attune to up to 4 magic items at once. Crafting common or uncommon magic items takes only a quarter of the normal time and costs half as much gold.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "11": [
+            {
+                "name": "SPELL-STORING ITEM",
+                "description": "After a long rest, touch a weapon or spellcasting focus to store a 1st- or 2nd-level artificer spell (1 action cast time). While held, a creature can use an action to cast the spell, using your spellcasting ability. Uses equal 2 x INT modifier (min 2).",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "12": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "14": [
+            {
+                "name": "MAGIC ITEM SAVANT",
+                "description": "You can attune to up to 5 magic items at once. You ignore all class, race, spell, and level requirements on attuning to or using magic items.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "16": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "18": [
+            {
+                "name": "MAGIC ITEM MASTER",
+                "description": "You can attune up to six magic items at once.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "19": [
+            {
+                "name": "Ability Score Improvement",
+                "description": "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+                "mechanics": {
+                    "type": "ability_score_improvement",
+                    "options": [
+                        {
+                            "type": "single",
+                            "amount": 2
+                        },
+                        {
+                            "type": "double",
+                            "amount": 1
+                        }
+                    ],
+                    "max_score": 20
+                }
+            }
+        ],
+        "20": [
+            {
+                "name": "SOUL OF ARTIFICE",
+                "description": "Gain a +1 bonus to all saving throws for each magic item you're attuned to. If reduced to 0 HP (but not killed outright), use your reaction to end one artificer infusion and drop to 1 HP instead.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ]
+    },
+    "subclasses": {
+        "Alchemist": {
+            "name": "Alchemist",
+            "description": "An Alchemist is an expert at combining reagents to produce mystical effects. Alchemists use their creations to give life and to leech it away. Alchemy is the oldest of artificer traditions, and its versatility has long been valued during times of war and peace.",
+            "features": {
+                "3": [
+                    {
+                        "name": "TOOL PROFICIENCY",
+                        "description": "You gain proficiency with alchemist's supplies. If you already have this proficiency, you gain proficiency with one other type of artisan's tools of your choice.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ALCHEMIST SPELLS",
+                        "description": "You always have certain spells prepared after you reach particular levels in this class, as shown in the Alchemist Spells table. These spells count as artificer spells for you, but they don't count against the number of artificer spells you prepare.",
+                        "mechanics": {
+                            "type": "passive",
+                            "spells": [
+                                {
+                                    "level": 3,
+                                    "spells": ["Healing Word", "Ray of Sickness"]
+                                },
+                                {
+                                    "level": 5,
+                                    "spells": ["Flaming Sphere", "Melf's Acid Arrow"]
+                                },
+                                {
+                                    "level": 9,
+                                    "spells": ["Gaseous Form", "Mass Healing Word"]
+                                },
+                                {
+                                    "level": 13,
+                                    "spells": ["Blight", "Death Ward"]
+                                },
+                                {
+                                    "level": 17,
+                                    "spells": ["Cloudkill", "Raise Dead"]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "EXPERIMENTAL ELIXIR",
+                        "description": "After a long rest, create a random experimental elixir in an empty flask with alchemist's supplies. Drink or administer as an action. Make more by spending spell slots, choosing effects. Elixirs last until drunk or your next long rest. More at higher levels. 1: Healing—regains 2d4 + INT mod HP, 2: Swiftness—+10 ft speed for 1 hour, 3: Resilience—+1 AC for 10 minutes, 4: Boldness—add 1d4 to attack rolls and saving throws for 1 minute, 5: Flight—10 ft flying speed for 10 minutes, 6: Transformation—Alter Self for 10 minutes.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "5": [
+                    {
+                        "name": "ALCHEMICAL SAVANT",
+                        "description": "When you cast a spell using alchemist's supplies as your focus, add your Intelligence modifier (min +1) to one healing roll or to a damage roll that deals acid, fire, necrotic, or poison damage.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "9": [
+                    {
+                        "name": "RESTORATIVE REAGENTS",
+                        "description": "When a creature drinks your experimental elixir, it gains temp HP equal to 2d6 + INT mod (min 1). You can cast Lesser Restoration for free with alchemist's supplies as focus, uses equal to INT mod (min 1), recharged on long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "CHEMICAL MASTERY",
+                        "description": "You gain resistance to acid and poison damage and are immune to the poisoned condition. You can cast Greater Restoration and Heal once each per long rest without a slot, preparation, or material component if using alchemist's supplies as your focus.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Armorer": {
+            "name": "Armorer",
+            "description": "An artificer who specializes as an Armourer modifies armor to function almost like a second skin. The armor is enhanced to hone the artificer's magic, unleash potent attacks, and generate a formidable defense. The artificer bonds with this armor, becoming one with it even as they experiment with it and refine its magical capabilities.",
+            "features": {
+                "3": [
+                    {
+                        "name": "TOOLS OF THE TRADE",
+                        "description": "You gain proficiency with heavy armor. You also gain proficiency with smith's tools. If you already have this tool proficiency, you gain proficiency with one other type of artisan's tools of your choice.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARMORER SPELLS",
+                        "description": "At certain levels, you always have specific spells prepared. These count as artificer spells for you and don't count against your prepared spells total.",
+                        "mechanics": {
+                            "type": "passive",
+                            "spells": [
+                                {
+                                    "level": 3,
+                                    "spells": ["Magic Missile", "Thunderwave"]
+                                },
+                                {
+                                    "level": 5,
+                                    "spells": ["Mirror Image", "Shatter"]
+                                },
+                                {
+                                    "level": 9,
+                                    "spells": ["Hypnotic Pattern", "Lightning Bolt"]
+                                },
+                                {
+                                    "level": 13,
+                                    "spells": ["Fire Shield", "Greater Invisibility"]
+                                },
+                                {
+                                    "level": 17,
+                                    "spells": ["Passwall", "Wall of Force"]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "ARCANE ARMOR",
+                        "description": "As an action with smith's tools, turn worn armor into Arcane Armor. It ignores Strength requirements, can be your spellcasting focus, attaches to you (can't be removed), covers your body, and replaces missing limbs. Lasts until you change armor or die.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARMOR MODEL",
+                        "description": "Customize your Arcane Armor as Guardian or Infiltrator after a short or long rest with smith's tools. Each model grants special features and a unique weapon using INT for attack and damage rolls. GUARDIAN: Thunder Gauntlets: Each gauntlet is a simple melee weapon (1d8 thunder damage). On hit, the target has disadvantage on attacks against creatures other than you until your next turn. Defensive Field: As a bonus action, gain temp HP equal to your Artificer level (replace any temp HP). Uses equal to proficiency bonus, regained after a long rest. INFILTRATOR: Lightning Launcher: Counts as a simple ranged weapon (90/300 ft, 1d6 lightning damage). Once per turn on a hit, deal an extra 1d6 lightning damage. Powered Steps: Walking speed increases by 5 ft. Dampening Field: Advantage on Stealth checks. If armor normally imposes disadvantage, they cancel out.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "5": [
+                    {
+                        "name": "EXTRA ATTACK",
+                        "description": "You can attack twice, rather than once, whenever you take the Attack action on your turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "9": [
+                    {
+                        "name": "ARMOR MODIFICATIONS",
+                        "description": "Your Arcane Armor counts as four separate items for infusions: chest piece, boots, helmet, and special weapon. Each can hold one infusion. You can now infuse two extra items, but they must be parts of your Arcane Armor. Infusions transfer if you change the armor model.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "PERFECTED ARMOR",
+                        "description": "GUARDIAN: As a reaction, pull a Huge or smaller creature within 30 ft toward you (STR save, up to 30 ft). If it ends within 5 ft, make a melee attack as part of the reaction. Uses equal to proficiency bonus per long rest.INFILTRATOR: Creatures hit by your Lightning Launcher shed dim light and have disadvantage on attacks against you until your next turn. The next attack roll against them has advantage, and if it hits, they take an extra 1d6 lightning damage.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Artillerist": {
+            "name": "Artillerist",
+            "description": "An Artillerist specializes in using magic to hurl energy, projectiles, and explosions on a battlefield. This destructive power is valued by armies in the wars on many different worlds. And when war passes, some members of this specialization seek to build a more peaceful world by using their powers to fight the resurgence of strife.",
+            "features": {
+                "3": [
+                    {
+                        "name": "TOOL PROFICIENCY",
+                        "description": "You gain proficiency with woodcarver's tools. If you already have this proficiency, you gain proficiency with one other type of artisan's tools of your choice.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "ARTILLERIST SPELLS",
+                        "description": "At certain levels, you always have specific spells prepared. These count as artificer spells for you and don't count against your prepared spells total.",
+                        "mechanics": {
+                            "type": "passive",
+                            "spells": [
+                                {
+                                    "level": 3,
+                                    "spells": ["Shield", "Thunderwave"]
+                                },
+                                {
+                                    "level": 5,
+                                    "spells": ["Scorching Ray", "Shatter"]
+                                },
+                                {
+                                    "level": 9,
+                                    "spells": ["Fireball", "Wind Wall"]
+                                },
+                                {
+                                    "level": 13,
+                                    "spells": ["Ice Storm", "Wall of Fire"]
+                                },
+                                {
+                                    "level": 17,
+                                    "spells": ["Cone of Cold", "Wall of Force"]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "ELDRITCH CANNON",
+                        "description": "As an action with woodcarver's or smith's tools, create a Small or Tiny magical cannon in an unoccupied space within 5 feet. Only one cannon at a time; create another after a long rest or by expending a spell slot. The cannon is magical, AC 18, HP = 5 x artificer level, immune to poison and psychic damage, and lasts 1 hour or until reduced to 0 HP. Use a bonus action (within 60 ft) to activate its effect and move it up to 15 ft if it has legs. Cannon Types: FLAMETHROWER: 15-ft cone, 2d8 fire damage (Dex save for half), ignites objects. FORCE BALLISTA: Ranged spell attack (120 ft), 2d8 force damage and pushes creatures 5 ft. PROTECTOR: Grants itself and allies within 10 ft temp HP equal to 1d8 + INT modifier.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "5": [
+                    {
+                        "name": "ARCANE FIREARM",
+                        "description": "After a long rest, use woodcarver's tools to inscribe sigils on a wand, staff, or rod, making it your arcane firearm. Use it as a spellcasting focus. When casting an artificer spell through it, roll a d8 and add the result to one damage roll of the spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "9": [
+                    {
+                        "name": "EXPLOSIVE CANNON",
+                        "description": "Your eldritch cannon's damage rolls each increase by 1d8. As an action within 60 feet, you can detonate the cannon, destroying it and forcing creatures within 20 feet to make a Dexterity save (spell save DC), taking 3d8 force damage (half on success).",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "FORTIFIED POSITION",
+                        "description": "You and allies have half cover within 10 feet of your Eldritch Cannon due to a magical field. You can have up to two cannons at once, create both with one action (not the same spell slot), and activate both with a single bonus action. No more than two cannons at a time.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Battle Smith": {
+            "name": "Battle Smith",
+            "description": "Armies require protection, and someone has to put things back together if defenses fail. A combination of protector and medic, a Battle Smith is an expert at defending others and repairing both materiel and personnel. To aid in their work, Battle Smiths are accompanied by a steel defender, a protective companion of their own creation. Many soldiers tell stories of nearly dying before being saved by a Battle Smith and a steel defender.",
+            "features": {
+                "3": [
+                    {
+                        "name": "TOOL PROFICIENCY",
+                        "description": "You gain proficiency with smith's tools. If you already have this proficiency, you gain proficiency with one other type of artisan's tools of your choice.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "BATTLE SMITH SPELLS",
+                        "description": "You always have certain spells prepared after you reach particular levels in this class, as shown in the Battle Smith Spells table. These spells count as artificer spells for you, but they don't count against the number of artificer spells you prepare. Artificer Level\tBattle Smith Spells 3rd\tHeroism, Shield 5th\tShining Smite, Warding Bond 9th\tAura of Vitality, Conjure Barrage 13th\tAura of Purity, Fire Shield 17th\tBanishing Smite, Mass Cure Wounds",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "BATTLE READY",
+                        "description": "Your combat training and your experiments with magic have paid off in two ways: You gain proficiency with martial weapons. When you attack with a magic weapon, you can use your Intelligence modifier, instead of Strength or Dexterity modifier, for the attack and damage rolls.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "STEEL DEFENDER",
+                        "description": "Your tinkering has borne you a faithful companion, a steel defender. It's friendly to you and your companions, and it obeys your commands. See its game statistics in the Steel Defender stat block, which uses your proficiency bonus (PB) in several places. You determine the creature's appearance and whether it has two legs or four; your choice has no effect on its game statistics. In combat, the defender shares your initiative count, but it takes its turn immediately after yours. It can move and use its reaction on its own, but the only action it takes on its turn is the Dodge action, unless you take a bonus action on your turn to command it to take another action. That action can be one in its stat block or some other action. If you are incapacitated, the defender can take any action of its...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "5": [
+                    {
+                        "name": "EXTRA ATTACK",
+                        "description": "You can attack twice, rather than once, whenever you take the Attack action on your turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "9": [
+                    {
+                        "name": "ARCANE JOLT",
+                        "description": "You've learn new ways to channel arcane energy to harm or heal. When either you hit a target with a magic weapon attack or your steel defender hits a target, you can channel magical energy through the strike to create one of the following effects: The target takes an extra 2d6 force damage. Choose one creature or object you can see within 30 feet of the target. Healing energy flows into the chosen recipient, restoring 2d6 hit points to it. You can use this energy a number of times equal to your Intelligence modifier (minimum of once), but you can do so no more than once on a turn. You regain all expended uses when you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "name": "IMPROVED DEFENDER",
+                        "description": "At 15th level, your Arcane Jolt and steel defender become more powerful: The extra damage and the healing of your Arcane Jolt both increase to 4d6. Your steel defender gains a +2 bonus to Armor Class. Whenever your steel defender uses its Deflect Attack, the attacker takes force damage equal to 1d4 + your Intelligence modifier.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "version": "5.5E",
+    "source": "XGE",
+    "source_page": 12
+}

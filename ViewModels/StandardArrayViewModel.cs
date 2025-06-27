@@ -11,6 +11,7 @@ public class StandardArrayViewModel : INotifyPropertyChanged
     private Character _character;
     private bool _isApplied = false;
     private CharacterClass? _selectedClass;
+    private AbilityScoreRecommendation? _selectedRecommendation;
     private ObservableCollection<CharacterClass> _classes;
 
     public StandardArrayViewModel(Character character)
@@ -86,31 +87,116 @@ public class StandardArrayViewModel : INotifyPropertyChanged
             _selectedClass = value;
             OnPropertyChanged(nameof(SelectedClass));
             OnPropertyChanged(nameof(HasClassRecommendation));
+            OnPropertyChanged(nameof(HasMultipleRecommendations));
+            OnPropertyChanged(nameof(AvailableRecommendations));
             OnPropertyChanged(nameof(ClassRecommendationText));
+            
+            // Auto-select first recommendation if any are available
+            if (AvailableRecommendations?.Count > 0)
+            {
+                SelectedRecommendation = AvailableRecommendations[0];
+            }
+            else
+            {
+                SelectedRecommendation = null;
+            }
         }
     }
 
-    public bool HasClassRecommendation 
+    public AbilityScoreRecommendation? SelectedRecommendation
+    {
+        get => _selectedRecommendation;
+        set
+        {
+            _selectedRecommendation = value;
+            OnPropertyChanged(nameof(SelectedRecommendation));
+            OnPropertyChanged(nameof(HasSelectedRecommendation));
+            OnPropertyChanged(nameof(RecommendationPreviewText));
+            OnPropertyChanged(nameof(HasClassRecommendation)); // Update this as it depends on selected recommendation
+        }
+    }
+
+    public bool HasClassRecommendation => HasSelectedRecommendation || SelectedClass?.StandardArrayRecommendation != null;
+
+    public bool HasMultipleRecommendations 
     { 
         get 
         {
-            var hasRec = SelectedClass?.StandardArrayRecommendation != null;
-            System.Diagnostics.Debug.WriteLine($"HasClassRecommendation: {hasRec}, SelectedClass: {SelectedClass?.Name}, StandardArrayRecommendation null: {SelectedClass?.StandardArrayRecommendation == null}");
-            return hasRec;
+            var result = SelectedClass?.HasMultipleRecommendations == true;
+            System.Diagnostics.Debug.WriteLine($"StandardArrayViewModel.HasMultipleRecommendations: {result} for class {SelectedClass?.Name}");
+            if (SelectedClass != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"  StartingClassBenefits?.StandardArrayRecommendations?.Count: {SelectedClass.StartingClassBenefits?.StandardArrayRecommendations?.Count}");
+                System.Diagnostics.Debug.WriteLine($"  StandardArrayRecommendations?.Count: {SelectedClass.StandardArrayRecommendations?.Count}");
+            }
+            return result;
         }
     }
-    
+
+    public bool HasSelectedRecommendation => SelectedRecommendation != null;
+
+    public List<AbilityScoreRecommendation>? AvailableRecommendations
+    {
+        get
+        {
+            // First try the new structure in starting_class_benefits
+            if (SelectedClass?.StartingClassBenefits?.StandardArrayRecommendations?.Count > 0)
+                return SelectedClass.StartingClassBenefits.StandardArrayRecommendations;
+            
+            // Then try at the class level
+            if (SelectedClass?.StandardArrayRecommendations?.Count > 0)
+                return SelectedClass.StandardArrayRecommendations;
+            
+            // No multiple recommendations available
+            return null;
+        }
+    }
+
     public string ClassRecommendationText
     {
         get
         {
-            if (!HasClassRecommendation || SelectedClass?.StandardArrayRecommendation == null)
+            if (SelectedRecommendation != null)
+                return $"Recommended for {SelectedClass?.Name}: {SelectedRecommendation.Name}";
+            else if (SelectedClass?.StandardArrayRecommendation != null)
+                return $"Recommended for {SelectedClass.Name}";
+            else
                 return string.Empty;
-                
-            var rec = SelectedClass.StandardArrayRecommendation;
-            return $"Recommended for {SelectedClass.Name}: " +
-                   $"Str:{rec["strength"]}, Dex:{rec["dexterity"]}, Con:{rec["constitution"]}, " +
-                   $"Int:{rec["intelligence"]}, Wis:{rec["wisdom"]}, Cha:{rec["charisma"]}";
+        }
+    }
+
+    public string RecommendationPreviewText
+    {
+        get
+        {
+            if (SelectedRecommendation?.Array != null)
+            {
+                var preview = SelectedRecommendation.Array
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            else if (SelectedClass?.StandardArrayRecommendation != null)
+            {
+                var rec = SelectedClass.StandardArrayRecommendation;
+                var preview = rec
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            else if (AvailableRecommendations?.Count > 0)
+            {
+                // Fallback: show first available recommendation even if not selected
+                var firstRec = AvailableRecommendations[0];
+                var preview = firstRec.Array
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Select(kvp => $"{CapitalizeFirst(kvp.Key)}: {kvp.Value}")
+                    .ToArray();
+                return string.Join(", ", preview);
+            }
+            return "";
         }
     }
 
@@ -191,13 +277,23 @@ public class StandardArrayViewModel : INotifyPropertyChanged
     {
         System.Diagnostics.Debug.WriteLine("ApplyClassRecommendation called");
         
-        if (!HasClassRecommendation || SelectedClass?.StandardArrayRecommendation == null)
+        Dictionary<string, int>? rec = null;
+
+        // Use selected recommendation if available, otherwise fall back to legacy single recommendation
+        if (SelectedRecommendation?.Array != null)
+        {
+            rec = SelectedRecommendation.Array;
+        }
+        else if (SelectedClass?.StandardArrayRecommendation != null)
+        {
+            rec = SelectedClass.StandardArrayRecommendation;
+        }
+
+        if (rec == null)
         {
             System.Diagnostics.Debug.WriteLine("No class recommendation available");
             return;
         }
-
-        var rec = SelectedClass.StandardArrayRecommendation;
         
         // Clear current assignments
         ResetStandardArray();
@@ -213,7 +309,7 @@ public class StandardArrayViewModel : INotifyPropertyChanged
             StandardArray.AssignValue("Wisdom", rec["wisdom"]);
             StandardArray.AssignValue("Charisma", rec["charisma"]);
             
-            System.Diagnostics.Debug.WriteLine($"Successfully applied class recommendation for {SelectedClass.Name}");
+            System.Diagnostics.Debug.WriteLine($"Successfully applied class recommendation for {SelectedClass?.Name}");
         }
         catch (Exception ex)
         {
@@ -226,6 +322,13 @@ public class StandardArrayViewModel : INotifyPropertyChanged
     private bool CanApplyClassRecommendation()
     {
         return HasClassRecommendation;
+    }
+
+    private string CapitalizeFirst(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+        return char.ToUpper(input[0]) + input.Substring(1).ToLower();
     }
 
     private void StandardArray_PropertyChanged(object? sender, PropertyChangedEventArgs e)

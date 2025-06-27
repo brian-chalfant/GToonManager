@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace GToonManager.Models;
 
@@ -24,9 +25,10 @@ public abstract class ChoiceMechanic : INotifyPropertyChanged
 // 1. Subclass Choice
 public class SubclassChoice : ChoiceMechanic
 {
-    public ObservableCollection<SubclassOption> AvailableSubclasses { get; set; } = new();
-    private SubclassOption? _selectedSubclass;
-    public SubclassOption? SelectedSubclass
+    public CharacterClassLevel? ClassLevel { get; set; }
+    public ObservableCollection<Subclass> AvailableSubclasses { get; set; } = new();
+    private Subclass? _selectedSubclass;
+    public Subclass? SelectedSubclass
     {
         get => _selectedSubclass;
         set
@@ -35,6 +37,25 @@ public class SubclassChoice : ChoiceMechanic
             IsCompleted = value != null;
             OnPropertyChanged(nameof(SelectedSubclass));
             OnPropertyChanged(nameof(IsCompleted));
+            
+            // Apply the subclass to the character level
+            if (ClassLevel != null && value != null)
+            {
+                ClassLevel.ChosenSubclass = value;
+            }
+        }
+    }
+    
+    // Legacy support for SubclassOption (if needed elsewhere)
+    public ObservableCollection<SubclassOption> LegacyAvailableSubclasses { get; set; } = new();
+    private SubclassOption? _legacySelectedSubclass;
+    public SubclassOption? LegacySelectedSubclass
+    {
+        get => _legacySelectedSubclass;
+        set
+        {
+            _legacySelectedSubclass = value;
+            OnPropertyChanged(nameof(LegacySelectedSubclass));
         }
     }
 }
@@ -49,24 +70,42 @@ public class SubclassOption
 // 2. Ability Score Improvement Choice
 public class AbilityScoreImprovementChoice : ChoiceMechanic
 {
-    public bool CanChooseFeat { get; set; }
-    private bool _chooseFeat;
-    public bool ChooseFeat
+    public bool CanChooseFeat { get; set; } = true; // In 2024, feats are always an option
+    
+    // Reference to the character for ability score validation
+    public Character? Character { get; set; }
+
+    private ASIChoiceType _choiceType = ASIChoiceType.AbilityScoreIncrease;
+    public ASIChoiceType ChoiceType
     {
-        get => _chooseFeat;
+        get => _choiceType;
         set
         {
-            _chooseFeat = value;
-            OnPropertyChanged(nameof(ChooseFeat));
+            _choiceType = value;
+            OnPropertyChanged(nameof(ChoiceType));
+            OnPropertyChanged(nameof(IsChoosingFeat));
+            OnPropertyChanged(nameof(IsChoosingAbilityScores));
             UpdateCompletionStatus();
         }
     }
 
+    public bool IsChoosingFeat => ChoiceType == ASIChoiceType.Feat;
+    public bool IsChoosingAbilityScores => ChoiceType == ASIChoiceType.AbilityScoreIncrease;
+
+    // Ability Score selections (can be +2 to one or +1 to two)
     public ObservableCollection<AbilityScoreSelection> AbilityScoreSelections { get; set; } = new();
-    public ObservableCollection<FeatOption> AvailableFeats { get; set; } = new();
     
-    private FeatOption? _selectedFeat;
-    public FeatOption? SelectedFeat
+    // Available abilities for selection
+    public List<string> AvailableAbilities { get; } = new() 
+    { 
+        "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma" 
+    };
+    
+    // Feat selection
+    public ObservableCollection<Feat> AvailableFeats { get; set; } = new();
+    
+    private Feat? _selectedFeat;
+    public Feat? SelectedFeat
     {
         get => _selectedFeat;
         set
@@ -77,24 +116,133 @@ public class AbilityScoreImprovementChoice : ChoiceMechanic
         }
     }
 
-    private void UpdateCompletionStatus()
+    public int TotalPointsUsed => AbilityScoreSelections.Sum(s => s.Improvement);
+    public int RemainingPoints => 2 - TotalPointsUsed;
+    public bool CanAddMorePoints => RemainingPoints > 0;
+
+    public void UpdateCompletionStatus()
     {
-        if (ChooseFeat && CanChooseFeat)
+        if (IsChoosingFeat && CanChooseFeat)
         {
             IsCompleted = SelectedFeat != null;
         }
+        else if (IsChoosingAbilityScores)
+        {
+            IsCompleted = TotalPointsUsed == 2;
+        }
         else
         {
-            IsCompleted = AbilityScoreSelections.Sum(s => s.Improvement) == 2;
+            IsCompleted = false;
         }
         OnPropertyChanged(nameof(IsCompleted));
+        OnPropertyChanged(nameof(TotalPointsUsed));
+        OnPropertyChanged(nameof(RemainingPoints));
+        OnPropertyChanged(nameof(CanAddMorePoints));
     }
 }
 
-public class AbilityScoreSelection
+public enum ASIChoiceType
+{
+    AbilityScoreIncrease,
+    Feat
+}
+
+public class AbilityScoreSelection : INotifyPropertyChanged
 {
     public string AbilityScore { get; set; } = string.Empty;
-    public int Improvement { get; set; }
+    
+    private int _improvement;
+    private AbilityScoreImprovementChoice? _parentChoice;
+    
+    public int Improvement 
+    { 
+        get => _improvement;
+        set
+        {
+            var newValue = Math.Max(0, Math.Min(2, value));
+            
+            // Check if this change would exceed the 2-point limit
+            if (_parentChoice != null)
+            {
+                var currentTotal = _parentChoice.AbilityScoreSelections.Sum(s => s.AbilityScore == AbilityScore ? 0 : s.Improvement);
+                if (currentTotal + newValue > 2)
+                {
+                    // Don't allow the change if it would exceed the limit
+                    return;
+                }
+                
+                // Check if this would make the ability score exceed 20
+                var wouldExceedCap = WouldExceedAbilityScoreCap(newValue);
+                if (wouldExceedCap)
+                {
+                    // Don't allow the change if it would exceed the 20 cap
+                    return;
+                }
+            }
+            
+            _improvement = newValue;
+            OnPropertyChanged(nameof(Improvement));
+            
+            // Notify parent choice to update completion status
+            _parentChoice?.UpdateCompletionStatus();
+        }
+    }
+
+    // Unique group name for radio buttons - combines parent choice ID with ability score
+    public string UniqueGroupName => _parentChoice != null ? $"{_parentChoice.Id}_{AbilityScore}" : AbilityScore;
+
+    public void SetParentChoice(AbilityScoreImprovementChoice parentChoice)
+    {
+        _parentChoice = parentChoice;
+        OnPropertyChanged(nameof(UniqueGroupName)); // Notify that UniqueGroupName changed
+    }
+
+    // Check if applying the proposed improvement would exceed the 20 ability score cap
+    private bool WouldExceedAbilityScoreCap(int proposedImprovement)
+    {
+        if (_parentChoice?.Character == null) return false;
+        
+        var character = _parentChoice.Character;
+        
+        // Get base score + species + background bonuses (without any ASI)
+        var baseScore = AbilityScore.ToLowerInvariant() switch
+        {
+            "strength" => character.AbilityScores.Strength + character.StrengthSpeciesBonus + character.StrengthBackgroundBonus,
+            "dexterity" => character.AbilityScores.Dexterity + character.DexteritySpeciesBonus + character.DexterityBackgroundBonus,
+            "constitution" => character.AbilityScores.Constitution + character.ConstitutionSpeciesBonus + character.ConstitutionBackgroundBonus,
+            "intelligence" => character.AbilityScores.Intelligence + character.IntelligenceSpeciesBonus + character.IntelligenceBackgroundBonus,
+            "wisdom" => character.AbilityScores.Wisdom + character.WisdomSpeciesBonus + character.WisdomBackgroundBonus,
+            "charisma" => character.AbilityScores.Charisma + character.CharismaSpeciesBonus + character.CharismaBackgroundBonus,
+            _ => null
+        };
+        
+        if (!baseScore.HasValue) return false;
+        
+        // Get current ASI total from character (this includes all applied ASI improvements)
+        var currentASI = AbilityScore.ToLowerInvariant() switch
+        {
+            "strength" => character.StrengthASI ?? 0,
+            "dexterity" => character.DexterityASI ?? 0,
+            "constitution" => character.ConstitutionASI ?? 0,
+            "intelligence" => character.IntelligenceASI ?? 0,
+            "wisdom" => character.WisdomASI ?? 0,
+            "charisma" => character.CharismaASI ?? 0,
+            _ => 0
+        };
+        
+        // Remove this selection's current contribution and add the proposed improvement
+        var adjustedASI = currentASI - _improvement + proposedImprovement;
+        
+        // Check if total would exceed 20
+        var totalScore = baseScore.Value + adjustedASI;
+        return totalScore > 20;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }
 
 public class FeatOption
@@ -138,14 +286,109 @@ public class SkillsToolsChoice : ChoiceMechanic
     public ObservableCollection<string> AvailableTools { get; set; } = new();
     public ObservableCollection<string> SelectedSkills { get; set; } = new();
     public ObservableCollection<string> SelectedTools { get; set; } = new();
+    
+    // Enhanced skill options with selection tracking
+    public ObservableCollection<SkillOption> SkillOptions { get; set; } = new();
+    public ObservableCollection<ToolOption> ToolOptions { get; set; } = new();
 
-    public bool CanChooseSkills => AvailableSkills.Count > 0;
-    public bool CanChooseTools => AvailableTools.Count > 0;
+    public bool CanChooseSkills => AvailableSkills.Count > 0 || SkillOptions.Count > 0;
+    public bool CanChooseTools => AvailableTools.Count > 0 || ToolOptions.Count > 0;
+
+    public int SelectedCount => SkillOptions.Count(s => s.IsSelected) + ToolOptions.Count(t => t.IsSelected);
+    public bool CanSelectMore => SelectedCount < NumberToChoose;
 
     public void UpdateCompletionStatus()
     {
-        IsCompleted = (SelectedSkills.Count + SelectedTools.Count) == NumberToChoose;
+        IsCompleted = SelectedCount == NumberToChoose;
         OnPropertyChanged(nameof(IsCompleted));
+        OnPropertyChanged(nameof(SelectedCount));
+        OnPropertyChanged(nameof(CanSelectMore));
+        
+        // Update CanBeSelected for all options
+        foreach (var skill in SkillOptions)
+        {
+            skill.UpdateCanBeSelected(CanSelectMore);
+        }
+        foreach (var tool in ToolOptions)
+        {
+            tool.UpdateCanBeSelected(CanSelectMore);
+        }
+    }
+}
+
+public class SkillOption : INotifyPropertyChanged
+{
+    public string Name { get; set; } = string.Empty;
+    
+    private bool _isSelected;
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            _isSelected = value;
+            OnPropertyChanged(nameof(IsSelected));
+        }
+    }
+    
+    private bool _canBeSelected = true;
+    public bool CanBeSelected
+    {
+        get => _canBeSelected;
+        set
+        {
+            _canBeSelected = value;
+            OnPropertyChanged(nameof(CanBeSelected));
+        }
+    }
+
+    public void UpdateCanBeSelected(bool canSelectMore)
+    {
+        CanBeSelected = IsSelected || canSelectMore;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
+
+public class ToolOption : INotifyPropertyChanged
+{
+    public string Name { get; set; } = string.Empty;
+    
+    private bool _isSelected;
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            _isSelected = value;
+            OnPropertyChanged(nameof(IsSelected));
+        }
+    }
+    
+    private bool _canBeSelected = true;
+    public bool CanBeSelected
+    {
+        get => _canBeSelected;
+        set
+        {
+            _canBeSelected = value;
+            OnPropertyChanged(nameof(CanBeSelected));
+        }
+    }
+
+    public void UpdateCanBeSelected(bool canSelectMore)
+    {
+        CanBeSelected = IsSelected || canSelectMore;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
 

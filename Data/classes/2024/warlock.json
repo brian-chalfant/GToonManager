@@ -1,0 +1,588 @@
+{
+    "name": "WARLOCK",
+    "description": "A warlock character class with unique abilities and features.",
+    "hit_dice": "1d8",
+    "starting_class_benefits": {
+        "description": "Benefits gained when WARLOCK is your first class",
+        "primary_ability": [
+            "charisma"
+        ],
+        "standard_array_recommendations": [
+            {
+                "name": "Standard",
+                "description": "Classic Eldritch Blast warlock",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 13,
+                    "constitution": 14,
+                    "intelligence": 10,
+                    "wisdom": 12,
+                    "charisma": 15
+                }
+            },
+            {
+                "name": "Hexblade",
+                "description": "Weapon-focused warlock, can dump Str",
+                "array": {
+                    "strength": 8,
+                    "dexterity": 14,
+                    "constitution": 13,
+                    "intelligence": 10,
+                    "wisdom": 12,
+                    "charisma": 15
+                }
+            }
+        ],
+        "saving_throw_proficiencies": [
+            "wisdom",
+            "charisma"
+        ],
+        "armor_proficiencies": [
+            "light armor"
+        ],
+        "weapon_proficiencies": [
+            "simple weapons"
+        ],
+        "tool_proficiencies": [],
+        "skill_proficiencies": {
+            "choose": 2,
+            "from": [
+                ": Arcana",
+                "Deception",
+                "History",
+                "Intimidation",
+                "Investigation",
+                "Nature",
+                "Religion"
+            ]
+        },
+        "equipment_grants": {
+            "choice": {
+                "description": "Choose one of the following equipment packages",
+                "options": [
+                    {
+                        "name": "Equipment Package",
+                        "description": "Standard warlock equipment and gold",
+                        "fixed": [
+                            {
+                                "item": "Arcane Focus",
+                                "quantity": 1,
+                                "description": "Arcane Focus"
+                            },
+                            {
+                                "item": "Book",
+                                "quantity": 1,
+                                "description": "Book"
+                            },
+                            {
+                                "item": "Dagger",
+                                "quantity": 2,
+                                "description": "Dagger"
+                            },
+                            {
+                                "item": "Leather Armor",
+                                "quantity": 1,
+                                "description": "Leather Armor"
+                            },
+                            {
+                                "item": "Scholar's Pack",
+                                "quantity": 1,
+                                "description": "Scholar's Pack"
+                            },
+                            {
+                                "item": "Sickle",
+                                "quantity": 1,
+                                "description": "Sickle"
+                            }
+                        ],
+                        "currency": {
+                            "gold": 15
+                        }
+                    },
+                    {
+                        "name": "Gold Only",
+                        "description": "Choose gold instead of equipment",
+                        "currency": {
+                            "gold": 45
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "multiclass_benefits": {
+        "description": "Benefits gained when multiclassing into WARLOCK",
+        "prerequisites": {
+            "minimum_ability_scores": {
+                "charisma": 13
+            }
+        },
+        "weapon_proficiencies": [
+            "simple weapons"
+        ],
+        "armor_proficiencies": [
+            "light armor"
+        ]
+    },
+    "features": {
+        "1": [
+            {
+                "name": "ELDRITCH INVOCATIONS",
+                "description": "You have unearthed Eldritch Invocations, pieces of forbidden knowledge that imbue you with an abiding magical ability or other lessons. You gain one invocation of your choice, such as Devil's Sight. If an invocation has a prerequisite, you must meet it to learn that invocation. For example, if an invocation requires you to be a level 5+ Warlock, you can select the invocation once you reach Warlock level 5. Whenever you gain a Warlock level, you can replace one of your invocations with another one for which you qualify. You can't replace an invocation if it's a prerequisite for another invocation that you have. When you gain certain Warlock levels, you gain more invocations of your choice, as shown in the Invocations column of the Warlock table. You can't pick the same invocation more than ...",
+                "mechanics": {
+                    "type": "passive"
+                }
+            },
+            {
+                "name": "PACT MAGIC",
+                "description": "Through occult ceremony, you have formed a pact with a mysterious entity to gain magical powers. The entity is a voice in the shadows—its identity unclear—but its boon to you is concrete: the ability to cast spells. The information below details how you use the rules of spellcasting with Warlock spells, which appear in the Warlock spell list later in the class's description. Cantrips. You know two Warlock cantrips of your choice. Eldritch Blast and Prestidigitation are recommended. Whenever you gain a Warlock level, you can replace one of your cantrips from this feature with another Warlock cantrip of your choice. When you reach Warlock levels 4 and 10, you learn another Warlock cantrip of your choice, as shown in the Cantrips column of the Warlock table. Spell Slots. The Warlock table sho...",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "2": [
+            {
+                "name": "MAGICAL CUNNING",
+                "description": "You can perform an esoteric rite for 1 minute. At the end of it, you regain expended Pact Magic spell slots but no more than a number equal to half your maximum (round up). Once you use this feature, you can't do so again until you finish a Long Rest.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "3": [
+            {
+                "name": "WARLOCK SUBCLASS",
+                "description": "You gain a Warlock subclass of your choice:",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "4": [
+            {
+                "name": "ABILITY SCORE IMPROVEMENT",
+                "description": "You gain the Ability Score Improvement feat or another feat of your choice for which you qualify. You gain this feature again at levels 8, 12, 16, and 19.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "9": [
+            {
+                "name": "CONTACT PATRON",
+                "description": "In the past, you usually contacted your patron through intermediaries. Now you can communicate directly; you always have the Contact Other Plane spell prepared. With this feature, you can cast the spell without expending a spell slot to contact your patron, and you automatically succeed on the spell's saving throw. Once you cast the spell with this feature, you can't do so again until you finish a Long Rest.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "11": [
+            {
+                "name": "MYSTIC ARCANUM",
+                "description": "Your patron grants you a magical secret called an arcanum. Choose one level 6 spell from the Warlock spell list as this arcanum. You can cast your arcanum spell once without expending a spell slot, and you must finish a Long Rest before you can do so again. As shown on the Warlock table, you gain another Warlock spell of your choice that can be cast in this way when you reach levels 13 (level 7 spell), 15 (level 8 spell), and 17 (level 9 spell). You regain all uses of your Mystic Arcanum when you finish a Long Rest. Whenever you gain a Warlock level, you can replace one of your arcanum spells with another Warlock spell of the same level.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "19": [
+            {
+                "name": "EPIC BOON",
+                "description": "You gain an Epic Boon feat or another feat of your choice for which you qualify. Boon of Fate is recommended.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ],
+        "20": [
+            {
+                "name": "ELDRITCH MASTER",
+                "description": "When you use your Magical Cunning feature, you regain all your expended Pact Magic spell slots.",
+                "mechanics": {
+                    "type": "passive"
+                }
+            }
+        ]
+    },
+    "subclasses": {
+        "ARCHFEY PATRON": {
+            "name": "ARCHFEY PATRON",
+            "description": "Your pact draws on the power of the Feywild, the mysterious realm of the Fey. When you choose this subclass, you might make a deal with a single mighty archfey, such as the Prince of Frost; the Queen of Air and Darkness, ruler of the Gloaming Court; Titania of the Summer Court; Oberon, the Green Lord; Hyrsam, the Prince of Fools; or an ancient hag. Or you might call on a wide spectrum of Fey, forging a complex web of favors and debts. Your patron's motivations are often inscrutable, and sometimes whimsical, and might involve a striving for greater magical power or the settling of age-old grudges.",
+            "features": {
+                "3": [
+                    {
+                        "name": "PATRON SPELLS",
+                        "description": "The magic of your otherworldly patron ensures you always have certain spells ready; when you reach a Warlock level specified in the Archfey Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "STEPS OF THE FEY",
+                        "description": "Your patron grants you the ability to move between the boundaries of the planes. You can cast Misty Step without expending a spell slot a number of times equal to your Charisma modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. In addition, whenever you cast that spell, you can choose one of the following additional effects. Refreshing Step. Immediately after you teleport, you or one creature you can see within 10 feet of you gains 1d10 Temporary Hit Points. Taunting Step. Creatures within 5 feet of the space you left must succeed on a Wisdom saving throw against your spell save DC or have Disadvantage on attack rolls against creatures other than you until the start of your next turn.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "MISTY ESCAPE",
+                        "description": "You can cast Misty Step as a Reaction in response to taking damage. In addition, the following effects are now among your Steps of the Fey options. Disappearing Step. You have the Invisible condition until the start of your next turn or until immediately after you make an attack roll, deal damage or cast a spell. Dreadful Step. Creatures within 5 feet of the space you left or the space you appear in (your choice) must succeed on a Wisdom saving throw against your spell save DC or take 2d10 Psychic damage.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "BEGUILING DEFENSES",
+                        "description": "Your patron teaches you how to guard your mind and body. You are immune to the Charmed condition. In addition, immediately after a creature you can see hits you with an attack roll, you can use your Reaction to reduce the damage you take by half (round down), and you can force the attacker to make a Wisdom saving throw against your spell save DC. On a failed save, the attacker takes Psychic damage equal to the damage you take. Once you use this Reaction, you can't use it again until you finish a Long Rest unless you expend a Pact Magic spell slot (no action required) to restore your use of it.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "BEWITCHING MAGIC",
+                        "description": "Your patron grants you the ability to weave your magic with teleportation. Immediately after you cast an Enchantment or Illusion spell using an action and a spell slot, you can cast Misty Step as part of the same action and without expending a spell slot.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "CELESTIAL PATRON": {
+            "name": "CELESTIAL PATRON",
+            "description": "Your pact draws on the power of the Upper Planes, the realms of everlasting bliss. You might enter an agreement with an empyrean, a couatl, a sphinx, a unicorn, or some similar entity associated with those realms. Or you might call on numerous such beings as you pursue goals aligned with theirs. Your pact allows you to experience the barest touch of the holy light that illuminates the multiverse.",
+            "features": {
+                "3": [
+                    {
+                        "name": "PATRON SPELLS",
+                        "description": "The magic of your otherworldly patron ensures you always have certain spells ready; when you reach a Warlock level specified in the Celestial Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "HEALING LIGHT",
+                        "description": "You gain the ability to channel celestial energy to heal wounds. You have a pool of d6s that you spend to fuel this healing. The number of dice in the pool equals 1 plus your Warlock level. As a Bonus Action, you can heal yourself or one creature that you can see within 60 feet of yourself, expending dice from the pool. The maximum number of dice you can expend at once equals your Charisma modifier (minimum of one die). Roll the dice you expend, and restore a number of Hit Points equal to the roll's total. Your pool regains all expended dice when you finish a Long Rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "RADIANT SOUL",
+                        "description": "Your link to your patron allows you to serve as a conduit for radiant energy. You have Resistance to Radiant damage. Once per turn, when a spell you cast deals Radiant or Fire damage, you can add your Charisma modifier to that spell against one of the spell's targets.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "CELESTIAL RESILIENCE",
+                        "description": "You gain Temporary Hit Points whenever you use your Magical Cunning feature or finish a Short Rest or Long Rest. These Temporary Hit Points equal your Warlock level plus your Charisma modifier. Additionally, choose up to five creatures you can see when you gain the points. Those creatures each gain Temporary Hit Points equal to half your Warlock level plus your Charisma modifier.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "SEARING VENGEANCE",
+                        "description": "When you or an ally within 60 feet of you is about to make a Death Saving Throw, you can unleash radiant energy to save the creature. The creature regains Hit Points equal to half its Hit Point Maximum and can end the Prone condition on itself. Each creature of your choice that is within 30 feet of the creature takes Radiant damage equal to 2d8 plus your Charisma modifier, and each has the Blinded condition until the end of the current turn. Once you use this feature, you can't use it again until you finish a Long Rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "FIEND PATRON": {
+            "name": "FIEND PATRON",
+            "description": "Your pact draws on the power of the Lower Planes—the homes of demons, devils, yugoloths, and other Fiends. When you choose this subclass, you might forge a bargain with a demon lord such as Demogorgon, Orcus, Fraz'Urb-luu, or Baphomet; an archdevil such as Asmodeus, Dispater, Mephistopheles, or Glasya; a pit fiend or balor that is especially mighty; or an ultroloth or some other lord of the yugoloths. Alternatively, you might call on a varied array of Fiends without binding yourself to the service of one. In any case, your patron's aims are evil—the corruption or destruction of all things, ultimately including you—and your path will be defined by the extent to which you strive against those aims.",
+            "features": {
+                "3": [
+                    {
+                        "name": "PATRON SPELLS",
+                        "description": "The magic of your otherworldly patron ensures you always have certain spells ready; when you reach a Warlock level specified in the Fiend Spells table, you thereafter always have the listed spells prepared.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "DARK ONE'S BLESSING",
+                        "description": "When you reduce an enemy to 0 Hit Points, you gain Temporary Hit Points equal to your Charisma modifier plus your Warlock level (minimum of 1 Temporary Hit Point). You also gain this benefit if someone else reduces an enemy within 10 feet of you to 0 Hit Points.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "DARK ONE'S OWN LUCK",
+                        "description": "You can call on your fiendish patron to alter fate in your favor. When you make an ability check or a saving throw, you can use this feature to add a d10 to your roll. You can do so after seeing the initial roll but before any of the roll's effects occur. You can use this feature a number of times equal to your Charisma modifier (minimum of once), but you can use it no more than once per roll. You regain all expended uses when you finish a Long Rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "FIENDISH RESILIENCE",
+                        "description": "Choose one damage type, other than Force, whenever you finish a Short Rest or Long Rest. You gain Resistance to that damage type until you choose a different one with this feature.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "HURL THROUGH HELL",
+                        "description": "Once per turn when you hit a creature with an attack roll, you can try to instantly transport the target through the Lower Planes. The target must succeed on a Charisma saving throw against your spell save DC, or the target disappears and hurtles through a nightmare landscape. The target takes 8d10 Psychic damage if it isn't a Fiend, and it has the Incapacitated condition until the end of your next turn, when it returns to the space it previously occupied or the nearest unoccupied space. Once you use this feature, you can't use it again until you finish a Long Rest unless you expend a Pact Magic spell slot (no action required) to restore your use of it.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "GREAT OLD ONE PATRON": {
+            "name": "GREAT OLD ONE PATRON",
+            "description": "Your pact is rooted in magic that is utterly foreign to the fabric of reality. When you choose this subclass, you might bind yourself to an ineffable being from the Far Realm or an elder god known only in legend—a being such as Ghaunadar, called That Which Lurks; Tharizdun, the Chained God; Dendar, the Night Serpent; Zargon, the Returner; Great Cthulhu; or some other unfathomable and uncaring being. Or you might rely on eldritch lore invoking the names of several such entities, without yoking yourself to one in particular. The motives of these beings are incomprehensible to mortals, and their knowledge is so immense and ancient that even the greatest libraries pale in comparison to the vast secrets they hold. The Great Old One might be indifferent to your existence, but the secrets you hav...",
+            "features": {
+                "3": [
+                    {
+                        "name": "PATRON SPELLS",
+                        "description": "The magic of your otherworldly patron ensures you always have certain spells ready; when you reach a Warlock level specified in the Great Old One Spells table, you thereafter always have the listed spells prepared. GREAT OLD ONE SPELLS",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "AWAKENED MIND",
+                        "description": "You can form a telepathic connection between your mind and the mind of another. As a Bonus Action, choose one creature you can see within 30 feet of yourself. You and the chosen creature can communicate telepathically with each other while the two of you are within a number of miles of each other equal to your Charisma modifier (minimum of 1 mile). To understand each other, you each must speak mentally in a language the other knows. The telepathic connection lasts for a number of minutes equal to your Warlock level. It ends early if you use this feature to form a connection with a different creature.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "PSYCHIC SPELLS",
+                        "description": "When you cast a Warlock spell that deals damage, you can change its damage type to Psychic. In addition, when you cast a Warlock spell that is an Enchantment or Illusion, you can do so without Verbal or Somatic components.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "CLAIRVOYANT COMBATANT",
+                        "description": "When you form a telepathic bond with a creature using your Awakened Mind, you can force that creature to make a Wisdom saving throw against your spell save DC. On a failed save, the creature has Disadvantage on attack rolls against you, and you have Advantage on attack rolls against that creature for the duration of the bond. Once you use this feature, you can't use it again until you finish a Short Rest or Long Rest unless you expend a Pact Magic spell slot (no action required) to restore your use of it.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "ELDRITCH HEX",
+                        "description": "Your alien patron grants you a powerful curse. You always have the Hex spell prepared. When you cast Hex and choose an ability, the target also has Disadvantage on saving throws of the chosen ability for the duration of the spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "THOUGHT SHIELD",
+                        "description": "Your thoughts can't be read by telepathy or other means unless you allow it. You also have Resistance to Psychic damage, and whenever a creature deals Psychic damage to you, that creature takes the same amount of damage that you take.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "CREATE THRALL",
+                        "description": "When you cast Summon Aberration, you can modify it so that it doesn't require Concentration. If you do so, the spell's duration becomes 1 minute for that casting and when summoned, the Aberration has a number of Temporary Hit Points equal to your Warlock level plus your Charisma modifier. In addition, the first time each turn the Aberration hits a creature under the effect of your Hex, the Aberration deals extra Psychic damage to the target equal to the bonus damage of that spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Fathomless": {
+            "name": "Fathomless",
+            "description": "You have plunged into a pact with the deeps. An entity of the ocean, the Elemental Plane of Water, or another otherworldly sea now allows you to draw on its thalassic power. Is it merely using you to learn about terrestrial realms, or does it want you to open cosmic floodgates and drown the world? Perhaps you were born into a generational cult that venerates the Fathomless and its spawn. Or you might have been shipwrecked and on the brink of drowning when your patron's grasp offered you a chance at life. Whatever the reason for your pact, the sea and its unknown depths call to you. Entities of the deep that might empower a warlock include krakens, ancient water elementals, godlike hallucinations dreamed into being by kuo-toa, merfolk demigods, and sea hag covens.",
+            "features": {
+                "3": [
+                    {
+                        "name": "EXPANDED SPELL LIST",
+                        "description": "The Fathomless lets you choose from an expanded list of spells when you learn a warlock spell. The following spells are added to the warlock spell list for you.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "TENTACLE OF THE DEEP",
+                        "description": "You can magically summon a spectral tentacle that strikes at your foes. As a bonus action, you create a 10-foot-long tentacle at a point you can see within 60 feet of you. The tentacle lasts for 1 minute or until you use this feature to create another tentacle. When you create the tentacle, you can make a melee spell attack against one creature within 10 feet of it. On a hit, the target takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn. When you reach 10th level in this class, the damage increases to 2d8. As a bonus action on your turn, you can move the tentacle up to 30 feet and repeat the attack. You can summon the tentacle a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "GIFT OF THE SEA",
+                        "description": "You gain a swimming speed of 40 feet, and you can breathe underwater.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "OCEANIC SOUL",
+                        "description": "You are now even more at home in the depths. You gain resistance to cold damage. In addition, when you are fully submerged, any creature that is also fully submerged can understand your speech, and you can understand theirs.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "GUARDIAN COIL",
+                        "description": "Your Tentacle of the Deeps can defend you and others, interposing itself between them and harm. When you or a creature you can see takes damage while within 10 feet of the tentacle, you can use your reaction to choose one of those creatures and reduce the damage to that creature by 1d8. When you reach 10th level in this class, the damage reduced by the tentacle increases to 2d8.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "GRASPING TENTACLES",
+                        "description": "You learn the spell Evard's Black Tentacles. It counts as a warlock spell for you, but it doesn't count against the number of spells you know. You can also cast it once without using a spell slot, and you regain the ability to do so when you finish a long rest. Whenever you cast this spell, your patron's magic bolsters you, granting you a number of temporary hit points equal to your warlock level. Moreover, damage can't break your concentration on this spell.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "FATHOMLESS PLUNGE",
+                        "description": "You can magically open temporary conduits to watery destinations. As an action, you can teleport yourself and up to five other willing creatures that you can see within 30 feet of you. Amid a whirl of tentacles, you all vanish and then reappear up to 1 mile away in a body of water you've seen (pond size or larger) or within 30 feet of it, each of you appearing in an unoccupied space within 30 feet of the others. Once you use this feature, you can't use it again until you finish a short or long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Genie": {
+            "name": "Genie",
+            "description": "You have made a pact with one of the rarest kinds of genie, a noble genie. Such entities rule vast fiefs on the Elemental Planes and have great influence over lesser genies and elemental creatures. Noble genies are varied in their motivations, but most are arrogant and wield power that rivals that of lesser deities. They delight in turning the table on mortals, who often bind genies into servitude, and readily enter into pacts that expand their reach. You choose your patron's kind or determine it randomly, from the following: Dao (Earth), Djinni (Air), Efreeti (Fire), Marid (Water).",
+            "features": {
+                "3": [
+                    {
+                        "name": "EXPANDED SPELL LIST",
+                        "description": "The Genie lets you choose from an expanded list of spells when you learn a warlock spell. The Genie Expanded Spells table shows the genie spells that are added to the warlock spell list for you, along with the spells associated in the table with your patron's kind: dao, djinni, efreeti, or marid.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "GENIE'S VESSEL",
+                        "description": "Your patron gifts you a magical vessel that grants you a measure of the genie's power. The vessel is a Tiny object, and you can use it as a spellcasting focus for your warlock spells. You decide what the object is, or you can determine what it is randomly from the following: Oil lamp, Urn, Ring with a compartment, Stoppered bottle, Hollow statuette, Ornate lantern While you are touching the vessel, you can use it in the following ways: Bottled Respite: As an action, you can magically vanish and enter your vessel, which remains in the space you left. The interior of the vessel is an extradimensional space in the shape of a 20-foot-radius cylinder, 20 feet high, and resembles your vessel. The interior is appointed with cushions and low tables and is a comfortable temperature. While inside, y...",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "ELEMENTAL GIFT",
+                        "description": "You begin to take on characteristics of your patron's kind. You now have resistance to a damage type determined by your patron's kind: bludgeoning (dao), thunder (djinni), fire (efreeti), or cold (marid). In addition, as a bonus action, you can give yourself a flying speed of 30 feet that lasts for 10 minutes, during which you can hover. You can use this bonus action a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "SANCTUARY VESSEL",
+                        "description": "When you enter your Genie's Vessel via the Bottled Respite feature, you can now choose up to five willing creatures that you can see within 30 feet of you, and the chosen creatures are drawn into the vessel with you. As a bonus action, you can eject any number of creatures from the vessel, and everyone is ejected if you leave or die or if the vessel is destroyed. In addition, anyone (including you) who remains within the vessel for at least 10 minutes gains the benefit of finishing a short rest, and anyone can add your proficiency bonus to the number of hit points they regain if they spend any Hit Dice as part of a short rest there.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "LIMITED WISH",
+                        "description": "You entreat your patron to grant you a small wish. As an action, you can speak your desire to your Genie's Vessel, requesting the effect of one spell that is 6th level or lower and has a casting time of 1 action. The spell can be from any class's spell list, and you don't need to meet the requirements in that spell, including costly components: the spell simply takes effect as part of this action. Once you use this feature, you can't use it again until you finish 1d4 long rests.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        },
+        "Hexblade": {
+            "name": "Hexblade",
+            "description": "You have made your pact with a mysterious entity from the Shadowfell – a force that manifests in sentient magic weapons carved from the stuff of shadow. The mighty sword Blackrazor is the most notable of these weapons, which have been spread across the multiverse over the ages. The shadowy force behind these weapons can offer power to warlocks who form pacts with it. Many hexblade warlocks create weapons that emulate those formed in the Shadowfell. Others forgo such arms, content to weave the dark magic of that plane into their spellcasting.",
+            "features": {
+                "3": [
+                    {
+                        "name": "EXPANDED SPELL LIST",
+                        "description": "The Hexblade lets you choose from an expanded list of spells when you learn a warlock spell. The following spells are added to the warlock spell list for you.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "HEXBLADE'S CURSE",
+                        "description": "You gain the ability to place a baleful curse on someone. As a bonus action, choose one creature you can see within 30 feet of you. The target is cursed for 1 minute. The curse ends early if the target dies, you die, or you are incapacitated. Until the curse ends, you gain the following benefits: You gain a bonus to damage rolls against the cursed target. The bonus equals your proficiency bonus. Any attack roll you make against the cursed target is a critical hit on a roll of 19 or 20 on the d20. If the cursed target dies, you regain hit points equal to your warlock level + your Charisma modifier (minimum of 1 hit point). You can't use this feature again until you finish a short or long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    },
+                    {
+                        "name": "HEX WARRIOR",
+                        "description": "You acquire the training necessary to effectively arm yourself for battle. You gain proficiency with medium armor, shields, and martial weapons. The influence of your patron also allows you to mystically channel your will through a particular weapon. Whenever you finish a long rest, you can touch one weapon that you are proficient with and that lacks the two-handed property. When you attack with that weapon, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefit lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the weapon's type.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "name": "ACCURSED SPECTER",
+                        "description": "You can curse the soul of a person you slay, temporarily binding it in your service. When you slay a humanoid, you can cause its spirit to rise from its corpse as a specter. When the specter appears, it gains temporary hit points equal to half your warlock level. Roll initiative for the specter, which has its own turns. It obeys your verbal commands, and it gains a special bonus to its attack rolls equal to your Charisma modifier (minimum of +0). The specter remains in your service until the end of your next long rest, at which point it vanishes to the afterlife. Once you bind a specter with this feature, you can't use the feature again until you finish a long rest.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "name": "ARMOUR OF HEXES",
+                        "description": "Your hex grows more powerful. If the target cursed by your Hexblade's Curse hits you with an attack roll, you can use your reaction to roll a d6. On a 4 or higher, the attack instead misses you, regardless of its roll.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "name": "MASTER OF HEXES",
+                        "description": "You can spread your Hexblade's Curse from a slain creature to another creature. When the creature cursed by your Hexblade's Curse dies, you can apply the curse to a different creature you can see within 30 feet of you, provided you aren't incapacitated. When you apply the curse in this way, you don't regain hit points from the death of the previously cursed creature.",
+                        "mechanics": {
+                            "type": "passive"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
